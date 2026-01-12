@@ -1,6 +1,8 @@
 package com.example.mobileapp;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,5 +22,14 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
+
+
+    View.OnClickListener loginMaq = new View.OnClickListener(){
+        public void onClick(View v){
+        }
+    };
+    public void buttonInicioSesion(){
+    Button inicioSesion = (Button)findViewById(R.id.iniciarSesion);
     }
 }
