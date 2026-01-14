@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/log_in"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1B1F27">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="top|center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="73dp"
+            android:background="#2D333E" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="411dp"
+            android:layout_height="87dp"
+            android:fontFamily="@font/upheavtt"
+            android:paddingTop="30dp"
+            android:paddingBottom="20dp"
+            android:text="BIENVENID@"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="48sp" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/upheavtt"
+            android:paddingTop="21dp"
+            android:layout_marginBottom="50dp"
+            android:text="NOS ALEGRA VERTE DE NUEVO!!! :)"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="27sp" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="411dp"
+            android:layout_height="42dp"
+            android:fontFamily="@font/upheavtt"
+            android:paddingStart="45dp"
+            android:text="correo electrónico"
+            android:textAlignment="textStart"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/editTextTextEmailAddress"
+            android:layout_width="379dp"
+            android:layout_height="47dp"
+            android:background="@drawable/form_shape"
+            android:ems="10"
+            android:fontFamily="@font/upheavtt"
+            android:inputType="textEmailAddress"
+            android:paddingStart="20dp"
+            android:text="email@domain.com"
+            android:textAlignment="textStart"
+            android:textColor="#828282" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
