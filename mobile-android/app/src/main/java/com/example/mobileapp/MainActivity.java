@@ -1,5 +1,6 @@
 package com.example.mobileapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,8 +14,10 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button button;
-    private TextView textView;
+    Button logInButton;
+    Button registerBtn;
+
+
 
 
     @Override
@@ -27,15 +30,27 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        logInButton = findViewById(R.id.logInButton);
+        registerBtn = findViewById(R.id.registerBtn);
 
-        textView = findViewById(R.id.archiveText);
-        button = findViewById(R.id.logInButton);
 
-        button.setOnClickListener( new View.OnClickListener() {
+        logInButton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                textView.setText("Hola Mundo");
+                Intent intent = new Intent(MainActivity.this, LogInActivity.class);
+                startActivity(intent);
             }
+
         });
+
+        registerBtn.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+
+        });
+
     }
 }
