@@ -6,32 +6,23 @@ import android.view.View;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class LogInActivity extends AppCompatActivity {
+public class ForgotPasswordActivity extends AppCompatActivity {
     Button registerBtn;
-    Button forgotPasswordBtn;
+    Button recoverPasswordBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.log_in);
+        setContentView(R.layout.forgot_password);
 
         registerBtn = findViewById(R.id.registerBtn);
-        forgotPasswordBtn = findViewById(R.id.forgotPasswordBtn);
+        recoverPasswordBtn = findViewById(R.id.recoverPasswordBtn);
         registerBtn.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LogInActivity.this, RegisterActivity.class);
+                Intent intent = new Intent(ForgotPasswordActivity.this, RegisterActivity.class);
                 startActivity(intent);
             }
-
-        });
-        forgotPasswordBtn.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LogInActivity.this, ForgotPasswordActivity.class);
-                startActivity(intent);
-            }
-
         });
     }
 }
