@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 public class LogInActivity extends AppCompatActivity {
     Button registerBtn;
     Button forgotPasswordBtn;
+    Button logInBtn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +19,9 @@ public class LogInActivity extends AppCompatActivity {
 
         registerBtn = findViewById(R.id.registerBtn);
         forgotPasswordBtn = findViewById(R.id.forgotPasswordBtn);
+        logInBtn = findViewById(R.id.logInBtn);
+
+
         registerBtn.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -29,6 +34,14 @@ public class LogInActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LogInActivity.this, ForgotPasswordActivity.class);
+                startActivity(intent);
+            }
+
+        });
+        logInBtn.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LogInActivity.this, MainActivity.class);
                 startActivity(intent);
             }
 

@@ -109,10 +109,11 @@
             android:text="Olvidé mi contraseña"
             android:textAlignment="viewEnd"
             android:textColor="#29CDF2"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:fitsSystemWindows="true"/>
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/logInBtn"
             android:layout_width="380dp"
             android:layout_height="50dp"
             android:background="@drawable/button_shape"
