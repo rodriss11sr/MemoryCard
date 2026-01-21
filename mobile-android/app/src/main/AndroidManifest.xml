@@ -30,7 +30,7 @@
         <activity android:name=".ForgotPasswordActivity"
             android:exported="false"
             />
-        <activity android:name=".MainActivity"
+        <activity android:name=".MainScreenActivity"
             android:exported="false"
             />
 
