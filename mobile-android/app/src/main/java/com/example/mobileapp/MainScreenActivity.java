@@ -33,8 +33,12 @@ public class MainScreenActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if(item.getItemId() == R.id.nav_profile){
+                    Intent intent = new Intent(MainScreenActivity.this, ProfileActivity.class);
+                    startActivity(intent);
+                } else if (item.getItemId() == R.id.nav_games) {
                     Intent intent = new Intent(MainScreenActivity.this, HomeActivity.class);
                     startActivity(intent);
+
                 }
 
                 //añadir else-if si se necesitan mas casos
