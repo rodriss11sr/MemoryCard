@@ -16,7 +16,7 @@ public class MainScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_screen);
+        setContentView(R.layout.activity_main);
 
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         ImageButton slideOutMenu = findViewById(R.id.slide_out_menu);

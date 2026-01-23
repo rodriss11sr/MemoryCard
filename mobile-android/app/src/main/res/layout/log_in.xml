@@ -103,23 +103,23 @@
         <Button
             android:id="@+id/forgotPasswordBtn"
             android:layout_width="match_parent"
-            android:layout_height="37dp"
+            android:layout_height="48dp"
             android:background="#00FFFFFF"
+            android:fitsSystemWindows="true"
             android:fontFamily="@font/m6x11plus"
             android:text="Olvidé mi contraseña"
             android:textAlignment="viewEnd"
             android:textColor="#29CDF2"
-            android:textSize="20sp"
-            android:fitsSystemWindows="true"/>
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/logInBtn"
             android:layout_width="380dp"
             android:layout_height="50dp"
+            android:layout_marginTop="40dp"
             android:background="@drawable/button_shape"
             android:fontFamily="@font/upheavtt"
             android:text="ENTRAR"
-            android:layout_marginTop="50dp"
             android:textSize="34sp"
             app:backgroundTint="@null" />
 
