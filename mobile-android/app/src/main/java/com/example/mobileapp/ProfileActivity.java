@@ -11,12 +11,12 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.navigation.NavigationView;
 
-public class MainScreenActivity extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_profile);
 
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         ImageButton slideOutMenu = findViewById(R.id.slide_out_menu);
@@ -33,17 +33,13 @@ public class MainScreenActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int itemId = item.getItemId();
-                if (itemId == R.id.nav_mainPage) {
+                if (itemId == R.id.nav_profile) {
                     drawerLayout.closeDrawer(GravityCompat.START);
                     return true;
-                }
-                if(itemId == R.id.nav_profile){
-                    Intent intent = new Intent(MainScreenActivity.this, ProfileActivity.class);
+                } else if (itemId == R.id.nav_mainPage) {
+                    Intent intent = new Intent(ProfileActivity.this, MainScreenActivity.class);
                     startActivity(intent);
                 }
-
-                //añadir else-if si se necesitan mas casos
-
                 drawerLayout.closeDrawer(GravityCompat.START);
                 return true;
             }

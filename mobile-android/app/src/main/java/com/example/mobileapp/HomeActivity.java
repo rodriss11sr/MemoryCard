@@ -16,9 +16,6 @@ public class HomeActivity extends AppCompatActivity {
     Button logInButton;
     Button registerBtn;
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

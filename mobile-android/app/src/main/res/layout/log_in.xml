@@ -98,25 +98,26 @@
             android:inputType="textPassword"
             android:letterSpacing="0.2"
             android:paddingStart="20dp"
+            android:layout_marginBottom="10dp"
             android:textColor="#818181" />
 
         <Button
             android:id="@+id/forgotPasswordBtn"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="wrap_content"
             android:background="#00FFFFFF"
-            android:fitsSystemWindows="true"
             android:fontFamily="@font/m6x11plus"
+            android:paddingBottom="50dp"
             android:text="Olvidé mi contraseña"
-            android:textAlignment="viewEnd"
+            android:textAlignment="textEnd"
             android:textColor="#29CDF2"
-            android:textSize="20sp" />
+            android:textSize="24sp" />
 
         <Button
             android:id="@+id/logInBtn"
             android:layout_width="380dp"
             android:layout_height="50dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="30dp"
             android:background="@drawable/button_shape"
             android:fontFamily="@font/upheavtt"
             android:text="ENTRAR"

@@ -110,9 +110,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="32dp"
                     android:fontFamily="@font/upheavtt"
+                    android:letterSpacing="0.1"
                     android:text="¿Qué es Archive?"
                     android:textColor="#FFFFFF"
-                    android:letterSpacing="0.1"
                     android:textSize="20sp" />
 
                 <TextView
