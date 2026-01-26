@@ -1,24 +1,22 @@
 import { NavLink } from "react-router-dom";
 
 const Sidebar = ({ sidebarWidth }) => {
-  // Estilo base para los enlaces
   const linkStyle = {
     display: "flex",
     alignItems: "center",
-    justifyContent: "center", // Centrado si es estrecho
+    justifyContent: "center",
     height: "50px",
     textDecoration: "none",
-    color: "#333",
+    color: "#ffffff",
     fontSize: "14px",
     transition: "background 0.3s",
-    flexDirection: "column", // Icono arriba, texto abajo (opcional)
+    flexDirection: "column",
   };
 
-  // Función para calcular estilo activo vs inactivo
   const getStyle = ({ isActive }) => ({
     ...linkStyle,
-    background: isActive ? "#e0e7ff" : "transparent", // Fondo azul claro si está activo
-    color: isActive ? "#4f46e5" : "#333", // Texto azul fuerte si está activo
+    background: isActive ? "#e0e7ff" : "transparent",
+    color: isActive ? "#4f46e5" : "#ffffff",
     fontWeight: isActive ? "bold" : "normal",
     borderLeft: isActive ? "4px solid #4f46e5" : "4px solid transparent",
   });
@@ -28,11 +26,10 @@ const Sidebar = ({ sidebarWidth }) => {
       style={{
         position: "fixed",
         left: 0,
-        // Usamos la altura del header definida en tu layout (64px) para bajar el sidebar
         top: 64,
         bottom: 0,
         width: sidebarWidth,
-        backgroundColor: "#f9fafb",
+        backgroundColor: "#33415c",
         borderRight: "1px solid #e5e7eb",
         display: "flex",
         flexDirection: "column",
@@ -57,7 +54,7 @@ const Sidebar = ({ sidebarWidth }) => {
           <span style={{ fontSize: "10px" }}>Juegos</span>
         </NavLink>
 
-        <NavLink to="/perfil/reviews" style={getStyle}>
+        <NavLink to="/reviews" style={getStyle}>
           <span>[]</span>
           <span style={{ fontSize: "10px" }}>Reviews</span>
         </NavLink>
@@ -67,7 +64,7 @@ const Sidebar = ({ sidebarWidth }) => {
           <span style={{ fontSize: "10px" }}>Whishlist</span>
         </NavLink>
 
-        <NavLink to="/perfil/amigos" style={getStyle}>
+        <NavLink to="/amigos" style={getStyle}>
           <span>👤</span>
           <span style={{ fontSize: "10px" }}>Amigos</span>
         </NavLink>

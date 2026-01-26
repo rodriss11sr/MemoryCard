@@ -1,42 +1,53 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+:root {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  /* --- PALETA EXTRAÍDA DE LA IMAGEN --- */
+  
+  /* El fondo general (el color más oscuro detrás de todo) */
+  --bg-color: #15171e; 
+  
+  /* El color de las tarjetas (ese azul grisáceo de los reviews) */
+  --card-bg: #2b303b; 
+  
+  /* Textos */
+  --text-primary: #ffffff;   /* Blanco puro para títulos */
+  --text-secondary: #9ca3af; /* Gris azulado para textos secundarios */
+  
+  /* Acentos */
+  --accent: #ef4444;         /* Rojo (para errores o likes) */
+  --border-color: #3e4451;   /* Líneas divisorias sutiles */
+
+  color-scheme: dark;
+  color: var(--text-primary);
+  background-color: var(--bg-color);
+  
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+body {
+  margin: 0;
+  display: flex;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: var(--bg-color);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Scrollbar personalizada para que pegue con el tema */
+::-webkit-scrollbar {
+  width: 8px;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+::-webkit-scrollbar-track {
+  background: var(--bg-color); 
 }
-
-.card {
-  padding: 2em;
+::-webkit-scrollbar-thumb {
+  background: #3e4451; 
+  border-radius: 4px;
 }
-
-.read-the-docs {
-  color: #888;
+::-webkit-scrollbar-thumb:hover {
+  background: #5c6370; 
 }

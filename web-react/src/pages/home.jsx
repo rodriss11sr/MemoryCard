@@ -22,7 +22,9 @@ function Home() {
         setError(null);
       } catch (err) {
         console.error("Error:", err);
-        setError("No se pudo conectar con el servidor. ¿Está el backend corriendo?");
+        setError(
+          "No se pudo conectar con el servidor. ¿Está el backend corriendo?",
+        );
       } finally {
         setLoading(false);
       }
@@ -31,14 +33,21 @@ function Home() {
   }, []);
 
   return (
-    <div className="home-container">
-      <div style={{ 
-          marginBottom: "30px", 
-          paddingBottom: "20px", 
-          borderBottom: "1px solid #eee" 
-      }}>
-        <h2 style={{ fontSize: "2rem", margin: "0 0 10px 0" }}>Bienvenido a tu Diario 🎮</h2>
-        <p style={{ color: "#666" }}>Explora y gestiona tu colección de videojuegos personal.</p>
+    <div className="home-container" style={{ backgroundColor: "#1b1f27" }}>
+      <div
+        style={{
+          backgroundColor: "#1b1f27",
+          marginBottom: "30px",
+          paddingBottom: "20px",
+          borderBottom: "1px solid #1b1f27",
+        }}
+      >
+        <h2 style={{ fontSize: "2rem", margin: "0 0 10px 0" }}>
+          Bienvenido a tu Diario 🎮
+        </h2>
+        <p style={{ color: "#666" }}>
+          Explora y gestiona tu colección de videojuegos personal.
+        </p>
       </div>
 
       <div className="card" style={{ marginBottom: "30px" }}>
@@ -51,7 +60,7 @@ function Home() {
             border: "1px solid #ddd",
             width: "100%",
             maxWidth: "500px",
-            fontSize: "1rem"
+            fontSize: "1rem",
           }}
         />
       </div>
@@ -65,13 +74,13 @@ function Home() {
       {error && (
         <div
           style={{
-            backgroundColor: "#fee2e2",
+            backgroundColor: "#1b1f27",
             color: "#b91c1c",
             padding: "15px",
             borderRadius: "10px",
             margin: "20px 0",
             textAlign: "center",
-            border: "1px solid #fca5a5"
+            border: "1px solid #fca5a5",
           }}
         >
           <p>⚠️ {error}</p>
@@ -81,6 +90,7 @@ function Home() {
       {!loading && !error && (
         <div
           style={{
+            backgroundColor: "#1b1f27",
             display: "flex",
             gap: "20px",
             justifyContent: "center",
@@ -88,7 +98,14 @@ function Home() {
           }}
         >
           {juegos.length === 0 ? (
-            <div style={{ textAlign: "center", padding: "40px", color: "#888", width: "100%" }}>
+            <div
+              style={{
+                textAlign: "center",
+                padding: "40px",
+                color: "#888",
+                width: "100%",
+              }}
+            >
               <p>📭 No hay juegos disponibles.</p>
               <small>Agrega algunos desde el backend para empezar.</small>
             </div>
@@ -97,14 +114,14 @@ function Home() {
               <div
                 key={juego.id_juego}
                 style={{
-                  backgroundColor: "#fff",
+                  backgroundColor: "#1b1f27",
                   padding: "15px",
                   borderRadius: "12px",
                   border: "1px solid #e5e7eb",
                   width: "200px",
                   textAlign: "center",
                   boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
-                  transition: "transform 0.2s"
+                  transition: "transform 0.2s",
                 }}
               >
                 {juego.portada ? (
@@ -123,31 +140,39 @@ function Home() {
                     }}
                   />
                 ) : (
-                  <div style={{ 
-                      height: "200px", 
-                      background: "#f3f4f6", 
-                      borderRadius: "8px", 
-                      display: "flex", 
-                      alignItems: "center", 
+                  <div
+                    style={{
+                      height: "200px",
+                      backgroundColor: "#1b1f27",
+                      borderRadius: "8px",
+                      display: "flex",
+                      alignItems: "center",
                       justifyContent: "center",
                       marginBottom: "10px",
-                      fontSize: "40px"
-                  }}>
+                      fontSize: "40px",
+                    }}
+                  >
                     🎮
                   </div>
                 )}
-                <h4 style={{ margin: "10px 0", fontSize: "0.95rem", color: "#111" }}>
+                <h4
+                  style={{
+                    margin: "10px 0",
+                    fontSize: "0.95rem",
+                    color: "#111",
+                  }}
+                >
                   {juego.titulo}
                 </h4>
                 {juego.plataformas && (
                   <span
                     style={{
                       display: "inline-block",
-                      background: "#f3f4f6",
+                      backgroundColor: "#1b1f27",
                       padding: "2px 8px",
                       borderRadius: "10px",
                       fontSize: "0.7rem",
-                      color: "#555"
+                      color: "#555",
                     }}
                   >
                     {juego.plataformas.split(", ").slice(0, 1).join("")}
@@ -159,24 +184,40 @@ function Home() {
         </div>
       )}
 
-      <div className="card" style={{ marginTop: "60px", textAlign: "center", padding: "20px", background: "#f9fafb", borderRadius: "10px" }}>
-        <button 
-            onClick={() => setLikes((likes) => likes + 1)}
-            style={{
-                background: "#ef4444",
-                color: "white",
-                border: "none",
-                padding: "10px 20px",
-                borderRadius: "20px",
-                cursor: "pointer",
-                fontWeight: "bold"
-            }}
+      <div
+        className="card"
+        style={{
+          marginTop: "60px",
+          textAlign: "center",
+          padding: "20px",
+          backgroundColor: "#1b1f27",
+          borderRadius: "10px",
+        }}
+      >
+        <button
+          onClick={() => setLikes((likes) => likes + 1)}
+          style={{
+            background: "#ef4444",
+            color: "white",
+            border: "none",
+            padding: "10px 20px",
+            borderRadius: "20px",
+            cursor: "pointer",
+            fontWeight: "bold",
+          }}
         >
           ❤️ Me gusta el proyecto ({likes})
         </button>
       </div>
-      
-      <footer style={{ marginTop: "30px", opacity: 0.6, textAlign: "center", fontSize: "0.8rem" }}>
+
+      <footer
+        style={{
+          marginTop: "30px",
+          opacity: 0.6,
+          textAlign: "center",
+          fontSize: "0.8rem",
+        }}
+      >
         TFG - Equipo GameBoxd - 2025
       </footer>
     </div>
