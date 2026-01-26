@@ -1,15 +1,48 @@
 package com.example.mobileapp;
-import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import com.google.android.material.navigation.NavigationView;
 
 public class ProfileActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.profile);
-        
+        setContentView(R.layout.activity_profile);
 
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        ImageButton slideOutMenu = findViewById(R.id.slide_out_menu);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+
+        slideOutMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int itemId = item.getItemId();
+                if (itemId == R.id.nav_profile) {
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                    return true;
+                } else if (itemId == R.id.nav_mainPage) {
+                    Intent intent = new Intent(ProfileActivity.this, MainScreenActivity.class);
+                    startActivity(intent);
+                }
+                drawerLayout.closeDrawer(GravityCompat.START);
+                return true;
+            }
+        });
     }
 }
