@@ -3,6 +3,7 @@ import AppLayout from "./components/applayout.jsx";
 import Login from "./pages/login.jsx";
 import Signin from "./pages/signin.jsx";
 import Home from "./pages/home.jsx";
+import Perfil from "./pages/perfil.jsx";
 
 
 function App() {
@@ -32,14 +33,14 @@ function App() {
             } 
           />*/}
           {/*Perfil del usuario (con header y sidebar)*/}
-          {/*<Route 
+          <Route 
             path="/perfil" 
             element={
               <AppLayout>
                 <Perfil />
               </AppLayout>
             } 
-          />*/}
+          />
       </Routes>
     </Router>
   );

@@ -3,10 +3,10 @@ import Header from "./header";
 import Sidebar from "./sidebar";
 
 const HEADER_HEIGHT = 64;
+const SIDEBAR_WIDTH = 180;
 
 export default function AppLayout({ children }) {
-  const [collapsed, setCollapsed] = useState(false);
-  const sidebarWidth = collapsed ? 60 : 95;
+
 
   return (
     <div
@@ -28,15 +28,15 @@ export default function AppLayout({ children }) {
           borderBottom: "1px solid #e5e7eb",
         }}
       >
-        <Header toggleSidebar={() => setCollapsed(!collapsed)} />
+        <Header/>
       </div>
-      <Sidebar sidebarWidth={sidebarWidth} />
+      <Sidebar/>
       <main
         style={{
-          marginLeft: sidebarWidth,
+          marginLeft: SIDEBAR_WIDTH,
           marginTop: HEADER_HEIGHT,
           minHeight: `calc(100vh - ${HEADER_HEIGHT}px)`,
-          width: `calc(100vw - ${sidebarWidth}px)`,
+          width: `calc(100vw - ${SIDEBAR_WIDTH}px)`,
           padding: "20px",
           backgroundColor: "#1b1f27",
           transition: "all 0.3s ease",

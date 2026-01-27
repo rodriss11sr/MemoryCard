@@ -1,24 +1,25 @@
 import { NavLink } from "react-router-dom";
 
-const Sidebar = ({ sidebarWidth }) => {
+const Sidebar = () => {
   const linkStyle = {
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
-    height: "50px",
+    justifyContent: "flex-start",
+    paddingLeft: "10px",
+    height: "80px",
     textDecoration: "none",
     color: "#ffffff",
     fontSize: "14px",
-    transition: "background 0.3s",
-    flexDirection: "column",
+    transition: "all 0.3s",
+    flexDirection: "row",
+    gap: "20px",
   };
 
   const getStyle = ({ isActive }) => ({
     ...linkStyle,
     background: isActive ? "#e0e7ff" : "transparent",
-    color: isActive ? "#4f46e5" : "#ffffff",
+    color: isActive ? "#33415c" : "#ffffff",
     fontWeight: isActive ? "bold" : "normal",
-    borderLeft: isActive ? "4px solid #4f46e5" : "4px solid transparent",
   });
 
   return (
@@ -28,7 +29,7 @@ const Sidebar = ({ sidebarWidth }) => {
         left: 0,
         top: 64,
         bottom: 0,
-        width: sidebarWidth,
+        width: "180px",
         backgroundColor: "#33415c",
         borderRight: "1px solid #e5e7eb",
         display: "flex",
@@ -40,33 +41,33 @@ const Sidebar = ({ sidebarWidth }) => {
     >
       <nav style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
         <NavLink to="/" style={getStyle}>
-          <span>🏠</span>
-          <span style={{ fontSize: "10px" }}>Inicio</span>
+          <span style={{ fontSize: "25px" }}>🏠</span>
+          <span style={{ fontSize: "32px" }}>Inicio</span>
         </NavLink>
 
         <NavLink to="/perfil" style={getStyle}>
-          <span>👤</span>
-          <span style={{ fontSize: "10px" }}>Perfil</span>
+          <span style={{ fontSize: "25px" }}>👤</span>
+          <span style={{ fontSize: "32px" }}>Perfil</span>
         </NavLink>
 
         <NavLink to="/juegos" style={getStyle}>
-          <span>🎮</span>
-          <span style={{ fontSize: "10px" }}>Juegos</span>
+          <span style={{ fontSize: "25px" }}>🎮</span>
+          <span style={{ fontSize: "32px" }}>Juegos</span>
         </NavLink>
 
         <NavLink to="/reviews" style={getStyle}>
-          <span>[]</span>
-          <span style={{ fontSize: "10px" }}>Reviews</span>
+          <span style={{ fontSize: "25px" }}>📝</span>
+          <span style={{ fontSize: "32px" }}>Reviews</span>
         </NavLink>
 
         <NavLink to="/whishlist" style={getStyle}>
-          <span>[]</span>
-          <span style={{ fontSize: "10px" }}>Whishlist</span>
+          <span style={{ fontSize: "25px" }}>❤️</span>
+          <span style={{ fontSize: "32px" }}>Whishlist</span>
         </NavLink>
 
         <NavLink to="/amigos" style={getStyle}>
-          <span>👤</span>
-          <span style={{ fontSize: "10px" }}>Amigos</span>
+          <span style={{ fontSize: "25px" }}>👥</span>
+          <span style={{ fontSize: "32px" }}>Amigos</span>
         </NavLink>
       </nav>
     </aside>
