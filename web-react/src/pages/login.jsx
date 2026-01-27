@@ -117,7 +117,7 @@ function Login() {
           </div>
 
           <button
-            type="button" // Cambia a "submit" cuando tengas backend real
+            type="button" // TODO: Cambiar a "submit" cuando este implementada la logica de creacion y logueo en el backend
             onClick={handleLogin}
             style={buttonStyle}
             onMouseOver={(e) => (e.target.style.opacity = "0.9")}
