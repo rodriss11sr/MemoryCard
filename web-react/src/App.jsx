@@ -1,7 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AppLayout from "./components/applayout.jsx";
 import Login from "./pages/login.jsx";
+import Signin from "./pages/signin.jsx";
 import Home from "./pages/home.jsx";
+
 
 function App() {
   return (
@@ -9,6 +11,8 @@ function App() {
       <Routes>
         {/*Login (Sin header ni sidebar)*/}
         <Route path="/login" element={<Login />} />
+        {/*Signin (Sin header ni sidebar)*/}
+        <Route path="/signin" element={<Signin />} />
           {/*Inicio (con header y sidebar)*/}
           <Route 
           path="/" 

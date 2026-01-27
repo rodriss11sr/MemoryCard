@@ -1,17 +1,21 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Login() {
+function Signin() {
   const navigate = useNavigate();
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleLogin = (e) => {
+  const isSamePassword = password === confirmPassword;
+
+  const handleSignin = (e) => {
     e.preventDefault();
-    // Aquí iría tu lógica real de backend.
-    // Por ahora simulamos que entra y redirige al Home.
-    console.log("Logueando con:", email, password);
+    //TODO: Implementar la logica del backend para crear cuentas
+    console.log("Registrando con:", email, password);
     navigate("/");
+    e.preventDefault();
   };
 
   // Estilos
@@ -23,6 +27,7 @@ function Login() {
     height: "100vh",
     width: "100vw",
   };
+
   const inputStyle = {
     width: "100%",
     padding: "12px",
@@ -53,7 +58,7 @@ function Login() {
     <div style={containerStyle}>
       {/* Logo o Icono */}
       <div style={{ textAlign: "center", marginBottom: "20px" }}>
-        <h2 style={{ marginBottom: "5px" }}>BIENVENID@!</h2>
+        <h2 style={{ marginBottom: "5px" }}>CREADOR DE PERSONAJE</h2>
         <p
           style={{
             color: "var(--text-secondary)",
@@ -61,11 +66,31 @@ function Login() {
             fontSize: "0.9rem",
           }}
         >
-          Nos alegra verte de nuevo!! :)
+          Eh, tú, al fin has despertado
         </p>
       </div>
 
-      <form onSubmit={handleLogin}>
+      <form onSubmit={handleSignin}>
+        <div style={{ textAlign: "left" }}>
+          <label
+            style={{
+              fontSize: "0.8rem",
+              marginLeft: "5px",
+              color: "var(--text-secondary)",
+            }}
+          >
+            Nombre de Usuario
+          </label>
+          <input
+            type="username"
+            placeholder="Ej: Gordon Freeman"
+            style={inputStyle}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+        </div>
+
         <div style={{ textAlign: "left" }}>
           <label
             style={{
@@ -104,29 +129,37 @@ function Login() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <p
+        </div>
+
+        <div style={{ textAlign: "left", marginTop: "10px" }}>
+          <label
             style={{
-              marginTop: "1px",
               fontSize: "0.8rem",
+              marginLeft: "5px",
               color: "var(--text-secondary)",
-              textAlign: "right",
-              width: "100%",
             }}
           >
-            <span style={{ color: "#29CDF2", cursor: "pointer" }}>
-              Olvidé la contraseña
-            </span>
-          </p>
+            Confirmar contraseña
+          </label>
+          <input
+            type="password"
+            placeholder="••••••"
+            style={inputStyle}
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+          />
         </div>
 
         <button
-          type="button" // TODO: Cambiar a "submit" cuando este implementada la logica de creacion y logueo en el backend
-          onClick={handleLogin}
+          type="button" // TODO: Cambiar a "submit" cuando este implementada la logica de creacion en el backend
+          onClick={handleSignin}
           style={buttonStyle}
+          disabled={!isSamePassword}
           onMouseOver={(e) => (e.target.style.opacity = "0.9")}
           onMouseOut={(e) => (e.target.style.opacity = "1")}
         >
-          Entrar
+          Crear
         </button>
       </form>
 
@@ -137,16 +170,16 @@ function Login() {
           color: "var(--text-secondary)",
         }}
       >
-        ¿No tienes cuenta?{" "}
+        ¿Ya tienes cuenta?{" "}
         <span
           style={{ color: "#29CDF2", cursor: "pointer" }}
-          onClick={() => navigate("/signin")}
+          onClick={() => navigate("/login")}
         >
-          Regístrate
+          Inicia Sesión!
         </span>
       </p>
     </div>
   );
 }
 
-export default Login;
+export default Signin;

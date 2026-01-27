@@ -68,11 +68,6 @@ const Sidebar = ({ sidebarWidth }) => {
           <span>👤</span>
           <span style={{ fontSize: "10px" }}>Amigos</span>
         </NavLink>
-
-        <NavLink to="/ajustes" style={getStyle}>
-          <span>⚙️</span>
-          <span style={{ fontSize: "10px" }}>Ajustes</span>
-        </NavLink>
       </nav>
     </aside>
   );
