@@ -1,0 +1,20 @@
+/* Fuentes personalizadas del proyecto */
+
+/* Fuente: M6x11 Plus */
+@font-face {
+    font-family: 'M6x11Plus';
+    src: url('/fonts/m6x11plus.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Fuente: Upheaval */
+@font-face {
+    font-family: 'Upheaval';
+    src: url('/fonts/upheavtt.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Fuente: Aclonica (Google Fonts) */
+@import url('https://fonts.googleapis.com/css2?family=Aclonica&display=swap');

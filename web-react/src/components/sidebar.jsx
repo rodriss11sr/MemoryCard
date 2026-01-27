@@ -13,6 +13,7 @@ const Sidebar = () => {
     transition: "all 0.3s",
     flexDirection: "row",
     gap: "20px",
+    fontFamily: "'Upheaval', system-ui",
   };
 
   const getStyle = ({ isActive }) => ({
