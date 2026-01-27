@@ -1,15 +1,42 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AppLayout from "./components/applayout.jsx";
-import Home from "./pages/home";
+import Login from "./pages/login.jsx";
+import Home from "./pages/home.jsx";
 
 function App() {
   return (
     <Router>
-      <AppLayout>
-        <Routes>
-          <Route path="/" element={<Home />} />
-        </Routes>
-      </AppLayout>
+      <Routes>
+        {/*Login (Sin header ni sidebar)*/}
+        <Route path="/login" element={<Login />} />
+          {/*Inicio (con header y sidebar)*/}
+          <Route 
+          path="/" 
+          element={
+            <AppLayout>
+              <Home />
+            </AppLayout>
+          } 
+        />
+          {/*Juegos (con header y sidebar)*/}
+          {/*<Route 
+            path="/juegos" 
+            element={
+              <AppLayout>
+                <Juegos />
+              </AppLayout>
+            } 
+          />*/}
+          {/*Perfil del usuario (con header y sidebar)*/}
+          {/*<Route 
+            path="/perfil" 
+            element={
+              <AppLayout>
+                <Perfil />
+              </AppLayout>
+            } 
+          />*/}
+      </Routes>
     </Router>
   );
 }
