@@ -46,19 +46,22 @@ function Header() {
             fontSize: "0.95rem",
             transition: "border-color 0.2s",
           }}
-          onFocus={(e) => (e.target.style.borderColor = "#0466c8")} // Efecto al hacer click (Azul)
+          onFocus={(e) => (e.target.style.borderColor = "#0466c8")}
           onBlur={(e) => (e.target.style.borderColor = "#4b5563")}
         />
       </div>
 
       <div>
-        <span onClick={() => navigate("/perfil")}>👤</span>
+        <span style={{ cursor: "pointer" }} onClick={() => navigate("/perfil")}>
+          👤
+        </span>
       </div>
 
       <div>
-          <span onClick={() => navigate("/")}>🔔</span>
+        <span style={{ cursor: "pointer" }} onClick={() => navigate("/")}>
+          🔔
+        </span>
       </div>
-
     </header>
   );
 }

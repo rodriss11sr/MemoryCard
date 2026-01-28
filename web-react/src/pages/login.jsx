@@ -6,10 +6,9 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  //TODO: Implementar la logica del backend para iniciar sesion
   const handleLogin = (e) => {
     e.preventDefault();
-    // Aquí iría tu lógica real de backend.
-    // Por ahora simulamos que entra y redirige al Home.
     console.log("Logueando con:", email, password);
     navigate("/");
   };
@@ -51,7 +50,6 @@ function Login() {
 
   return (
     <div style={containerStyle}>
-      {/* Logo o Icono */}
       <div style={{ textAlign: "center", marginBottom: "20px" }}>
         <h2 style={{ marginBottom: "5px" }}>BIENVENID@!</h2>
         <p
@@ -85,7 +83,6 @@ function Login() {
             required
           />
         </div>
-
         <div style={{ textAlign: "left", marginTop: "10px" }}>
           <label
             style={{
@@ -118,9 +115,9 @@ function Login() {
             </span>
           </p>
         </div>
-
+        // TODO: Cambiar a "submit" cuando este implementada la logica de inicio de sesion en el backend
         <button
-          type="button" // TODO: Cambiar a "submit" cuando este implementada la logica de creacion y logueo en el backend
+          type="button"
           onClick={handleLogin}
           style={buttonStyle}
           onMouseOver={(e) => (e.target.style.opacity = "0.9")}

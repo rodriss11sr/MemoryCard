@@ -10,12 +10,11 @@ function Signin() {
 
   const isSamePassword = password === confirmPassword;
 
+  //TODO: Implementar la logica del backend para crear cuentas
   const handleSignin = (e) => {
     e.preventDefault();
-    //TODO: Implementar la logica del backend para crear cuentas
     console.log("Registrando con:", email, password);
     navigate("/");
-    e.preventDefault();
   };
 
   // Estilos
@@ -90,7 +89,6 @@ function Signin() {
             required
           />
         </div>
-
         <div style={{ textAlign: "left" }}>
           <label
             style={{
@@ -110,7 +108,6 @@ function Signin() {
             required
           />
         </div>
-
         <div style={{ textAlign: "left", marginTop: "10px" }}>
           <label
             style={{
@@ -130,7 +127,6 @@ function Signin() {
             required
           />
         </div>
-
         <div style={{ textAlign: "left", marginTop: "10px" }}>
           <label
             style={{
@@ -150,9 +146,9 @@ function Signin() {
             required
           />
         </div>
-
+        // TODO: Cambiar a "submit" cuando este implementada la logica de creacion en el backend
         <button
-          type="button" // TODO: Cambiar a "submit" cuando este implementada la logica de creacion en el backend
+          type="button"
           onClick={handleSignin}
           style={buttonStyle}
           disabled={!isSamePassword}

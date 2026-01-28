@@ -1,7 +1,14 @@
 import { useState } from "react";
+import FriendCard from "../components/friendCard.jsx";
 
+//TODO: Obtener datos desde el backend y utilizarlos
 function Perfil() {
   const [activeTab, setActiveTab] = useState("juegos");
+
+  const AMIGOS_DATA = [
+  { id: 1, nombre: "John Bloodborne", juegos: 124 },
+  { id: 2, nombre: "Relajao Relajao", juegos: 36 },
+];
 
   return (
     <div style={{ paddingBottom: "50px" }}>
@@ -34,16 +41,15 @@ function Perfil() {
         </p>
       </div>
 
-      {/* --- SECCIÓN 2: TABS DE NAVEGACIÓN --- */}
       <div
         style={{
           display: "flex",
-          justifyContent: "center", // Centrado en escritorio, scroll en móvil si quieres
+          justifyContent: "center",
           gap: "20px",
           marginBottom: "30px",
           borderBottom: "1px solid #3e4451",
           paddingBottom: "10px",
-          overflowX: "auto", // Para que en móviles pequeños se pueda deslizar
+          overflowX: "auto",
         }}
       >
         {["juegos", "wishlist", "reviews", "listas", "amigos"].map((tab) => (
@@ -53,7 +59,7 @@ function Perfil() {
             style={{
               background: "transparent",
               border: "none",
-              color: activeTab === tab ? "#ef4444" : "#9ca3af", // Rojo si activo, gris si no
+              color: activeTab === tab ? "#29CDF2" : "#9ca3af",
               fontWeight: activeTab === tab ? "bold" : "normal",
               fontSize: "1rem",
               cursor: "pointer",
@@ -62,7 +68,7 @@ function Perfil() {
               letterSpacing: "1px",
               borderBottom:
                 activeTab === tab
-                  ? "3px solid #ef4444"
+                  ? "3px solid #29CDF2"
                   : "3px solid transparent",
               transition: "all 0.2s",
             }}
@@ -70,6 +76,16 @@ function Perfil() {
             {tab}
           </button>
         ))}
+      </div>
+
+      <div style={{ maxWidth: "800px", margin: "0 auto", padding: "0 20px" }}>
+        {activeTab === "amigos" && (
+          <div>
+            {AMIGOS_DATA.map((amigo) => (
+              <FriendCard key={amigo.id} nombre={amigo.nombre} juegos={amigo.juegos} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
