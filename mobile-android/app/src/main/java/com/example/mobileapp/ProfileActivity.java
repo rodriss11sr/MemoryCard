@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.navigation.NavigationView;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -18,10 +19,9 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        DrawerLayout drawerLayout = findViewById(R.id.profile);
         ImageButton slideOutMenu = findViewById(R.id.slide_out_menu);
         NavigationView navigationView = findViewById(R.id.nav_view);
-
         slideOutMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -36,7 +36,8 @@ public class ProfileActivity extends AppCompatActivity {
                 if (itemId == R.id.nav_profile) {
                     drawerLayout.closeDrawer(GravityCompat.START);
                     return true;
-                } else if (itemId == R.id.nav_mainPage) {
+                }
+                else if (itemId == R.id.nav_mainPage) {
                     Intent intent = new Intent(ProfileActivity.this, MainScreenActivity.class);
                     startActivity(intent);
                 }

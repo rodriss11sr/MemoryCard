@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainScreenActivity extends AppCompatActivity {
@@ -18,9 +19,10 @@ public class MainScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        DrawerLayout drawerLayout = findViewById(R.id.mainScreen);
         ImageButton slideOutMenu = findViewById(R.id.slide_out_menu);
         NavigationView navigationView = findViewById(R.id.nav_view);
+        ShapeableImageView profileBtn = findViewById(R.id.profileBtn);
 
         slideOutMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -28,7 +30,13 @@ public class MainScreenActivity extends AppCompatActivity {
                 drawerLayout.openDrawer(GravityCompat.START);
             }
         });
-
+        profileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainScreenActivity.this, ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -37,7 +45,7 @@ public class MainScreenActivity extends AppCompatActivity {
                     drawerLayout.closeDrawer(GravityCompat.START);
                     return true;
                 }
-                if(itemId == R.id.nav_profile){
+                else if(itemId == R.id.nav_profile){
                     Intent intent = new Intent(MainScreenActivity.this, ProfileActivity.class);
                     startActivity(intent);
                 }

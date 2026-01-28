@@ -56,13 +56,13 @@
             android:id="@+id/linearLayout2"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:paddingHorizontal="16dp"
             android:orientation="horizontal">
 
             <ImageButton
                 android:id="@+id/game_ballxpit"
                 android:layout_width="111dp"
                 android:layout_height="162dp"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/game_miniature_shape"
                 android:clipToOutline="true"
