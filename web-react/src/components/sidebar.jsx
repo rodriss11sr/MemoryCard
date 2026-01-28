@@ -43,32 +43,32 @@ const Sidebar = () => {
       <nav style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
         <NavLink to="/" style={getStyle}>
           <span style={{ fontSize: "25px" }}>🏠</span>
-          <span style={{ fontSize: "32px" }}>Inicio</span>
+          <span style={{ fontSize: "25px" }}>Inicio</span>
         </NavLink>
 
         <NavLink to="/perfil" style={getStyle}>
           <span style={{ fontSize: "25px" }}>👤</span>
-          <span style={{ fontSize: "32px" }}>Perfil</span>
+          <span style={{ fontSize: "25px" }}>Perfil</span>
         </NavLink>
 
         <NavLink to="/juegos" style={getStyle}>
           <span style={{ fontSize: "25px" }}>🎮</span>
-          <span style={{ fontSize: "32px" }}>Juegos</span>
+          <span style={{ fontSize: "25px" }}>Juegos</span>
         </NavLink>
 
         <NavLink to="/reviews" style={getStyle}>
           <span style={{ fontSize: "25px" }}>📝</span>
-          <span style={{ fontSize: "32px" }}>Reviews</span>
+          <span style={{ fontSize: "25px" }}>Reviews</span>
         </NavLink>
 
         <NavLink to="/whishlist" style={getStyle}>
           <span style={{ fontSize: "25px" }}>❤️</span>
-          <span style={{ fontSize: "32px" }}>Whishlist</span>
+          <span style={{ fontSize: "25px" }}>Whishlist</span>
         </NavLink>
 
         <NavLink to="/amigos" style={getStyle}>
           <span style={{ fontSize: "25px" }}>👥</span>
-          <span style={{ fontSize: "32px" }}>Amigos</span>
+          <span style={{ fontSize: "25px" }}>Amigos</span>
         </NavLink>
       </nav>
     </aside>

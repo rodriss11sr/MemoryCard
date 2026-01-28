@@ -5,10 +5,23 @@ import FriendCard from "../components/friendCard.jsx";
 function Perfil() {
   const [activeTab, setActiveTab] = useState("juegos");
 
+  const JUEGOS_DATA = (id) => {
+    const juegos = {
+      1: { nombre: "The Witcher 3: Wild Hunt" },
+      2: { nombre: "Cyberpunk 2077" },
+    };
+    return juegos[id];
+  }
+
   const AMIGOS_DATA = [
-  { id: 1, nombre: "John Bloodborne", juegos: 124 },
-  { id: 2, nombre: "Relajao Relajao", juegos: 36 },
-];
+    { id: 1, nombre: "John Bloodborne", juegos: 124 },
+    { id: 2, nombre: "Relajao Relajao", juegos: 36 },
+  ];
+
+  const REVIEWS_DATA = [
+    {id:1, titulo: JUEGOS_DATA(1).nombre, contenido: "...", puntuacion:4.5},
+    {id:2, titulo: JUEGOS_DATA(2).nombre, contenido: "------", puntuacion:5},
+  ];
 
   return (
     <div style={{ paddingBottom: "50px" }}>
@@ -36,7 +49,14 @@ function Perfil() {
         <h2 style={{ margin: "0 0 5px 0", fontSize: "1.8rem", color: "white" }}>
           Gordon Freeman
         </h2>
-        <p style={{ color: "#9ca3af", margin: 0, fontSize: "0.9rem" }}>
+        <p
+          style={{
+            color: "#9ca3af",
+            margin: 0,
+            fontFamily: "m6x11plus",
+            fontSize: "1.5rem",
+          }}
+        >
           Se unió el 14-11-1998
         </p>
       </div>
@@ -66,11 +86,8 @@ function Perfil() {
               padding: "5px 10px",
               textTransform: "uppercase",
               letterSpacing: "1px",
-              borderBottom:
-                activeTab === tab
-                  ? "3px solid #29CDF2"
-                  : "3px solid transparent",
               transition: "all 0.2s",
+              fontFamily: "upheaval, system-ui",
             }}
           >
             {tab}
@@ -82,8 +99,25 @@ function Perfil() {
         {activeTab === "amigos" && (
           <div>
             {AMIGOS_DATA.map((amigo) => (
-              <FriendCard key={amigo.id} nombre={amigo.nombre} juegos={amigo.juegos} />
+              <FriendCard
+                key={amigo.id}
+                nombre={amigo.nombre}
+                juegos={amigo.juegos}
+              />
             ))}
+          </div>
+        )}
+
+        {activeTab === "reviews" && (
+          <div>
+            {REVIEWS_DATA.map((review) => (
+              <ReviewCard
+                key={review.id}
+                titulo={review.titulo}
+                contenido={review.contenido}
+                puntuacion={review.puntuacion}
+              />
+                ))}
           </div>
         )}
       </div>

@@ -50,7 +50,7 @@ const FriendCard = ({ nombre, juegos }) => {
           style={{
             color: "#ffffff",
             fontWeight: "800",
-            fontSize: "1rem",
+            fontSize: "1.3rem",
             textTransform: "uppercase",
             letterSpacing: "1px",
             fontFamily: "upheaval, system-ui",
@@ -61,8 +61,9 @@ const FriendCard = ({ nombre, juegos }) => {
 
         <span
           style={{
-            color: "#9ca3af", // Gris claro
-            fontSize: "0.9rem",
+            color: "#9ca3af",
+            fontFamily: "m6x11plus, system-ui",
+            fontSize: "1.0rem",
             marginTop: "2px",
             fontWeight: "500",
           }}
