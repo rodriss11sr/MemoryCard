@@ -25,7 +25,6 @@ export default function AppLayout({ children }) {
           right: 0,
           zIndex: 50,
           height: HEADER_HEIGHT,
-          borderBottom: "1px solid #e5e7eb",
         }}
       >
         <Header/>
