@@ -13,7 +13,8 @@
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -183,8 +184,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:fontFamily="@font/upheavtt"
                 android:layout_marginTop="20dp"
+                android:fontFamily="@font/upheavtt"
                 android:text="Juegos favoritos"
                 android:textColor="@color/white"
                 android:textSize="24sp" />
@@ -207,8 +208,8 @@
                     android:id="@+id/linearLayout2"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:paddingHorizontal="16dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="16dp">
 
                     <ImageButton
                         android:id="@+id/game_ds3"
@@ -252,6 +253,158 @@
                         android:clipToOutline="true"
                         android:scaleType="centerCrop"
                         android:src="@drawable/ror2" />
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <TextView
+                android:id="@+id/textView20"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/upheavtt"
+                android:text="Actividad Reciente"
+                android:textColor="@color/white"
+                android:textSize="24sp" />
+
+            <View
+                android:id="@+id/divider6"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="151dp"
+                android:background="#818387" />
+
+            <HorizontalScrollView
+                android:id="@+id/latestactivity"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutLatestActivity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="16dp"
+                    android:layout_marginBottom="30dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageButton
+                            android:id="@+id/game_deadspace"
+                            android:layout_width="111dp"
+                            android:layout_height="162dp"
+                            android:layout_marginTop="20dp"
+                            android:background="@drawable/game_miniature_shape"
+                            android:clipToOutline="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/deadspace" />
+                        <RatingBar
+                            android:id="@+id/ratingBarReview"
+                            style="?android:attr/ratingBarStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="4dp"
+                            android:isIndicator="true"
+                            android:numStars="5"
+                            android:progressBackgroundTint="#626262"
+                            android:progressTint="#FFCC00"
+                            android:rating="1"
+                            android:stepSize="0.5" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageButton
+                        android:id="@+id/game_dredge"
+                        android:layout_width="111dp"
+                        android:layout_height="162dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/game_miniature_shape"
+                        android:clipToOutline="true"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/dredge" />
+
+                        <RatingBar
+                            android:id="@+id/ratingBarReview"
+                            style="?android:attr/ratingBarStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="4dp"
+                            android:isIndicator="true"
+                            android:numStars="5"
+                            android:progressBackgroundTint="#626262"
+                            android:progressTint="#FFCC00"
+                            android:rating="4"
+                            android:stepSize="0.5" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <ImageButton
+                            android:id="@+id/game_mhwilds"
+                            android:layout_width="111dp"
+                            android:layout_height="162dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="20dp"
+                            android:background="@drawable/game_miniature_shape"
+                            android:clipToOutline="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/mhwilds" />
+                        <RatingBar
+                            android:id="@+id/ratingBarReview"
+                            style="?android:attr/ratingBarStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="4dp"
+                            android:isIndicator="true"
+                            android:numStars="5"
+                            android:progressBackgroundTint="#626262"
+                            android:progressTint="#FFCC00"
+                            android:rating="5"
+                            android:stepSize="0.5" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageButton
+                            android:id="@+id/game1_gow"
+                            android:layout_width="111dp"
+                            android:layout_height="162dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="20dp"
+                            android:background="@drawable/game_miniature_shape"
+                            android:clipToOutline="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/gow" />
+                        <RatingBar
+                            android:id="@+id/ratingBarReview"
+                            style="?android:attr/ratingBarStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="4dp"
+                            android:isIndicator="true"
+                            android:numStars="5"
+                            android:progressBackgroundTint="#626262"
+                            android:progressTint="#FFCC00"
+                            android:rating="4.5"
+                            android:stepSize="0.5" />
+                    </LinearLayout>
                 </LinearLayout>
             </HorizontalScrollView>
 
