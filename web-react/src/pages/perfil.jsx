@@ -1,17 +1,53 @@
 import { useState } from "react";
 import FriendCard from "../components/friendCard.jsx";
+import ReviewCard from "../components/reviewCard.jsx";
+import GameLibraryCard from "../components/gameLibraryCard.jsx";
 
 //TODO: Obtener datos desde el backend y utilizarlos
 function Perfil() {
-  const [activeTab, setActiveTab] = useState("juegos");
+  const [activeTab, setActiveTab] = useState("amigos");
 
-  const JUEGOS_DATA = (id) => {
-    const juegos = {
-      1: { nombre: "The Witcher 3: Wild Hunt" },
-      2: { nombre: "Cyberpunk 2077" },
-    };
-    return juegos[id];
-  }
+  const WISHLIST_DATA = [
+    {
+      id: 90,
+      nombre: "MySims Kingdom",
+      imagen:
+        "https://images.igdb.com/igdb/image/upload/t_original/co9jux.webp",
+    },
+    {
+      id: 92,
+      nombre: "Code Vein II",
+      imagen:
+        "https://images.igdb.com/igdb/image/upload/t_cover_big/co9xhi.webp",
+    },
+  ];
+
+  const JUEGOS_DATA = [
+    {
+      id: 1,
+      nombre: "The Witcher 3: Wild Hunt",
+      imagen:
+        "https://image.api.playstation.com/vulcan/ap/rnd/202211/0711/qezXTVn1ExqBjVjR5Ipm97IK.png",
+    },
+    {
+      id: 2,
+      nombre: "Cyberpunk 2077",
+      imagen:
+        "https://image.api.playstation.com/vulcan/ap/rnd/202008/0416/6Bo40lnWU0BhgrOUm7Cb6by3.png",
+    },
+    {
+      id: 3,
+      nombre: "Pokémon Zafiro",
+      imagen:
+        "https://images.igdb.com/igdb/image/upload/t_cover_big/co1zhp.webp",
+    },
+    {
+      id: 4,
+      nombre: "Harry Potter y la Piedra Filosofal",
+      imagen:
+        "https://images.igdb.com/igdb/image/upload/t_cover_big/co3jh0.webp",
+    },
+  ];
 
   const AMIGOS_DATA = [
     { id: 1, nombre: "John Bloodborne", juegos: 124 },
@@ -19,9 +55,30 @@ function Perfil() {
   ];
 
   const REVIEWS_DATA = [
-    {id:1, titulo: JUEGOS_DATA(1).nombre, contenido: "...", puntuacion:4.5},
-    {id:2, titulo: JUEGOS_DATA(2).nombre, contenido: "------", puntuacion:5},
+    {
+      id: 101,
+      juegoId: 1,
+      titulo: "The Witcher 3: Wild Hunt",
+      contenido: "Obra maestra absoluta.",
+      puntuacion: 4.5,
+      imagen:
+        "https://image.api.playstation.com/vulcan/ap/rnd/202211/0711/kh4MUIuMmHlktOHar3lVl6rY.png",
+    },
+    {
+      id: 102,
+      juegoId: 2,
+      titulo: "Cyberpunk 2077",
+      contenido: "Ha mejorado mucho con los parches.",
+      puntuacion: 5,
+      imagen:
+        "https://image.api.playstation.com/vulcan/ap/rnd/202008/0416/6Bo40lnWU0BhgrOUm7Cb6by3.png",
+    },
   ];
+
+  const getReviewScore = (gameId) => {
+    const review = REVIEWS_DATA.find((r) => r.juegoId === gameId);
+    return review ? review.puntuacion : undefined;
+  };
 
   return (
     <div style={{ paddingBottom: "50px" }}>
@@ -107,7 +164,25 @@ function Perfil() {
             ))}
           </div>
         )}
-
+        {activeTab === "juegos" && (
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "20px",
+              justifyContent: "center",
+            }}
+          >
+            {JUEGOS_DATA.map((juego) => (
+              <GameLibraryCard
+                key={juego.id}
+                nombre={juego.nombre}
+                portada={juego.imagen}
+                puntuacion={getReviewScore(juego.id)}
+              />
+            ))}
+          </div>
+        )}
         {activeTab === "reviews" && (
           <div>
             {REVIEWS_DATA.map((review) => (
@@ -116,8 +191,28 @@ function Perfil() {
                 titulo={review.titulo}
                 contenido={review.contenido}
                 puntuacion={review.puntuacion}
+                imagen={review.imagen}
               />
-                ))}
+            ))}
+          </div>
+        )}
+        {activeTab === "wishlist" && (
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "20px",
+              justifyContent: "center",
+            }}
+          >
+            {WISHLIST_DATA.map((juego) => (
+              <GameLibraryCard
+                key={juego.id}
+                nombre={juego.nombre}
+                portada={juego.imagen}
+                puntuacion={getReviewScore(juego.id)}
+              />
+            ))}
           </div>
         )}
       </div>
