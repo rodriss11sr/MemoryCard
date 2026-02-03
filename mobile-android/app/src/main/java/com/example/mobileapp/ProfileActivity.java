@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +15,8 @@ import com.google.android.material.navigation.NavigationView;
 
 public class ProfileActivity extends AppCompatActivity {
 
+    Button gamesProfile;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,10 +25,39 @@ public class ProfileActivity extends AppCompatActivity {
         DrawerLayout drawerLayout = findViewById(R.id.profile);
         ImageButton slideOutMenu = findViewById(R.id.slide_out_menu);
         NavigationView navigationView = findViewById(R.id.nav_view);
+
+
+        gamesProfile = findViewById(R.id.gamesProfile);
+        gamesProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, GamesProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
         slideOutMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
+
+        drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+            }
+            @Override
+            public void onDrawerOpened(@NonNull View drawerView) {
+                slideOutMenu.setImageResource(R.drawable.menu_open);
+            }
+            @Override
+            public void onDrawerClosed(@NonNull View drawerView) {
+                slideOutMenu.setImageResource(R.drawable.menu_closed);
+            }
+            @Override
+            public void onDrawerStateChanged(int newState) {
             }
         });
 
