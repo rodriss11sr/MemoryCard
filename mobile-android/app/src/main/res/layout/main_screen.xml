@@ -10,22 +10,223 @@
     android:fitsSystemWindows="true"
     android:visibility="visible">
 
-    <!--Header-->
+
     <TextView
         android:id="@+id/textView11"
-        android:layout_width="318dp"
-        android:layout_height="82dp"
-        android:layout_marginStart="46dp"
-        android:layout_marginTop="362dp"
-        android:layout_marginEnd="47dp"
-        android:layout_marginBottom="447dp"
-        android:text="TEST TEXT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/upheavtt"
+        android:text="Nuevos Lanzamientos"
         android:textColor="@color/white"
-        android:textSize="60sp"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="392dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="10dp"
+        android:background="#818387"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView"
+        android:layout_width="411dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider3">
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="16dp"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/game_ballxpit"
+                android:layout_width="111dp"
+                android:layout_height="162dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/game_miniature_shape"
+                android:clipToOutline="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ballxpit" />
+
+            <ImageButton
+                android:id="@+id/game_silentHillF"
+                android:layout_width="111dp"
+                android:layout_height="162dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/game_miniature_shape"
+                android:clipToOutline="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/silenthillf" />
+
+            <ImageButton
+                android:id="@+id/game1_hades2"
+                android:layout_width="111dp"
+                android:layout_height="162dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/game_miniature_shape"
+                android:clipToOutline="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/hades2" />
+
+            <ImageButton
+                android:id="@+id/game1_yakuzapirate"
+                android:layout_width="111dp"
+                android:layout_height="162dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/game_miniature_shape"
+                android:clipToOutline="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/yakuzapirate" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="25dp"
+        android:fontFamily="@font/upheavtt"
+        android:text="Reviews Populares"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="392dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="10dp"
+        android:background="#818387"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="10dp"
+        android:paddingStart="10dp"
+        android:background="@drawable/review_card_shape"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider2">
+
+        <ImageButton
+            android:id="@+id/game_ballxpit2"
+            android:layout_width="70dp"
+            android:layout_height="110dp"
+            android:layout_marginVertical="10dp"
+            android:layout_gravity="center|start"
+            android:background="@drawable/game_miniature_shape"
+            android:clipToOutline="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ballxpit" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/pfp_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="10dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/image"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.App.CircleImageView" />
+
+        <LinearLayout
+            android:layout_width="239dp"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/upheavtt"
+                    android:text="Gordon Freeman"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/textView15"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/m6x11plus"
+                    android:text="4d"
+                    android:textColor="#A2A2A2"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginVertical="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/m6x11plus"
+                android:text="@string/LoreIpsum"
+                android:textColor="#9C9C9C"
+                android:textSize="16sp" />
+
+            <!--isIndicator=true <- Esto sirve para que no se pueda calificar-->
+            <RatingBar
+
+                android:id="@+id/ratingBarReview"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="true"
+                android:numStars="5"
+                android:progressBackgroundTint="#626262"
+                android:progressTint="#FFCC00"
+                android:rating="4.5"
+                android:stepSize="0.5" />
+        </LinearLayout>
+
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

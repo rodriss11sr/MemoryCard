@@ -12,46 +12,35 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.navigation.NavigationView;
 
-public class MainScreenActivity extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_profile);
 
-        DrawerLayout drawerLayout = findViewById(R.id.mainScreen);
+        DrawerLayout drawerLayout = findViewById(R.id.profile);
         ImageButton slideOutMenu = findViewById(R.id.slide_out_menu);
         NavigationView navigationView = findViewById(R.id.nav_view);
-        ShapeableImageView profileBtn = findViewById(R.id.profileBtn);
-
         slideOutMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 drawerLayout.openDrawer(GravityCompat.START);
             }
         });
-        profileBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainScreenActivity.this, ProfileActivity.class);
-                startActivity(intent);
-            }
-        });
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int itemId = item.getItemId();
-                if (itemId == R.id.nav_mainPage) {
+                if (itemId == R.id.nav_profile) {
                     drawerLayout.closeDrawer(GravityCompat.START);
                     return true;
                 }
-                else if(itemId == R.id.nav_profile){
-                    Intent intent = new Intent(MainScreenActivity.this, ProfileActivity.class);
+                else if (itemId == R.id.nav_mainPage) {
+                    Intent intent = new Intent(ProfileActivity.this, MainScreenActivity.class);
                     startActivity(intent);
                 }
-
-                //añadir else-if si se necesitan mas casos
-
                 drawerLayout.closeDrawer(GravityCompat.START);
                 return true;
             }
