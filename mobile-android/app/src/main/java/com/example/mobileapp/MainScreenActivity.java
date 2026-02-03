@@ -37,6 +37,22 @@ public class MainScreenActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+            }
+            @Override
+            public void onDrawerOpened(@NonNull View drawerView) {
+                slideOutMenu.setImageResource(R.drawable.menu_open);
+            }
+            @Override
+            public void onDrawerClosed(@NonNull View drawerView) {
+                slideOutMenu.setImageResource(R.drawable.menu_closed);
+            }
+            @Override
+            public void onDrawerStateChanged(int newState) {
+            }
+        });
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
