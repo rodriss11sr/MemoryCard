@@ -56,12 +56,13 @@ function Header() {
           👤
         </span>
       </div>
-
+      {/*
       <div>
         <span style={{ cursor: "pointer" }} onClick={() => navigate("/")}>
           🔔
         </span>
       </div>
+*/}
     </header>
   );
 }
