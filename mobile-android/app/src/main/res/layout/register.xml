@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1B1F27"
+    android:fitsSystemWindows="true">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="73dp"
+                android:background="#2D333E" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="411dp"
+                android:layout_height="143dp"
+                android:fontFamily="@font/upheavtt"
+                android:paddingTop="30dp"
+                android:paddingBottom="20dp"
+                android:text="Creador de personajes"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="48sp" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="40dp"
+                android:fontFamily="@font/upheavtt"
+                android:paddingTop="21dp"
+                android:text="Eh, tú. Al fin has despertado"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="27sp" />
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="match_parent"
+                android:layout_height="29dp"
+                android:fontFamily="@font/upheavtt"
+                android:letterSpacing="0.05"
+                android:paddingStart="30dp"
+                android:text="nombre de usuario"
+                android:textAlignment="textStart"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/usernameCreateAccount"
+                android:layout_width="380dp"
+                android:layout_height="50dp"
+                android:background="@drawable/form_shape"
+                android:ems="10"
+                android:fontFamily="@font/upheavtt"
+                android:inputType="text"
+                android:letterSpacing="0.05"
+                android:paddingStart="20dp"
+                android:text="email@domain.com"
+                android:textAlignment="textStart"
+                android:textColor="#828282" />
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="411dp"
+                android:layout_height="29dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/upheavtt"
+                android:letterSpacing="0.05"
+                android:paddingStart="30dp"
+                android:text="correo electrónico"
+                android:textAlignment="textStart"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/emailCreateAccount"
+                android:layout_width="380dp"
+                android:layout_height="50dp"
+                android:background="@drawable/form_shape"
+                android:ems="10"
+                android:fontFamily="@font/upheavtt"
+                android:inputType="textEmailAddress"
+                android:letterSpacing="0.05"
+                android:paddingStart="20dp"
+                android:text="email@domain.com"
+                android:textAlignment="textStart"
+                android:textColor="#828282" />
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="match_parent"
+                android:layout_height="29dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/upheavtt"
+                android:letterSpacing="0.05"
+                android:paddingStart="30dp"
+                android:text="contraseña"
+                android:textAlignment="textStart"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/passwordCreateAccount"
+                android:layout_width="380dp"
+                android:layout_height="50dp"
+                android:background="@drawable/form_shape"
+                android:ems="10"
+                android:fontFamily="@font/upheavtt"
+                android:inputType="textPassword"
+                android:letterSpacing="0.2"
+                android:paddingStart="20dp"
+                android:text="aaaaaa"
+                android:textColor="#818181" />
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="match_parent"
+                android:layout_height="29dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/upheavtt"
+                android:letterSpacing="0.05"
+                android:paddingStart="30dp"
+                android:text="confirmar contraseña"
+                android:textAlignment="textStart"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/confirmPassword"
+                android:layout_width="380dp"
+                android:layout_height="50dp"
+                android:background="@drawable/form_shape"
+                android:ems="10"
+                android:fontFamily="@font/upheavtt"
+                android:inputType="textPassword"
+                android:letterSpacing="0.2"
+                android:paddingStart="20dp"
+                android:text="aaaaaa"
+                android:textColor="#818181" />
+
+            <Button
+                android:id="@+id/createAccountBtn"
+                android:layout_width="380dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/button_shape"
+                android:fontFamily="@font/upheavtt"
+                android:text="CREAR"
+                android:textSize="34sp"
+                app:backgroundTint="@null" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingTop="15dp">
+
+                <TextView
+                    android:id="@+id/woutAccount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/m6x11plus"
+                    android:letterSpacing="0.03"
+                    android:text="¿Ya tienes cuenta?"
+                    android:textColor="#FFFFFF"
+                    android:textSize="24sp" />
+
+                <Button
+                    android:id="@+id/logInButton"
+                    android:layout_width="197dp"
+                    android:layout_height="wrap_content"
+                    android:background="#00FFFFFF"
+                    android:fontFamily="@font/m6x11plus"
+                    android:text="Inicia sesión!"
+                    android:textColor="#29CDF2"
+                    android:textSize="24sp"
+                    app:iconTint="#00000000"
+                    app:rippleColor="#00FFFFFF" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
