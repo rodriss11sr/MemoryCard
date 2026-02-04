@@ -10,14 +10,13 @@
     <ImageButton
         android:id="@+id/slide_out_menu"
         android:layout_width="55dp"
-        android:layout_height="76dp"
+        android:layout_height="60dp"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
         android:background="#00FFFFFF"
-        android:paddingStart="30dp"
-        android:paddingEnd="0dp"
-        android:scaleType="centerCrop"
-        app:srcCompat="@android:drawable/ic_menu_sort_by_size" />
+        android:scaleType="fitCenter"
+        android:src="@drawable/menu_closed" />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/profileBtn"
