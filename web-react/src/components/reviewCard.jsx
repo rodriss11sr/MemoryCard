@@ -56,33 +56,32 @@ const ReviewCard = ({ titulo, contenido, puntuacion, imagen }) => {
       </div>
 
       <div style={contentStyle}>
-        <h3
+        <span
           style={{
-            margin: 0,
             color: "#ffffff",
-            textTransform: "uppercase",
-            fontSize: "1rem",
             fontWeight: "800",
+            fontSize: "1.3rem",
+            textTransform: "uppercase",
             letterSpacing: "1px",
-            fontFamily: "system-ui, sans-serif",
+            fontFamily: "upheaval, system-ui",
           }}
         >
           {titulo}
-        </h3>
+        </span>
 
         <div><StarRating nota={puntuacion} size="1rem" /></div>
 
-        <p
+        <span
           style={{
-            margin: 0,
             color: "#9ca3af",
-            fontSize: "0.9rem",
-            fontFamily: "m6x11plus",
+            fontFamily: "m6x11plus, system-ui",
+            fontSize: "1.0rem",
             marginTop: "2px",
+            fontWeight: "500",
           }}
         >
           {contenido}
-        </p>
+        </span>
       </div>
     </div>
   );

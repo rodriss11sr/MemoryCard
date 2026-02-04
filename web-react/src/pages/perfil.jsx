@@ -85,37 +85,51 @@ function Perfil() {
       <div
         style={{ textAlign: "center", marginBottom: "30px", marginTop: "10px" }}
       >
-        <div
+        <aside
           style={{
-            width: "100px",
-            height: "100px",
-            borderRadius: "50%",
-            background: "#fff",
-            margin: "0 auto 15px auto",
-            border: "4px solid #2b303b",
-            overflow: "hidden",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "15px",
+            margin: "0 auto",
+            width: "fit-content",
           }}
         >
-          <img
-            src="https://api.dicebear.com/7.x/avataaars/svg?seed=Gordon"
-            alt="avatar"
-            style={{ width: "100%", height: "100%" }}
-          />
-        </div>
+          <div
+            style={{
+              width: "100px",
+              height: "100px",
+              borderRadius: "50%",
+              background: "#fff",
+              margin: "0 auto 15px auto",
+              border: "4px solid #2b303b",
+              overflow: "hidden",
+            }}
+          >
 
-        <h2 style={{ margin: "0 0 5px 0", fontSize: "1.8rem", color: "white" }}>
-          Gordon Freeman
-        </h2>
-        <p
-          style={{
-            color: "#9ca3af",
-            margin: 0,
-            fontFamily: "m6x11plus",
-            fontSize: "1.5rem",
-          }}
-        >
-          Se unió el 14-11-1998
-        </p>
+            <img
+              src="https://api.dicebear.com/7.x/avataaars/svg?seed=Gordon"
+              alt="avatar"
+              style={{ width: "100%", height: "100%" }}
+            />
+          </div>
+          <div>
+
+            <h2 style={{ margin: "0 0 5px 0", fontSize: "1.8rem", color: "white" }}>
+              Gordon Freeman
+            </h2>
+            <p
+              style={{
+                color: "#9ca3af",
+                margin: 0,
+                fontFamily: "m6x11plus",
+                fontSize: "1.5rem",
+              }}
+            >
+              Se unió el 14-11-1998
+            </p>
+          </div>
+        </aside>
       </div>
 
       <div
