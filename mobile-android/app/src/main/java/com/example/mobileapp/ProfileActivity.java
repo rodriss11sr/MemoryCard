@@ -16,6 +16,7 @@ import com.google.android.material.navigation.NavigationView;
 public class ProfileActivity extends AppCompatActivity {
 
     Button gamesProfile;
+    Button wishlistProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,15 @@ public class ProfileActivity extends AppCompatActivity {
 
 
         gamesProfile = findViewById(R.id.gamesProfile);
+        wishlistProfile = findViewById(R.id.wishlistProfile);
+
+        wishlistProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, WishlistProfileActivity.class);
+                startActivity(intent);
+            }
+        });
         gamesProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
