@@ -45,12 +45,12 @@ const Sidebar = () => {
           <span style={{ fontSize: "25px" }}>Inicio</span>
         </NavLink>
 
-        <NavLink to="/perfil" style={getStyle}>
+        <NavLink to="/profile" style={getStyle}>
           {/*<span style={{ fontSize: "25px" }}>👤</span>*/}
           <span style={{ fontSize: "25px" }}>Perfil</span>
         </NavLink>
 
-        <NavLink to="/juegos" style={getStyle}>
+        <NavLink to="/juego" style={getStyle}>
           {/*<span style={{ fontSize: "25px" }}>🎮</span>*/}
           <span style={{ fontSize: "25px" }}>Juegos</span>
         </NavLink>

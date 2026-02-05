@@ -1,7 +1,7 @@
 import React from "react";
-import StarRating from "./starRating.jsx";
+import StarRating from "./StarRating.jsx";
 
-const ReviewCard = ({ titulo, contenido, puntuacion, imagen }) => {
+const UserReviewCard = ({ titulo, contenido, puntuacion, imagen }) => {
 
   const cardStyle = {
     display: "flex",
@@ -87,4 +87,4 @@ const ReviewCard = ({ titulo, contenido, puntuacion, imagen }) => {
   );
 };
 
-export default ReviewCard;
+export default UserReviewCard;

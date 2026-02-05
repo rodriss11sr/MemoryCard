@@ -1,7 +1,7 @@
 import { useState } from "react";
-import FriendCard from "../components/friendCard.jsx";
-import ReviewCard from "../components/reviewCard.jsx";
-import GameLibraryCard from "../components/gameLibraryCard.jsx";
+import FriendCard from "../components/FriendCard.jsx";
+import UserReviewCard from "../components/UserReviewCard.jsx";
+import GameLibraryCard from "../components/GameLibraryCard.jsx";
 
 //TODO: Obtener datos desde el backend y utilizarlos
 function Perfil() {

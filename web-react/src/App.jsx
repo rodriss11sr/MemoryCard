@@ -1,9 +1,11 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import AppLayout from "./components/applayout.jsx";
-import Login from "./pages/login.jsx";
-import Signin from "./pages/signin.jsx";
-import Home from "./pages/home.jsx";
-import Perfil from "./pages/perfil.jsx";
+import AppLayout from "./components/AppLayout.jsx";
+import LogIn from "./pages/login.jsx";
+import SignIn from "./pages/SignIn.jsx";
+import Password from "./pages/Password.jsx";
+import Home from "./pages/Home.jsx";
+import Profile from "./pages/Profile.jsx";
+import Juego from "./pages/Juego.jsx";
 
 
 function App() {
@@ -11,36 +13,38 @@ function App() {
     <Router>
       <Routes>
         {/*Login (Sin header ni sidebar)*/}
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<LogIn />} />
         {/*Signin (Sin header ni sidebar)*/}
-        <Route path="/signin" element={<Signin />} />
-          {/*Inicio (con header y sidebar)*/}
-          <Route 
-          path="/" 
+        <Route path="/signin" element={<SignIn />} />
+        {/*Recuperar contraseña (Sin header ni sidebar)*/}
+        <Route path="/password" element={<Password />} />
+        {/*Inicio (con header y sidebar)*/}
+        <Route
+          path="/"
           element={
             <AppLayout>
               <Home />
             </AppLayout>
-          } 
+          }
         />
-          {/*Juegos (con header y sidebar)*/}
-          {/*<Route 
-            path="/juegos" 
-            element={
-              <AppLayout>
-                <Juegos />
-              </AppLayout>
-            } 
-          />*/}
-          {/*Perfil del usuario (con header y sidebar)*/}
-          <Route 
-            path="/perfil" 
-            element={
-              <AppLayout>
-                <Perfil />
-              </AppLayout>
-            } 
-          />
+        {/*Juegos (con header y sidebar)*/}
+        <Route
+          path="/juego"
+          element={
+            <AppLayout>
+              <Juego />
+            </AppLayout>
+          }
+        />
+        {/*Perfil del usuario (con header y sidebar)*/}
+        <Route
+          path="/profile"
+          element={
+            <AppLayout>
+              <Profile />
+            </AppLayout>
+          }
+        />
       </Routes>
     </Router>
   );

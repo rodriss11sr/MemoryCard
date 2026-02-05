@@ -35,6 +35,7 @@ function Signin() {
     backgroundColor: "#ffffff",
     color: "#828282",
     border: "1px solid var(--border-color)",
+    fontFamily: "m6x11plus",
     fontSize: "1rem",
     boxSizing: "border-box",
   };
@@ -47,6 +48,7 @@ function Signin() {
     border: "none",
     backgroundColor: "#0466c8",
     color: "white",
+    fontFamily: "upheaval",
     fontWeight: "bold",
     fontSize: "1rem",
     cursor: "pointer",
@@ -62,7 +64,8 @@ function Signin() {
           style={{
             color: "var(--text-secondary)",
             marginBottom: "30px",
-            fontSize: "0.9rem",
+            fontFamily: "m6x11plus",
+            fontSize: "1rem",
           }}
         >
           Eh, tú, al fin has despertado
@@ -76,6 +79,7 @@ function Signin() {
               fontSize: "0.8rem",
               marginLeft: "5px",
               color: "var(--text-secondary)",
+              fontFamily: "m6x11plus",
             }}
           >
             Nombre de Usuario
@@ -95,6 +99,7 @@ function Signin() {
               fontSize: "0.8rem",
               marginLeft: "5px",
               color: "var(--text-secondary)",
+              fontFamily: "m6x11plus",
             }}
           >
             Correo Electrónico
@@ -114,6 +119,7 @@ function Signin() {
               fontSize: "0.8rem",
               marginLeft: "5px",
               color: "var(--text-secondary)",
+              fontFamily: "m6x11plus",
             }}
           >
             Contraseña
@@ -133,6 +139,7 @@ function Signin() {
               fontSize: "0.8rem",
               marginLeft: "5px",
               color: "var(--text-secondary)",
+              fontFamily: "m6x11plus",
             }}
           >
             Confirmar contraseña
@@ -146,7 +153,7 @@ function Signin() {
             required
           />
         </div>
-        // TODO: Cambiar a "submit" cuando este implementada la logica de creacion en el backend
+        {/* TODO: Cambiar a "submit" cuando este implementada la logica de creacion en el backend*/}
         <button
           type="button"
           onClick={handleSignin}
@@ -162,6 +169,7 @@ function Signin() {
       <p
         style={{
           marginTop: "20px",
+          fontFamily: "m6x11plus",
           fontSize: "0.8rem",
           color: "var(--text-secondary)",
         }}

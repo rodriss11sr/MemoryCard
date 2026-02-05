@@ -1,12 +1,11 @@
 import { useState } from "react";
-import Header from "./header";
-import Sidebar from "./sidebar";
+import Header from "./Header";
+import Sidebar from "./Sidebar";
 
 const HEADER_HEIGHT = 64;
 const SIDEBAR_WIDTH = 180;
 
-export default function AppLayout({ children }) {
-
+function AppLayout({ children }) {
 
   return (
     <div
@@ -47,3 +46,5 @@ export default function AppLayout({ children }) {
     </div>
   );
 }
+
+export default AppLayout;
