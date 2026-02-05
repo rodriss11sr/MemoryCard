@@ -229,6 +229,24 @@ function Perfil() {
             ))}
           </div>
         )}
+        {activeTab === "listas" && (
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "20px",
+              justifyContent: "center",
+            }}
+          >
+            {LISTAS_DATA.map((lista) => (
+              <ProfileListCard
+                key={lista.id}
+                nombre={lista.nombre}
+                juegos={lista.juegos}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
