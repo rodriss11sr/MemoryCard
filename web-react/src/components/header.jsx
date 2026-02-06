@@ -29,7 +29,7 @@ function Header() {
           onClick={() => navigate("/")}
           style={{ margin: 0, fontSize: "24px", cursor: "pointer" }}
         >
-          GameBoxd 🎮
+          Memory Card 🎮
         </h1>
       </div>
 
