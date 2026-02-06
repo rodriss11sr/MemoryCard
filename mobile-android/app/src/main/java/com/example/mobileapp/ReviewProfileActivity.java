@@ -9,6 +9,5 @@ public class ReviewProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reviews_profile_activity);
-
     }
 }

@@ -60,7 +60,7 @@
                 android:backgroundTint="#00FFFFFF"
                 android:fontFamily="@font/upheavtt"
                 android:text="JUEGOS"
-                android:textColor="#0466C8"
+                android:textColor="#29CDF2"
                 android:textSize="30sp" />
 
             <Button
