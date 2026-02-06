@@ -68,17 +68,24 @@ function Home() {
             }}
             >
                 {JUEGOS_DATA.map((juego) => (
-                    <GameLibraryCard
-                        key={juego.id}
-                        juego={juego}
-                    />
-                ))}
+              <GameLibraryCard
+                key={juego.id}
+                nombre={juego.nombre}
+                portada={juego.imagen}
+              />
+            ))}
             </div>
 
             <h2>Reseñas destacadas</h2>
-            <div className="reviews-grid">
+            <div className="reviews-grid" style={{ maxWidth: "800px", margin: "0 auto", padding: "0 20px" }}>
                 {REVIEWS_DATA.map((review) => (
-                    <UserReviewCard key={review.id} review={review} />
+                    <UserReviewCard
+                        key={review.id}
+                        titulo={review.titulo}
+                        contenido={review.contenido}
+                        puntuacion={review.puntuacion}
+                        imagen={review.imagen}
+                    />
                 ))}
             </div>
         </div>

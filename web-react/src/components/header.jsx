@@ -3,6 +3,16 @@ import { useNavigate } from "react-router-dom";
 function Header() {
   const navigate = useNavigate();
 
+  const avatarContainerStyle = {
+    width: "50px",
+    height: "50px",
+    borderRadius: "50%",
+    overflow: "hidden",
+    backgroundColor: "#ffffff",
+    border: "2px solid #ffffff",
+    flexShrink: 0,
+  };
+
   return (
     <header
       style={{
@@ -52,9 +62,27 @@ function Header() {
       </div>
 
       <div>
-        <span style={{ cursor: "pointer" }} onClick={() => navigate("/perfil")}>
-          👤
-        </span>
+        <div
+          style={{
+            width: "45px",
+            height: "45px",
+            borderRadius: "50%",
+            background: "#fff",
+            border: "2px solid #ffffff",
+            overflow: "hidden",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+          onClick={() => navigate("/profile")}
+        >
+          <img
+            src="https://api.dicebear.com/7.x/avataaars/svg?seed=Gordon"
+            alt="avatar"
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          />
+        </div>
       </div>
       {/*
       <div>

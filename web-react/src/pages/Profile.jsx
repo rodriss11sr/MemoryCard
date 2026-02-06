@@ -2,10 +2,81 @@ import { useState } from "react";
 import FriendCard from "../components/FriendCard.jsx";
 import UserReviewCard from "../components/UserReviewCard.jsx";
 import GameLibraryCard from "../components/GameLibraryCard.jsx";
+import ProfileListCard from "../components/ProfileListCard.jsx";
+
 
 //TODO: Obtener datos desde el backend y utilizarlos
 function Perfil() {
   const [activeTab, setActiveTab] = useState("amigos");
+
+  const LISTAS_DATA = [
+    {
+      id: 1,
+      nombre: "Saga Assassin's Creed",
+      juegos: [
+        {
+          id: 50,
+          nombre: "Assassin's Creed",
+          imagen:
+            "https://images.igdb.com/igdb/image/upload/t_cover_big/co1rrw.webp",
+        },
+        {
+          id: 51,
+          nombre: "Assassin's Creed: Bloodlines",
+          imagen:
+            "https://images.igdb.com/igdb/image/upload/t_cover_big/co1xia.webp",
+        },
+        {
+          id: 52,
+          nombre: "Assassin's Creed II",
+          imagen:
+            "https://images.igdb.com/igdb/image/upload/t_cover_big/co1rcf.webp",
+        },
+        {
+          id: 53,
+          nombre: "Assassin's Creed Brotherhood",
+          imagen:
+            "https://images.igdb.com/igdb/image/upload/t_cover_big/co6t4d.webp",
+        },
+        {
+          id: 54,
+          nombre: "Assassin's Creed Revelations",
+          imagen:
+            "https://images.igdb.com/igdb/image/upload/t_cover_big/co1xih.webp",
+        },
+        {
+          id: 55,
+          nombre: "Assassin's Creed III",
+          imagen:
+            "https://images.igdb.com/igdb/image/upload/t_cover_big/co1xii.webp",
+        },
+        {
+          id: 56,
+          nombre: "Assassin's Creed IV Black Flag",
+          imagen:
+            "https://images.igdb.com/igdb/image/upload/t_cover_big/co4qfn.webp",
+        },
+        {
+          id: 57,
+          nombre: "Assassin's Creed Unity",
+          imagen:
+            "https://images.igdb.com/igdb/image/upload/t_cover_big/co1xiq.webp",
+        },
+        {
+          id: 58,
+          nombre: "Assassin's Creed Rogue",
+          imagen:
+            "https://images.igdb.com/igdb/image/upload/t_cover_big/co1xir.webp",
+        },
+        {
+          id: 59,
+          nombre: "Assassin's Creed Mirage",
+          imagen:
+            "https://images.igdb.com/igdb/image/upload/t_cover_big/co57sj.webp",
+        },
+      ],
+    },
+  ];
 
   const WISHLIST_DATA = [
     {
@@ -47,6 +118,11 @@ function Perfil() {
       imagen:
         "https://images.igdb.com/igdb/image/upload/t_cover_big/co3jh0.webp",
     },
+    {
+      id: 5,
+      nombre: "Ronaldinho Soccer 64",
+      imagen: "https://tse3.mm.bing.net/th/id/OIP.1XS4wUMa1Gm1jHWX4h6hgAHaFZ?rs=1&pid=ImgDetMain&o=7&rm=3",
+    }
   ];
 
   const AMIGOS_DATA = [
@@ -80,8 +156,10 @@ function Perfil() {
     return review ? review.puntuacion : undefined;
   };
 
+
+
   return (
-    <div style={{ paddingBottom: "50px" }}>
+    <div style={{ paddingBottom: "50px" }} >
       <div
         style={{ textAlign: "center", marginBottom: "30px", marginTop: "10px" }}
       >
@@ -129,6 +207,58 @@ function Perfil() {
               Se unió el 14-11-1998
             </p>
           </div>
+          <div>
+            <p
+              style={{
+                color: "#9ca3af",
+                margin: 0,
+                fontFamily: "m6x11plus",
+                fontSize: "0.9rem",
+              }}
+            >
+
+            </p>
+            <p
+              style={{
+                color: "#9ca3af",
+                margin: 0,
+                fontFamily: "m6x11plus",
+                fontSize: "0.9rem",
+              }}
+            >
+
+            </p>
+            <p
+              style={{
+                color: "#9ca3af",
+                margin: 0,
+                fontFamily: "m6x11plus",
+                fontSize: "0.9rem",
+              }}
+            >
+              Poner algo para rellenar el espacio
+            </p>
+            <p
+              style={{
+                color: "#9ca3af",
+                margin: 0,
+                fontFamily: "m6x11plus",
+                fontSize: "0.9rem",
+              }}
+            >
+              y que no quede tan vacío,
+            </p>
+            <p
+              style={{
+                color: "#9ca3af",
+                margin: 0,
+                fontFamily: "m6x11plus",
+                fontSize: "0.9rem",
+              }}
+            >
+              aunque no se me ocurre nada xd
+            </p>
+          </div>
         </aside>
       </div>
 
@@ -168,7 +298,13 @@ function Perfil() {
 
       <div style={{ maxWidth: "800px", margin: "0 auto", padding: "0 20px" }}>
         {activeTab === "amigos" && (
-          <div>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+              gap: "20px",
+            }}
+          >
             {AMIGOS_DATA.map((amigo) => (
               <FriendCard
                 key={amigo.id}
@@ -200,7 +336,7 @@ function Perfil() {
         {activeTab === "reviews" && (
           <div>
             {REVIEWS_DATA.map((review) => (
-              <ReviewCard
+              <UserReviewCard
                 key={review.id}
                 titulo={review.titulo}
                 contenido={review.contenido}
@@ -238,6 +374,28 @@ function Perfil() {
               justifyContent: "center",
             }}
           >
+            <button style={{
+              marginBottom: "20px",
+              padding: "10px 20px",
+              background: "#2b303b",
+              border: "1px solid #3e4451",
+              borderRadius: "8px",
+              color: "#ffffff",
+              cursor: "pointer"
+            }}>
+              Buscar lista
+            </button>
+            <button style={{
+              marginBottom: "20px",
+              padding: "10px 20px",
+              background: "#2b303b",
+              border: "1px solid #3e4451",
+              borderRadius: "8px",
+              color: "#ffffff",
+              cursor: "pointer"
+            }}>
+              Crear lista
+            </button>
             {LISTAS_DATA.map((lista) => (
               <ProfileListCard
                 key={lista.id}
@@ -248,7 +406,7 @@ function Perfil() {
           </div>
         )}
       </div>
-    </div>
+    </div >
   );
 }
 
