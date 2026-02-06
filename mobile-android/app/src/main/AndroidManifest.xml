@@ -39,6 +39,9 @@
         <activity android:name=".GamesProfileActivity"
             android:exported="false"
             />
+        <activity android:name=".WishlistProfileActivity"
+            android:exported="false"
+            />
 
 
 
