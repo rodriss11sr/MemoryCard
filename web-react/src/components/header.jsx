@@ -53,7 +53,8 @@ function Header() {
             width: "100%",
             maxWidth: "500px",
             outline: "none",
-            fontSize: "0.95rem",
+            fontFamily:"m6x11plus",
+            fontSize: "1.2rem",
             transition: "border-color 0.2s",
           }}
           onFocus={(e) => (e.target.style.borderColor = "#0466c8")}

@@ -28,6 +28,36 @@ function Home() {
             imagen:
                 "https://images.igdb.com/igdb/image/upload/t_cover_big/co3jh0.webp",
         },
+        {
+            id: 50,
+            nombre: "Assassin's Creed",
+            imagen:
+                "https://images.igdb.com/igdb/image/upload/t_cover_big/co1rrw.webp",
+        },
+        {
+            id: 51,
+            nombre: "Assassin's Creed: Bloodlines",
+            imagen:
+                "https://images.igdb.com/igdb/image/upload/t_cover_big/co1xia.webp",
+        },
+        {
+            id: 52,
+            nombre: "Assassin's Creed II",
+            imagen:
+                "https://images.igdb.com/igdb/image/upload/t_cover_big/co1rcf.webp",
+        },
+        {
+            id: 53,
+            nombre: "Assassin's Creed Brotherhood",
+            imagen:
+                "https://images.igdb.com/igdb/image/upload/t_cover_big/co6t4d.webp",
+        },
+        {
+            id: 54,
+            nombre: "Assassin's Creed Revelations",
+            imagen:
+                "https://images.igdb.com/igdb/image/upload/t_cover_big/co1xih.webp",
+        },
     ];
 
     const REVIEWS_DATA = [
@@ -44,7 +74,7 @@ function Home() {
             id: 102,
             juegoId: 2,
             titulo: "Cyberpunk 2077",
-            contenido: "Ha mejorado mucho con los parches.",
+            contenido: "Cyberpunk 2077 es un videojuego de rol de acción de disparos en primera persona desarrollado por CD Projekt RED y publicado por CD Projekt que se lanzó para Microsoft Windows, PlayStation 4 y Xbox One el 10 de diciembre de 2020, y posteriormente en PlayStation 5, Xbox Series X|S y Google Stadia el 15 de febrero de 2022 y finalmente en Nintendo Switch 2 el 5 de junio de 2025. Siendo una adaptación del juego de rol Cyberpunk 2020 de Mike Pondsmith, se establece cincuenta y siete años más tarde en la ciudad distópica de Night City, California. Es un mundo abierto con seis distritos diferentes, con una perspectiva de primera persona y los jugadores asumen el papel del personaje personalizable llamado V, quienes pueden mejorar sus estadísticas con experiencia. V tiene un arsenal de armas y opciones para combate cuerpo a cuerpo, los cuales pueden ser modificados.\n\nLa historia sigue la lucha de V, un/una mercenario/a de Night City que lidia con las consecuencias de un atraco que salió mal y que resulta en un biochip experimental cibernético que contiene un engrama de la legendaria estrella de rock y terrorista Johnny Silverhand, que amenaza con sobrescribir lentamente la mente de V. A medida que avanza la historia, V y Silverhand deben trabajar juntos para encontrar una manera de separarse y salvar la vida de V.\n\nEl videojuego fue desarrollado por CD Projekt RED, un estudio interno dentro de CD Projekt, usando el motor de videojuegos REDengine 4. Lanzaron una nueva división en Breslavia y se asociaron con Digital Scapes, Nvidia, QLOC y Jali Research para ayudar al desarrollo. El personal excede el número de los que trabajaron en The Witcher 3: Wild Hunt. Durante el evento E3 de 2019, se declaró la fecha oficial del lanzamiento del videojuego, y además se reveló que el actor Keanu Reeves formaría parte del elenco de personajes que tendrían relevancia en el transcurso del videojuego. Estos datos fueron presentados por el mismo actor en la presentación del videojuego en el evento E3, siendo el conductor del evento del videojuego.\n\nCyberpunk 2077 recibió elogios de la crítica por su narrativa, ambientación y gráficos. Sin embargo, algunos de sus elementos de juego recibieron respuestas mixtas, mientras que sus temas y representación de personajes transgénero recibieron algunas críticas. También ha sido muy criticado por los numerosos bugs, particularmente en las versiones de consola que sufrían problemas de rendimiento. En octubre de 2023, el videojuego había vendido más de 25 millones de unidades. Una expansión, Phantom Liberty, tuvo programado su estreno el 26 de septiembre de 2023[2]​ para la PC y en PlayStation 5 y Xbox Series X|S y vendió 3 millones de unidades una semana después de su lanzamiento. Su costo total de desarrollo y comercialización (incluidas actualizaciones y DLC) supera los $436 000 000,[3]​ lo que lo convierte en uno de los videojuegos más caros de desarrollo. Una secuela del videojuego ha sido anunciada y está actualmente en desarrollo.",
             puntuacion: 5,
             imagen:
                 "https://image.api.playstation.com/vulcan/ap/rnd/202008/0416/6Bo40lnWU0BhgrOUm7Cb6by3.png",
@@ -60,19 +90,27 @@ function Home() {
         <div className="home-container">
             <h2>Nuevos lanzamientos</h2>
 
-            <div className="games-grid" style={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: "20px",
-                justifyContent: "left",
-            }}
-            >
-                {JUEGOS_DATA.map((juego) => (
-              <GameLibraryCard
-                key={juego.id}
-                nombre={juego.nombre}
-                portada={juego.imagen}
-              />
+            <div
+                className="games-row"
+                style={{
+                    display: "flex",
+                    gap: "20px",
+                    alignItems: "flex-start",
+                    overflowX: "auto",
+                    overflowY: "hidden",
+                    padding: "10px 0",
+                    WebkitOverflowScrolling: "touch",
+                    justifyContent: "left",
+                    scrollSnapType: "x mandatory",
+                }}
+            >{JUEGOS_DATA.map((juego) => (
+                <div key={juego.id} style={{ flex: "0 0 auto", scrollSnapAlign: "start" }}>
+                    <GameLibraryCard
+                        key={juego.id}
+                        nombre={juego.nombre}
+                        portada={juego.imagen}
+                    />
+                </div>
             ))}
             </div>
 
@@ -88,7 +126,7 @@ function Home() {
                     />
                 ))}
             </div>
-        </div>
+        </div >
     );
 }
 export default Home;
