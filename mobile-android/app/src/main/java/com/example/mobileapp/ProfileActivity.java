@@ -17,6 +17,9 @@ public class ProfileActivity extends AppCompatActivity {
 
     Button gamesProfile;
     Button wishlistProfile;
+    Button reviewsProfile;
+    Button listProfile;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +33,8 @@ public class ProfileActivity extends AppCompatActivity {
 
         gamesProfile = findViewById(R.id.gamesProfile);
         wishlistProfile = findViewById(R.id.wishlistProfile);
+        reviewsProfile = findViewById(R.id.reviewsProfile);
+        listProfile = findViewById(R.id.listProfile);
 
         wishlistProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,7 +50,13 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+        reviewsProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, ReviewProfileActivity.class);
+                startActivity(intent);
+            }
+        });
 
         slideOutMenu.setOnClickListener(new View.OnClickListener() {
             @Override
