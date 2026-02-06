@@ -7,7 +7,7 @@ import ProfileListCard from "../components/ProfileListCard.jsx";
 
 //TODO: Obtener datos desde el backend y utilizarlos
 function Perfil() {
-  const [activeTab, setActiveTab] = useState("amigos");
+  const [activeTab, setActiveTab] = useState("perfil");
 
   const LISTAS_DATA = [
     {
@@ -273,7 +273,7 @@ function Perfil() {
           overflowX: "auto",
         }}
       >
-        {["juegos", "wishlist", "reviews", "listas", "amigos"].map((tab) => (
+        {["perfil", "juegos", "wishlist", "reviews", "listas", "amigos"].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
@@ -297,22 +297,43 @@ function Perfil() {
       </div>
 
       <div style={{ maxWidth: "800px", margin: "0 auto", padding: "0 20px" }}>
-        {activeTab === "amigos" && (
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+        {activeTab === "perfil" && (
+          <div>
+            <h2>Favoritos</h2>
+            <div className="games-grid" style={{
+              display: "flex",
+              flexWrap: "wrap",
               gap: "20px",
+              justifyContent: "left",
             }}
-          >
-            {AMIGOS_DATA.map((amigo) => (
-              <FriendCard
-                key={amigo.id}
-                nombre={amigo.nombre}
-                juegos={amigo.juegos}
-              />
-            ))}
+            >
+              {JUEGOS_DATA.map((juego) => (
+                <GameLibraryCard
+                  key={juego.id}
+                  nombre={juego.nombre}
+                  portada={juego.imagen}
+                />
+              ))}
+            </div>
+            <h2>Actividad Reciente</h2>
+            <div className="games-grid" style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "20px",
+              justifyContent: "left",
+            }}
+            >
+              {JUEGOS_DATA.map((juego) => (
+                <GameLibraryCard
+                  key={juego.id}
+                  nombre={juego.nombre}
+                  portada={juego.imagen}
+                  puntuacion={getReviewScore(juego.id)}
+                />
+              ))}
+            </div>
           </div>
+
         )}
         {activeTab === "juegos" && (
           <div
@@ -333,19 +354,6 @@ function Perfil() {
             ))}
           </div>
         )}
-        {activeTab === "reviews" && (
-          <div>
-            {REVIEWS_DATA.map((review) => (
-              <UserReviewCard
-                key={review.id}
-                titulo={review.titulo}
-                contenido={review.contenido}
-                puntuacion={review.puntuacion}
-                imagen={review.imagen}
-              />
-            ))}
-          </div>
-        )}
         {activeTab === "wishlist" && (
           <div
             style={{
@@ -361,6 +369,19 @@ function Perfil() {
                 nombre={juego.nombre}
                 portada={juego.imagen}
                 puntuacion={getReviewScore(juego.id)}
+              />
+            ))}
+          </div>
+        )}
+        {activeTab === "reviews" && (
+          <div>
+            {REVIEWS_DATA.map((review) => (
+              <UserReviewCard
+                key={review.id}
+                titulo={review.titulo}
+                contenido={review.contenido}
+                puntuacion={review.puntuacion}
+                imagen={review.imagen}
               />
             ))}
           </div>
@@ -401,6 +422,23 @@ function Perfil() {
                 key={lista.id}
                 nombre={lista.nombre}
                 juegos={lista.juegos}
+              />
+            ))}
+          </div>
+        )}
+        {activeTab === "amigos" && (
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+              gap: "20px",
+            }}
+          >
+            {AMIGOS_DATA.map((amigo) => (
+              <FriendCard
+                key={amigo.id}
+                nombre={amigo.nombre}
+                juegos={amigo.juegos}
               />
             ))}
           </div>

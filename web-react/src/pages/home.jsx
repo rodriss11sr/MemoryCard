@@ -58,7 +58,7 @@ function Home() {
 
     return (
         <div className="home-container">
-            <h1>Nuevos lanzamientos</h1>
+            <h2>Nuevos lanzamientos</h2>
 
             <div className="games-grid" style={{
                 display: "flex",
