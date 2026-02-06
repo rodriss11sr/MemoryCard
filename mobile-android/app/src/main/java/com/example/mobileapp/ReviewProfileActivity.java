@@ -8,7 +8,7 @@ public class ReviewProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.review_profile_activity);
+        setContentView(R.layout.reviews_profile_activity);
 
     }
 }
