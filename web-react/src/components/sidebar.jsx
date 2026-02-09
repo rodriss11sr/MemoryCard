@@ -50,7 +50,7 @@ const Sidebar = () => {
           <span style={{ fontSize: "25px" }}>Perfil</span>
         </NavLink>
 
-        <NavLink to="/juego" style={getStyle}>
+        <NavLink to="/game" style={getStyle}>
           {/*<span style={{ fontSize: "25px" }}>🎮</span>*/}
           <span style={{ fontSize: "25px" }}>Juegos</span>
         </NavLink>
@@ -65,7 +65,7 @@ const Sidebar = () => {
           <span style={{ fontSize: "25px" }}>Whishlist</span>
         </NavLink>
 
-        <NavLink to="/amigos" style={getStyle}>
+        <NavLink to="/friends" style={getStyle}>
           {/*<span style={{ fontSize: "25px" }}>👥</span>*/}
           <span style={{ fontSize: "25px" }}>Amigos</span>
         </NavLink>

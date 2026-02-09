@@ -1,6 +1,6 @@
 
 
-const ProfileListCard = ({ nombre, juegos }) => {
+const ProfileListCard = ({ nombre, juegos, autor }) => {
     const cardStyle = {
         display: "flex",
         alignItems: "center",
@@ -20,44 +20,72 @@ const ProfileListCard = ({ nombre, juegos }) => {
     return (
 
         <div style={cardStyle}>
-            <span
-                style={{
-                    color: "#ffffff",
-                    fontWeight: "800",
-                    fontSize: "1.3rem",
-                    textTransform: "uppercase",
-                    letterSpacing: "1px",
-                    fontFamily: "upheaval, system-ui",
-                }}
-            >
-                {nombre}
-            </span>
-
-            <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-                {juegos.map((juego, index) => (
-                    <span key={index} style={{ color: "#9ca3af", fontSize: "0.9rem" }}>
-                        {juego.imagen ? (
-                            <img
-                                src={juego.imagen}
-                                alt={juego.nombre}
-                                style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                            />
-                        ) : (
-                            <div
-                                style={{
-                                    width: "100%",
-                                    height: "100%",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    color: "#555",
-                                }}
-                            >
-                                🎮
-                            </div>
-                        )}
+            <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                <span
+                    style={{
+                        color: "#ffffff",
+                        fontWeight: "800",
+                        fontSize: "1.3rem",
+                        textTransform: "uppercase",
+                        letterSpacing: "1px",
+                        fontFamily: "upheaval, system-ui",
+                    }}
+                >
+                    {nombre}
+                </span>
+                {autor && (
+                    <span
+                        style={{
+                            color: "#9ca3af",
+                            fontSize: "0.85rem",
+                            fontWeight: "400",
+                            letterSpacing: "0.5px",
+                        }}
+                    >
+                        de {autor}
                     </span>
-                ))}
+                )}
+            </div>
+
+            <div style={{ display: "flex", alignItems: "center", position: "relative" }}>
+                <div style={{
+                    display: "flex",
+                    alignItems: "center",
+                    position: "relative",
+                    width: 78 + 22 * (Math.max(0, (juegos || []).slice(0,4).length - 1)),
+                    height: 104,
+                }}>
+                    {(juegos || []).slice(0,4).map((juego, index) => {
+                        const left = index * 22;
+                        const zIndex = 4 - index;
+                        const isFront = index === 0;
+                        return (
+                            <div key={index} style={{
+                                width: 78,
+                                height: 104,
+                                borderRadius: 8,
+                                overflow: "hidden",
+                                boxShadow: "0 6px 12px rgba(0,0,0,0.45)",
+                                border: "1px solid rgba(255,255,255,0.06)",
+                                backgroundColor: "#1f2937",
+                                position: "absolute",
+                                top: 0,
+                                left: left,
+                                zIndex: zIndex,
+                                transform: isFront ? "none" : "scale(0.98)",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                            }}>
+                                {juego.imagen ? (
+                                    <img src={juego.imagen} alt={juego.nombre} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                                ) : (
+                                    <div style={{ color: "#9ca3af", fontSize: "1.6rem" }}>🎮</div>
+                                )}
+                            </div>
+                        );
+                    })}
+                </div>
             </div>
         </div>
 

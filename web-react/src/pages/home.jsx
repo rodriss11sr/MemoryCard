@@ -1,6 +1,6 @@
 import { useState } from "react";
 import GameLibraryCard from "../components/GameLibraryCard.jsx";
-import UserReviewCard from "../components/UserReviewCard.jsx";
+import ReviewCard from "../components/ReviewCard.jsx";
 
 function Home() {
     const JUEGOS_DATA = [
@@ -117,7 +117,7 @@ function Home() {
             <h2>Reseñas destacadas</h2>
             <div className="reviews-grid" style={{ maxWidth: "800px", margin: "0 auto", padding: "0 20px" }}>
                 {REVIEWS_DATA.map((review) => (
-                    <UserReviewCard
+                    <ReviewCard
                         key={review.id}
                         titulo={review.titulo}
                         contenido={review.contenido}

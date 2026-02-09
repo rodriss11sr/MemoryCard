@@ -3,16 +3,19 @@ import FriendCard from "../components/FriendCard.jsx";
 import UserReviewCard from "../components/UserReviewCard.jsx";
 import GameLibraryCard from "../components/GameLibraryCard.jsx";
 import ProfileListCard from "../components/ProfileListCard.jsx";
+import ListCreator from "../components/ListCreator.jsx";
 
 
 //TODO: Obtener datos desde el backend y utilizarlos
 function Perfil() {
   const [activeTab, setActiveTab] = useState("perfil");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const LISTAS_DATA = [
     {
       id: 1,
       nombre: "Saga Assassin's Creed",
+      autor: "Gordon Freeman",
       juegos: [
         {
           id: 50,
@@ -387,43 +390,47 @@ function Perfil() {
           </div>
         )}
         {activeTab === "listas" && (
-          <div
-            style={{
+          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+            <div style={{ display: "flex", gap: "20px", justifyContent: "center" }}>
+              <button style={{
+                padding: "10px 20px",
+                background: "#2b303b",
+                border: "1px solid #3e4451",
+                borderRadius: "8px",
+                color: "#ffffff",
+                cursor: "pointer"
+              }}>
+                Buscar lista
+              </button>
+              <button 
+                onClick={() => setIsModalOpen(true)}
+                style={{
+                  padding: "10px 20px",
+                  background: "#2b303b",
+                  border: "1px solid #3e4451",
+                  borderRadius: "8px",
+                  color: "#ffffff",
+                  cursor: "pointer"
+                }}
+              >
+                Crear lista
+              </button>
+            </div>
+            <div style={{
               display: "flex",
               flexWrap: "wrap",
               gap: "20px",
               justifyContent: "center",
-            }}
-          >
-            <button style={{
-              marginBottom: "20px",
-              padding: "10px 20px",
-              background: "#2b303b",
-              border: "1px solid #3e4451",
-              borderRadius: "8px",
-              color: "#ffffff",
-              cursor: "pointer"
             }}>
-              Buscar lista
-            </button>
-            <button style={{
-              marginBottom: "20px",
-              padding: "10px 20px",
-              background: "#2b303b",
-              border: "1px solid #3e4451",
-              borderRadius: "8px",
-              color: "#ffffff",
-              cursor: "pointer"
-            }}>
-              Crear lista
-            </button>
-            {LISTAS_DATA.map((lista) => (
-              <ProfileListCard
-                key={lista.id}
-                nombre={lista.nombre}
-                juegos={lista.juegos}
-              />
-            ))}
+              {LISTAS_DATA.map((lista) => (
+                <ProfileListCard
+                  key={lista.id}
+                  nombre={lista.nombre}
+                  autor={lista.autor}
+                  juegos={lista.juegos}
+                />
+              ))}
+            </div>
           </div>
         )}
         {activeTab === "amigos" && (
@@ -444,6 +451,23 @@ function Perfil() {
           </div>
         )}
       </div>
+
+      {isModalOpen && (
+        <div style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: "rgba(0, 0, 0, 0.6)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          zIndex: 1000,
+        }}>
+          <ListCreator onClose={() => setIsModalOpen(false)} autor="Gordon Freeman" />
+        </div>
+      )}
     </div >
   );
 }
