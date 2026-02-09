@@ -32,7 +32,7 @@
             android:fontFamily="@font/upheavtt"
             android:paddingTop="30dp"
             android:paddingBottom="40dp"
-            android:text="@string/archive"
+            android:text="@string/memoryCard"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
             android:textSize="48sp" />

@@ -21,6 +21,10 @@ import com.google.android.material.navigation.NavigationView;
 
 public class GamesProfileActivity extends AppCompatActivity {
 
+    Button wishlistProfile;
+    Button reviewsProfile;
+    Button listProfile;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +47,17 @@ public class GamesProfileActivity extends AppCompatActivity {
         Button nameAccordionGamesProfile = findViewById(R.id.nameAccordionGamesProfile);
         Button ratingAccordionGamesProfile = findViewById(R.id.ratingAccordionGamesProfile);
         Button latestAddedAccordionGamesProfile = findViewById(R.id.LatestAddedAccordionGamesProfile);
+
+        wishlistProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GamesProfileActivity.this, WishlistProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+
 
         View.OnClickListener toggleAccordion = v -> {
           if(expandableContent.getVisibility() == View.VISIBLE) {
@@ -82,6 +97,7 @@ public class GamesProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
         slideOutMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
