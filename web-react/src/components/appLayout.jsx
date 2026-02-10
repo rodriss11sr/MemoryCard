@@ -2,13 +2,13 @@ import { useState } from "react";
 import Header from "./Header.jsx";
 import Sidebar from "./Sidebar.jsx";
 
-const HEADER_HEIGHT = 64;
-const SIDEBAR_WIDTH = 180;
+const HEADER_HEIGHT = 64; //Altura fija para el header
+const SIDEBAR_WIDTH = 180;  //Ancho fijo para el sidebar
 
 function AppLayout({ children }) {
 
   return (
-    <div
+    <div className="LayoutCompleto"
       style={{
         overflow: "hidden",
         minHeight: "100vh",
@@ -16,7 +16,7 @@ function AppLayout({ children }) {
         flexDirection: "column",
       }}
     >
-      <div
+      <div className="Header"
         style={{
           position: "fixed",
           top: 0,
@@ -29,10 +29,11 @@ function AppLayout({ children }) {
         <Header/>
       </div>
       <Sidebar/>
+      {/*Paginas que van dentro del layout*/}
       <main
         style={{
-          marginLeft: SIDEBAR_WIDTH,
-          marginTop: HEADER_HEIGHT,
+          marginLeft: SIDEBAR_WIDTH,  //Espacio del sidebar
+          marginTop: HEADER_HEIGHT,   //Espacio del header
           minHeight: `calc(100vh - ${HEADER_HEIGHT}px)`,
           width: `calc(100vw - ${SIDEBAR_WIDTH}px)`,
           padding: "20px",
@@ -41,7 +42,7 @@ function AppLayout({ children }) {
           boxSizing: "border-box",
         }}
       >
-        {children}
+        {children}  
       </main>
     </div>
   );
