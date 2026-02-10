@@ -45,6 +45,9 @@
         <activity android:name=".ReviewProfileActivity"
             android:exported="false"
             />
+        <activity android:name=".ListsProfileActivity"
+            android:exported="false"
+            />
 
 
 

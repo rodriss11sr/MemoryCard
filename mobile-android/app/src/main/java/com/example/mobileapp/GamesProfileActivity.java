@@ -37,7 +37,6 @@ public class GamesProfileActivity extends AppCompatActivity {
         NavigationView navigationView = findViewById(R.id.nav_view);
         ShapeableImageView profileBtn = findViewById(R.id.profileBtn);
 
-
         //Variables del accordion
         View accordionView = findViewById(R.id.accordion_games_profile);
         TextView accordionTitle = findViewById(R.id.accordion_title);
@@ -48,6 +47,18 @@ public class GamesProfileActivity extends AppCompatActivity {
         Button ratingAccordionGamesProfile = findViewById(R.id.ratingAccordionGamesProfile);
         Button latestAddedAccordionGamesProfile = findViewById(R.id.LatestAddedAccordionGamesProfile);
 
+        reviewsProfile = findViewById(R.id.reviewsProfile);
+        wishlistProfile = findViewById(R.id.wishlistProfile);
+
+
+        reviewsProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GamesProfileActivity.this, ReviewProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
         wishlistProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,9 +66,6 @@ public class GamesProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
-
 
         View.OnClickListener toggleAccordion = v -> {
           if(expandableContent.getVisibility() == View.VISIBLE) {
