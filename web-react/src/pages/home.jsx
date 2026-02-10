@@ -64,6 +64,8 @@ function Home() {
         {
             id: 101,
             juegoId: 1,
+            usuario: "John Bloodborne",
+            avatar: "https://api.dicebear.com/9.x/avataaars/svg?seed=JohnBloodborne",
             titulo: "The Witcher 3: Wild Hunt",
             contenido: "Obra maestra absoluta.",
             puntuacion: 4.5,
@@ -73,6 +75,8 @@ function Home() {
         {
             id: 102,
             juegoId: 2,
+            usuario:"Relajao Relajao",
+            foto: "https://api.dicebear.com/9.x/avataaars/svg?seed=Relajao",
             titulo: "Cyberpunk 2077",
             contenido: "Cyberpunk 2077 es un videojuego de rol de acción de disparos en primera persona desarrollado por CD Projekt RED y publicado por CD Projekt que se lanzó para Microsoft Windows, PlayStation 4 y Xbox One el 10 de diciembre de 2020, y posteriormente en PlayStation 5, Xbox Series X|S y Google Stadia el 15 de febrero de 2022 y finalmente en Nintendo Switch 2 el 5 de junio de 2025. Siendo una adaptación del juego de rol Cyberpunk 2020 de Mike Pondsmith, se establece cincuenta y siete años más tarde en la ciudad distópica de Night City, California. Es un mundo abierto con seis distritos diferentes, con una perspectiva de primera persona y los jugadores asumen el papel del personaje personalizable llamado V, quienes pueden mejorar sus estadísticas con experiencia. V tiene un arsenal de armas y opciones para combate cuerpo a cuerpo, los cuales pueden ser modificados.\n\nLa historia sigue la lucha de V, un/una mercenario/a de Night City que lidia con las consecuencias de un atraco que salió mal y que resulta en un biochip experimental cibernético que contiene un engrama de la legendaria estrella de rock y terrorista Johnny Silverhand, que amenaza con sobrescribir lentamente la mente de V. A medida que avanza la historia, V y Silverhand deben trabajar juntos para encontrar una manera de separarse y salvar la vida de V.\n\nEl videojuego fue desarrollado por CD Projekt RED, un estudio interno dentro de CD Projekt, usando el motor de videojuegos REDengine 4. Lanzaron una nueva división en Breslavia y se asociaron con Digital Scapes, Nvidia, QLOC y Jali Research para ayudar al desarrollo. El personal excede el número de los que trabajaron en The Witcher 3: Wild Hunt. Durante el evento E3 de 2019, se declaró la fecha oficial del lanzamiento del videojuego, y además se reveló que el actor Keanu Reeves formaría parte del elenco de personajes que tendrían relevancia en el transcurso del videojuego. Estos datos fueron presentados por el mismo actor en la presentación del videojuego en el evento E3, siendo el conductor del evento del videojuego.\n\nCyberpunk 2077 recibió elogios de la crítica por su narrativa, ambientación y gráficos. Sin embargo, algunos de sus elementos de juego recibieron respuestas mixtas, mientras que sus temas y representación de personajes transgénero recibieron algunas críticas. También ha sido muy criticado por los numerosos bugs, particularmente en las versiones de consola que sufrían problemas de rendimiento. En octubre de 2023, el videojuego había vendido más de 25 millones de unidades. Una expansión, Phantom Liberty, tuvo programado su estreno el 26 de septiembre de 2023[2]​ para la PC y en PlayStation 5 y Xbox Series X|S y vendió 3 millones de unidades una semana después de su lanzamiento. Su costo total de desarrollo y comercialización (incluidas actualizaciones y DLC) supera los $436 000 000,[3]​ lo que lo convierte en uno de los videojuegos más caros de desarrollo. Una secuela del videojuego ha sido anunciada y está actualmente en desarrollo.",
             puntuacion: 5,
@@ -123,6 +127,8 @@ function Home() {
                         contenido={review.contenido}
                         puntuacion={review.puntuacion}
                         imagen={review.imagen}
+                        usuario={review.usuario}
+                        avatar={review.avatar}
                     />
                 ))}
             </div>
