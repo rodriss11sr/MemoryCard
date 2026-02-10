@@ -1,6 +1,6 @@
 import StarRating from "./StarRating";
 
-const GameReviewCard = ({ userImage, userName, description, rating, date }) => {
+const GameReviewCard = ({ foto, usuario, desc, puntuacion, fecha }) => {
   const cardStyle = {
     display: "flex",
     alignItems: "center",
@@ -64,15 +64,15 @@ const GameReviewCard = ({ userImage, userName, description, rating, date }) => {
 
   return (
     <div style={cardStyle}>
-      <img src={userImage} alt={userName} style={userImageStyle} />
+      <img src={foto} alt={usuario} style={userImageStyle} />
       <div style={contentStyle}>
         <div style={headerStyle}>
-          <h3 style={userNameStyle}>{userName}</h3>
-          <StarRating rating={rating} />
+          <h3 style={userNameStyle}>{usuario}</h3>
+          <StarRating rating={puntuacion} />
         </div>
-        <p style={descriptionStyle}>{description}</p>
+        <p style={descriptionStyle}>{desc}</p>
       </div>
-      <span style={dateStyle}>{date}</span>
+      <span style={dateStyle}>{fecha}</span>
     </div>
   );
 };
