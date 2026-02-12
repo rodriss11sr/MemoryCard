@@ -1,227 +1,138 @@
-import { useState, useEffect } from "react";
-import "../App.css";
-
-const API_URL = "http://localhost:3000/api";
+import { useState } from "react";
+import GameLibraryCard from "../components/GameLibraryCard.jsx";
+import ReviewCard from "../components/ReviewCard.jsx";
 
 function Home() {
-  const [likes, setLikes] = useState(0);
-  const [juegos, setJuegos] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+    const JUEGOS_DATA = [
+        {
+            id: 1,
+            nombre: "The Witcher 3: Wild Hunt",
+            imagen:
+                "https://image.api.playstation.com/vulcan/ap/rnd/202211/0711/qezXTVn1ExqBjVjR5Ipm97IK.png",
+        },
+        {
+            id: 2,
+            nombre: "Cyberpunk 2077",
+            imagen:
+                "https://image.api.playstation.com/vulcan/ap/rnd/202008/0416/6Bo40lnWU0BhgrOUm7Cb6by3.png",
+        },
+        {
+            id: 3,
+            nombre: "Pokémon Zafiro",
+            imagen:
+                "https://images.igdb.com/igdb/image/upload/t_cover_big/co1zhp.webp",
+        },
+        {
+            id: 4,
+            nombre: "Harry Potter y la Piedra Filosofal",
+            imagen:
+                "https://images.igdb.com/igdb/image/upload/t_cover_big/co3jh0.webp",
+        },
+        {
+            id: 50,
+            nombre: "Assassin's Creed",
+            imagen:
+                "https://images.igdb.com/igdb/image/upload/t_cover_big/co1rrw.webp",
+        },
+        {
+            id: 51,
+            nombre: "Assassin's Creed: Bloodlines",
+            imagen:
+                "https://images.igdb.com/igdb/image/upload/t_cover_big/co1xia.webp",
+        },
+        {
+            id: 52,
+            nombre: "Assassin's Creed II",
+            imagen:
+                "https://images.igdb.com/igdb/image/upload/t_cover_big/co1rcf.webp",
+        },
+        {
+            id: 53,
+            nombre: "Assassin's Creed Brotherhood",
+            imagen:
+                "https://images.igdb.com/igdb/image/upload/t_cover_big/co6t4d.webp",
+        },
+        {
+            id: 54,
+            nombre: "Assassin's Creed Revelations",
+            imagen:
+                "https://images.igdb.com/igdb/image/upload/t_cover_big/co1xih.webp",
+        },
+    ];
 
-  useEffect(() => {
-    async function cargarJuegos() {
-      try {
-        setLoading(true);
-        const response = await fetch(`${API_URL}/juegos`);
-        if (!response.ok) {
-          throw new Error("Error al cargar los juegos");
-        }
-        const data = await response.json();
-        setJuegos(data);
-        setError(null);
-      } catch (err) {
-        console.error("Error:", err);
-        setError(
-          "No se pudo conectar con el servidor. ¿Está el backend corriendo?",
-        );
-      } finally {
-        setLoading(false);
-      }
-    }
-    cargarJuegos();
-  }, []);
+    const REVIEWS_DATA = [
+        {
+            id: 101,
+            juegoId: 1,
+            usuario: "John Bloodborne",
+            avatar: "https://api.dicebear.com/9.x/avataaars/svg?seed=JohnBloodborne",
+            titulo: "The Witcher 3: Wild Hunt",
+            contenido: "Obra maestra absoluta.",
+            puntuacion: 4.5,
+            imagen:
+                "https://image.api.playstation.com/vulcan/ap/rnd/202211/0711/kh4MUIuMmHlktOHar3lVl6rY.png",
+        },
+        {
+            id: 102,
+            juegoId: 2,
+            usuario:"Relajao Relajao",
+            foto: "https://api.dicebear.com/9.x/avataaars/svg?seed=Relajao",
+            titulo: "Cyberpunk 2077",
+            contenido: "Cyberpunk 2077 es un videojuego de rol de acción de disparos en primera persona desarrollado por CD Projekt RED y publicado por CD Projekt que se lanzó para Microsoft Windows, PlayStation 4 y Xbox One el 10 de diciembre de 2020, y posteriormente en PlayStation 5, Xbox Series X|S y Google Stadia el 15 de febrero de 2022 y finalmente en Nintendo Switch 2 el 5 de junio de 2025. Siendo una adaptación del juego de rol Cyberpunk 2020 de Mike Pondsmith, se establece cincuenta y siete años más tarde en la ciudad distópica de Night City, California. Es un mundo abierto con seis distritos diferentes, con una perspectiva de primera persona y los jugadores asumen el papel del personaje personalizable llamado V, quienes pueden mejorar sus estadísticas con experiencia. V tiene un arsenal de armas y opciones para combate cuerpo a cuerpo, los cuales pueden ser modificados.\n\nLa historia sigue la lucha de V, un/una mercenario/a de Night City que lidia con las consecuencias de un atraco que salió mal y que resulta en un biochip experimental cibernético que contiene un engrama de la legendaria estrella de rock y terrorista Johnny Silverhand, que amenaza con sobrescribir lentamente la mente de V. A medida que avanza la historia, V y Silverhand deben trabajar juntos para encontrar una manera de separarse y salvar la vida de V.\n\nEl videojuego fue desarrollado por CD Projekt RED, un estudio interno dentro de CD Projekt, usando el motor de videojuegos REDengine 4. Lanzaron una nueva división en Breslavia y se asociaron con Digital Scapes, Nvidia, QLOC y Jali Research para ayudar al desarrollo. El personal excede el número de los que trabajaron en The Witcher 3: Wild Hunt. Durante el evento E3 de 2019, se declaró la fecha oficial del lanzamiento del videojuego, y además se reveló que el actor Keanu Reeves formaría parte del elenco de personajes que tendrían relevancia en el transcurso del videojuego. Estos datos fueron presentados por el mismo actor en la presentación del videojuego en el evento E3, siendo el conductor del evento del videojuego.\n\nCyberpunk 2077 recibió elogios de la crítica por su narrativa, ambientación y gráficos. Sin embargo, algunos de sus elementos de juego recibieron respuestas mixtas, mientras que sus temas y representación de personajes transgénero recibieron algunas críticas. También ha sido muy criticado por los numerosos bugs, particularmente en las versiones de consola que sufrían problemas de rendimiento. En octubre de 2023, el videojuego había vendido más de 25 millones de unidades. Una expansión, Phantom Liberty, tuvo programado su estreno el 26 de septiembre de 2023[2]​ para la PC y en PlayStation 5 y Xbox Series X|S y vendió 3 millones de unidades una semana después de su lanzamiento. Su costo total de desarrollo y comercialización (incluidas actualizaciones y DLC) supera los $436 000 000,[3]​ lo que lo convierte en uno de los videojuegos más caros de desarrollo. Una secuela del videojuego ha sido anunciada y está actualmente en desarrollo.",
+            puntuacion: 5,
+            imagen:
+                "https://image.api.playstation.com/vulcan/ap/rnd/202008/0416/6Bo40lnWU0BhgrOUm7Cb6by3.png",
+        },
+    ];
 
-  return (
-    <div className="home-container" style={{ backgroundColor: "#1b1f27" }}>
-      <div
-        style={{
-          backgroundColor: "#1b1f27",
-          marginBottom: "30px",
-          paddingBottom: "20px",
-          borderBottom: "1px solid #1b1f27",
-        }}
-      >
-        <h2 style={{ fontSize: "2rem", margin: "0 0 10px 0" }}>
-          Bienvenido a tu Diario 🎮
-        </h2>
-        <p style={{ color: "#666" }}>
-          Explora y gestiona tu colección de videojuegos personal.
-        </p>
-      </div>
+    const getReviewScore = (gameId) => {
+        const review = REVIEWS_DATA.find((r) => r.juegoId === gameId);
+        return review ? review.puntuacion : undefined;
+    };
 
-      <div className="card" style={{ marginBottom: "30px" }}>
-        <input
-          type="text"
-          placeholder="Busca un juego para loguear..."
-          style={{
-            padding: "12px 20px",
-            borderRadius: "25px",
-            border: "1px solid #ddd",
-            width: "100%",
-            maxWidth: "500px",
-            fontSize: "1rem",
-          }}
-        />
-      </div>
+    return (
+        <div className="home-container">
+            <h2>Nuevos lanzamientos</h2>
 
-      {loading && (
-        <div style={{ textAlign: "center", padding: "40px" }}>
-          <p>⏳ Cargando biblioteca...</p>
-        </div>
-      )}
-
-      {error && (
-        <div
-          style={{
-            backgroundColor: "#1b1f27",
-            color: "#b91c1c",
-            padding: "15px",
-            borderRadius: "10px",
-            margin: "20px 0",
-            textAlign: "center",
-            border: "1px solid #fca5a5",
-          }}
-        >
-          <p>⚠️ {error}</p>
-        </div>
-      )}
-
-      {!loading && !error && (
-        <div
-          style={{
-            backgroundColor: "#1b1f27",
-            display: "flex",
-            gap: "20px",
-            justifyContent: "center",
-            flexWrap: "wrap",
-          }}
-        >
-          {juegos.length === 0 ? (
             <div
-              style={{
-                textAlign: "center",
-                padding: "40px",
-                color: "#888",
-                width: "100%",
-              }}
-            >
-              <p>📭 No hay juegos disponibles.</p>
-              <small>Agrega algunos desde el backend para empezar.</small>
-            </div>
-          ) : (
-            juegos.map((juego) => (
-              <div
-                key={juego.id_juego}
+                className="games-row"
                 style={{
-                  backgroundColor: "#1b1f27",
-                  padding: "15px",
-                  borderRadius: "12px",
-                  border: "1px solid #e5e7eb",
-                  width: "200px",
-                  textAlign: "center",
-                  boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
-                  transition: "transform 0.2s",
+                    display: "flex",
+                    gap: "20px",
+                    alignItems: "flex-start",
+                    overflowX: "auto",
+                    overflowY: "hidden",
+                    padding: "10px 0",
+                    WebkitOverflowScrolling: "touch",
+                    justifyContent: "left",
+                    scrollSnapType: "x mandatory",
                 }}
-              >
-                {juego.portada ? (
-                  <img
-                    src={juego.portada}
-                    alt={juego.titulo}
-                    style={{
-                      width: "100%",
-                      aspectRatio: "3/4",
-                      objectFit: "cover",
-                      borderRadius: "8px",
-                      marginBottom: "10px",
-                    }}
-                    onError={(e) => {
-                      e.target.style.display = "none";
-                    }}
-                  />
-                ) : (
-                  <div
-                    style={{
-                      height: "200px",
-                      backgroundColor: "#1b1f27",
-                      borderRadius: "8px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      marginBottom: "10px",
-                      fontSize: "40px",
-                    }}
-                  >
-                    🎮
-                  </div>
-                )}
-                <h4
-                  style={{
-                    margin: "10px 0",
-                    fontSize: "0.95rem",
-                    color: "#111",
-                  }}
-                >
-                  {juego.titulo}
-                </h4>
-                {juego.plataformas && (
-                  <span
-                    style={{
-                      display: "inline-block",
-                      backgroundColor: "#1b1f27",
-                      padding: "2px 8px",
-                      borderRadius: "10px",
-                      fontSize: "0.7rem",
-                      color: "#555",
-                    }}
-                  >
-                    {juego.plataformas.split(", ").slice(0, 1).join("")}
-                  </span>
-                )}
-              </div>
-            ))
-          )}
-        </div>
-      )}
+            >{JUEGOS_DATA.map((juego) => (
+                <div key={juego.id} style={{ flex: "0 0 auto", scrollSnapAlign: "start" }}>
+                    <GameLibraryCard
+                        key={juego.id}
+                        nombre={juego.nombre}
+                        portada={juego.imagen}
+                    />
+                </div>
+            ))}
+            </div>
 
-      <div
-        className="card"
-        style={{
-          marginTop: "60px",
-          textAlign: "center",
-          padding: "20px",
-          backgroundColor: "#1b1f27",
-          borderRadius: "10px",
-        }}
-      >
-        <button
-          onClick={() => setLikes((likes) => likes + 1)}
-          style={{
-            background: "#ef4444",
-            color: "white",
-            border: "none",
-            padding: "10px 20px",
-            borderRadius: "20px",
-            cursor: "pointer",
-            fontWeight: "bold",
-          }}
-        >
-          ❤️ Me gusta el proyecto ({likes})
-        </button>
-      </div>
-
-      <footer
-        style={{
-          marginTop: "30px",
-          opacity: 0.6,
-          textAlign: "center",
-          fontSize: "0.8rem",
-        }}
-      >
-        TFG - Equipo GameBoxd - 2025
-      </footer>
-    </div>
-  );
+            <h2>Reseñas destacadas</h2>
+            <div className="reviews-grid" style={{ maxWidth: "800px", margin: "0 auto", padding: "0 20px" }}>
+                {REVIEWS_DATA.map((review) => (
+                    <ReviewCard
+                        key={review.id}
+                        titulo={review.titulo}
+                        contenido={review.contenido}
+                        puntuacion={review.puntuacion}
+                        imagen={review.imagen}
+                        usuario={review.usuario}
+                        avatar={review.avatar}
+                    />
+                ))}
+            </div>
+        </div >
+    );
 }
-
 export default Home;
