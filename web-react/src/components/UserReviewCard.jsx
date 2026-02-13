@@ -69,7 +69,9 @@ const UserReviewCard = ({ titulo, contenido, puntuacion, imagen }) => {
           {titulo}
         </span>
 
-        <div><StarRating nota={puntuacion} size="1rem" /></div>
+        {puntuacion !== null && puntuacion !== undefined && (
+          <div><StarRating nota={puntuacion / 2} size="1rem" /></div>
+        )}
 
         <span
           style={{

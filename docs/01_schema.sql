@@ -1,84 +1,67 @@
 -- ============================================
--- ESQUEMA DE BASE DE DATOS - GameBoxd
--- Aplicación tipo Letterboxd para videojuegos
+-- ESQUEMA DE BASE DE DATOS - Memory Card
+-- VERSIÓN PARA phpMyAdmin
+-- Ejecuta este script en la pestaña SQL de phpMyAdmin
 -- ============================================
-
--- Crear la base de datos (descomenta si necesitas crearla)
--- CREATE DATABASE gameboxd CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
--- USE gameboxd;
 
 -- ============================================
 -- TABLAS PRINCIPALES
 -- ============================================
 
 -- Tabla: USUARIO
-CREATE TABLE usuario (
+CREATE TABLE IF NOT EXISTS usuario (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL UNIQUE,
     correo VARCHAR(255) NOT NULL UNIQUE,
-    contraseña VARCHAR(255) NOT NULL, -- Debería estar hasheada (bcrypt, argon2, etc.)
+    contraseña VARCHAR(255) NOT NULL,
     fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
-    avatar VARCHAR(500) DEFAULT NULL, -- URL de la imagen del avatar
+    avatar VARCHAR(500) DEFAULT NULL,
     INDEX idx_correo (correo),
     INDEX idx_nombre (nombre)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Tabla: JUEGO
-CREATE TABLE juego (
+CREATE TABLE IF NOT EXISTS juego (
     id_juego INT AUTO_INCREMENT PRIMARY KEY,
     titulo VARCHAR(255) NOT NULL,
     fecha_lanzamiento DATE DEFAULT NULL,
-    descripcion TEXT DEFAULT NULL,
-    portada VARCHAR(500) DEFAULT NULL, -- URL de la imagen de portada
+    descripcion TEXT,
+    portada VARCHAR(500) DEFAULT NULL,
     INDEX idx_titulo (titulo),
-    INDEX idx_fecha_lanzamiento (fecha_lanzamiento)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Tabla: LISTA
-CREATE TABLE lista (
-    id_lista INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255) NOT NULL,
-    descripcion TEXT DEFAULT NULL,
-    fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
-    publica BOOLEAN DEFAULT TRUE, -- TRUE = pública, FALSE = privada
-    id_usuario INT NOT NULL, -- Usuario que crea la lista
-    FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE,
-    INDEX idx_id_usuario (id_usuario),
-    INDEX idx_publica (publica)
+    INDEX idx_fecha (fecha_lanzamiento)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Tabla: PLATAFORMA
-CREATE TABLE plataforma (
-    nombre VARCHAR(100) PRIMARY KEY -- Ej: "PlayStation 5", "Xbox Series X", "PC", "Nintendo Switch"
+CREATE TABLE IF NOT EXISTS plataforma (
+    nombre VARCHAR(100) PRIMARY KEY
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Tabla: GENERO
-CREATE TABLE genero (
-    nombre VARCHAR(100) PRIMARY KEY -- Ej: "Acción", "Aventura", "RPG", "Estrategia"
+CREATE TABLE IF NOT EXISTS genero (
+    nombre VARCHAR(100) PRIMARY KEY
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Tabla: DESARROLLADORA
-CREATE TABLE desarrolladora (
-    nombre VARCHAR(255) PRIMARY KEY -- Ej: "FromSoftware", "Nintendo", "CD Projekt Red"
+CREATE TABLE IF NOT EXISTS desarrolladora (
+    nombre VARCHAR(255) PRIMARY KEY
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Tabla: RESEÑA
-CREATE TABLE reseña (
+CREATE TABLE IF NOT EXISTS reseña (
     id_reseña INT AUTO_INCREMENT PRIMARY KEY,
     texto TEXT NOT NULL,
-    nota DECIMAL(3,1) DEFAULT NULL, -- Nota de 0.0 a 10.0 (o NULL si no hay nota)
+    nota DECIMAL(3,1) DEFAULT NULL,
     fecha_publicacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     spoilers BOOLEAN DEFAULT FALSE,
     likes INT DEFAULT 0,
-    id_usuario INT NOT NULL, -- Usuario que escribe la reseña
-    id_juego INT NOT NULL, -- Juego sobre el que se escribe
+    id_usuario INT NOT NULL,
+    id_juego INT NOT NULL,
     FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE,
     FOREIGN KEY (id_juego) REFERENCES juego(id_juego) ON DELETE CASCADE,
     INDEX idx_id_usuario (id_usuario),
     INDEX idx_id_juego (id_juego),
     INDEX idx_fecha_publicacion (fecha_publicacion),
     INDEX idx_nota (nota),
-    -- Un usuario solo puede escribir una reseña por juego
     UNIQUE KEY unique_usuario_juego (id_usuario, id_juego)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -87,9 +70,7 @@ CREATE TABLE reseña (
 -- ============================================
 
 -- Relación: Guarda (Usuario N:M Juego)
--- Representa los juegos que un usuario tiene guardados/seguidos
--- Incluye estado (jugando, completado, pendiente, etc.) y horas jugadas
-CREATE TABLE guarda (
+CREATE TABLE IF NOT EXISTS guarda (
     id_usuario INT NOT NULL,
     id_juego INT NOT NULL,
     estado ENUM('pendiente', 'jugando', 'completado', 'abandonado', 'en_pausa') DEFAULT 'pendiente',
@@ -103,21 +84,18 @@ CREATE TABLE guarda (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Relación: Contiene (Lista N:M Juego)
--- Representa los juegos que están en una lista
-CREATE TABLE contiene (
+CREATE TABLE IF NOT EXISTS contiene (
     id_lista INT NOT NULL,
     id_juego INT NOT NULL,
+    orden INT DEFAULT 0,
     fecha_agregado DATETIME DEFAULT CURRENT_TIMESTAMP,
-    orden INT DEFAULT 0, -- Para ordenar los juegos en la lista
     PRIMARY KEY (id_lista, id_juego),
     FOREIGN KEY (id_lista) REFERENCES lista(id_lista) ON DELETE CASCADE,
-    FOREIGN KEY (id_juego) REFERENCES juego(id_juego) ON DELETE CASCADE,
-    INDEX idx_orden (orden)
+    FOREIGN KEY (id_juego) REFERENCES juego(id_juego) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Relación: Lanza (Juego N:M Plataforma)
--- Representa en qué plataformas está disponible un juego
-CREATE TABLE lanza (
+CREATE TABLE IF NOT EXISTS lanza (
     id_juego INT NOT NULL,
     nombre_plataforma VARCHAR(100) NOT NULL,
     PRIMARY KEY (id_juego, nombre_plataforma),
@@ -126,8 +104,7 @@ CREATE TABLE lanza (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Relación: Pertenece (Juego N:M Genero)
--- Representa los géneros de un juego
-CREATE TABLE pertenece (
+CREATE TABLE IF NOT EXISTS pertenece (
     id_juego INT NOT NULL,
     nombre_genero VARCHAR(100) NOT NULL,
     PRIMARY KEY (id_juego, nombre_genero),
@@ -136,8 +113,7 @@ CREATE TABLE pertenece (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Relación: Desarrolla (Juego N:M Desarrolladora)
--- Representa qué desarrolladora(s) crearon un juego
-CREATE TABLE desarrolla (
+CREATE TABLE IF NOT EXISTS desarrolla (
     id_juego INT NOT NULL,
     nombre_desarrolladora VARCHAR(255) NOT NULL,
     PRIMARY KEY (id_juego, nombre_desarrolladora),
@@ -146,55 +122,30 @@ CREATE TABLE desarrolla (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Relación: Sigue (Usuario N:M Usuario)
--- Representa que un usuario sigue a otro usuario (auto-relación)
-CREATE TABLE sigue (
-    id_usuario_seguidor INT NOT NULL, -- Usuario que sigue
-    id_usuario_seguido INT NOT NULL,  -- Usuario que es seguido
+CREATE TABLE IF NOT EXISTS sigue (
+    id_usuario_seguidor INT NOT NULL,
+    id_usuario_seguido INT NOT NULL,
     fecha_seguimiento DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id_usuario_seguidor, id_usuario_seguido),
     FOREIGN KEY (id_usuario_seguidor) REFERENCES usuario(id_usuario) ON DELETE CASCADE,
     FOREIGN KEY (id_usuario_seguido) REFERENCES usuario(id_usuario) ON DELETE CASCADE,
-    -- Un usuario no puede seguirse a sí mismo
     CHECK (id_usuario_seguidor != id_usuario_seguido)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ============================================
--- DATOS DE EJEMPLO (OPCIONAL)
--- ============================================
-
--- Insertar algunas plataformas de ejemplo
-INSERT INTO plataforma (nombre) VALUES
-('PC'),
-('PlayStation 5'),
-('Xbox Series X'),
-('Nintendo Switch'),
-('PlayStation 4'),
-('Xbox One');
-
--- Insertar algunos géneros de ejemplo
-INSERT INTO genero (nombre) VALUES
-('Acción'),
-('Aventura'),
-('RPG'),
-('Estrategia'),
-('Shooter'),
-('Plataformas'),
-('Puzzle'),
-('Simulación'),
-('Deportes'),
-('Carreras');
-
--- Insertar algunas desarrolladoras de ejemplo
-INSERT INTO desarrolladora (nombre) VALUES
-('FromSoftware'),
-('Nintendo'),
-('CD Projekt Red'),
-('Rockstar Games'),
-('Valve'),
-('Bethesda Game Studios');
+-- Tabla: LISTA
+CREATE TABLE IF NOT EXISTS lista (
+    id_lista INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    descripcion TEXT,
+    fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+    publica BOOLEAN DEFAULT TRUE,
+    id_usuario INT NOT NULL,
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE,
+    INDEX idx_id_usuario (id_usuario)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ============================================
--- VISTAS ÚTILES (OPCIONAL)
+-- VISTAS ÚTILES
 -- ============================================
 
 -- Vista: Juegos con información completa
@@ -239,16 +190,3 @@ FROM reseña r
 INNER JOIN usuario u ON r.id_usuario = u.id_usuario
 INNER JOIN juego j ON r.id_juego = j.id_juego
 ORDER BY r.fecha_publicacion DESC;
-
--- ============================================
--- ÍNDICES ADICIONALES PARA OPTIMIZACIÓN
--- ============================================
-
--- Índices para búsquedas frecuentes
-CREATE INDEX idx_guarda_estado ON guarda(estado);
-CREATE INDEX idx_reseña_likes ON reseña(likes DESC);
-CREATE INDEX idx_lista_fecha ON lista(fecha_creacion DESC);
-
--- ============================================
--- FIN DEL ESQUEMA
--- ============================================

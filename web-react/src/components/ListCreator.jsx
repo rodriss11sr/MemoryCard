@@ -13,16 +13,42 @@ function ListCreator({ onClose, autor }) {
         }
     };
 
-    const handleCrear = () => {
+    const handleCrear = async () => {
         if (nombre.trim() === "") {
             alert("El nombre de la lista no puede estar vacío.");
             return;
         }
-        console.log("Lista creada:", { nombre, autor, juegos });
-        alert(`Lista "${nombre}" creada por ${autor} con ${juegos.length} juegos.`);
-        setNombre("");
-        setJuegos([]);
-        onClose();
+
+        const user = JSON.parse(localStorage.getItem("user") || "null");
+        if (!user) {
+            alert("Debes estar logeado");
+            return;
+        }
+
+        try {
+            // Crear la lista
+            const res = await fetch("http://localhost:8000/api/create_lista.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    id_usuario: user.id,
+                    nombre: nombre,
+                    descripcion: "",
+                    publica: true,
+                }),
+            });
+
+            const data = await res.json();
+            if (data.ok) {
+                setNombre("");
+                setJuegos([]);
+                onClose(); // Esto recargará los datos en Profile.jsx
+            } else {
+                alert(data.message || "Error al crear la lista");
+            }
+        } catch (error) {
+            alert("Error al crear la lista");
+        }
     };
 
     return (

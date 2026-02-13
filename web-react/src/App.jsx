@@ -1,5 +1,5 @@
 
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import AppLayout from "./components/AppLayout.jsx";
 import LogIn from "./pages/LogIn.jsx";
 import SignIn from "./pages/SignIn.jsx";
@@ -7,9 +7,19 @@ import Password from "./pages/Password.jsx";
 import Home from "./pages/Home.jsx";
 import Profile from "./pages/Profile.jsx";
 import Game from "./pages/Game.jsx";
+import Games from "./pages/Games.jsx";
 import Reviews from "./pages/Reviews.jsx";
 import Friends from "./pages/Friends.jsx";
 import Whishlist from "./pages/Whishlist.jsx";
+import ListDetail from "./pages/ListDetail.jsx";
+
+function RequireAuth({ children }) {
+  const isAuthenticated = !!localStorage.getItem("user");
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+  return children;
+}
 
 function App() {
   return (
@@ -25,56 +35,103 @@ function App() {
         <Route
           path="/"
           element={
-            <AppLayout>
-              <Home />
-            </AppLayout>
+            <RequireAuth>
+              <AppLayout>
+                <Home />
+              </AppLayout>
+            </RequireAuth>
           }
         />
         {/*Perfil del usuario (con header y sidebar)*/}
         <Route
           path="/profile"
           element={
-            <AppLayout>
-              <Profile />
-            </AppLayout>
+            <RequireAuth>
+              <AppLayout>
+                <Profile />
+              </AppLayout>
+            </RequireAuth>
           }
         />
-        {/*Juegos (con header y sidebar)*/}
+        {/*Perfil de otro usuario (con header y sidebar)*/}
         <Route
-          path="/game"
+          path="/user/:id"
           element={
-            <AppLayout>
-              <Game />
-            </AppLayout>
+            <RequireAuth>
+              <AppLayout>
+                <Profile />
+              </AppLayout>
+            </RequireAuth>
+          }
+        />
+        {/*Listado de juegos (con header y sidebar)*/}
+        <Route
+          path="/games"
+          element={
+            <RequireAuth>
+              <AppLayout>
+                <Games />
+              </AppLayout>
+            </RequireAuth>
+          }
+        />
+        {/*Detalle de juego (con header y sidebar)*/}
+        <Route
+          path="/game/:id"
+          element={
+            <RequireAuth>
+              <AppLayout>
+                <Game />
+              </AppLayout>
+            </RequireAuth>
           }
         />
         {/*Reviews (con header y sidebar)*/}
         <Route
           path="/reviews"
           element={
-            <AppLayout>
-              <Reviews />
-            </AppLayout>
+            <RequireAuth>
+              <AppLayout>
+                <Reviews />
+              </AppLayout>
+            </RequireAuth>
           }
         />
         {/*Amigos (con header y sidebar)*/}
         <Route
           path="/friends"
           element={
-            <AppLayout>
-              <Friends />
-            </AppLayout>
+            <RequireAuth>
+              <AppLayout>
+                <Friends />
+              </AppLayout>
+            </RequireAuth>
           }
         />
         {/*Whishlist (con header y sidebar)*/}
         <Route
           path="/whishlist"
           element={
-            <AppLayout>
-              <Whishlist />
-            </AppLayout>
+            <RequireAuth>
+              <AppLayout>
+                <Whishlist />
+              </AppLayout>
+            </RequireAuth>
           }
         />
+        {/*Detalle de lista (con header y sidebar)*/}
+        <Route
+          path="/list/:id"
+          element={
+            <RequireAuth>
+              <AppLayout>
+                <ListDetail />
+              </AppLayout>
+            </RequireAuth>
+          }
+        />
+        {/*Cualquier otra ruta redirige al login*/}
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </Router>
   );

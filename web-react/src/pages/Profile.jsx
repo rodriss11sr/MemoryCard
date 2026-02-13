@@ -1,168 +1,219 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import FriendCard from "../components/FriendCard.jsx";
 import UserReviewCard from "../components/UserReviewCard.jsx";
 import GameLibraryCard from "../components/GameLibraryCard.jsx";
 import ProfileListCard from "../components/ProfileListCard.jsx";
 import ListCreator from "../components/ListCreator.jsx";
 
-
-//TODO: Obtener datos desde el backend y utilizarlos
 function Perfil() {
+  const navigate = useNavigate();
+  const { id } = useParams(); // ID del usuario a ver (si viene de /user/:id)
   const [activeTab, setActiveTab] = useState("perfil");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const LISTAS_DATA = [
-    {
-      id: 1,
-      nombre: "Saga Assassin's Creed",
-      autor: "Gordon Freeman",
-      juegos: [
-        {
-          id: 50,
-          nombre: "Assassin's Creed",
-          imagen:
-            "https://images.igdb.com/igdb/image/upload/t_cover_big/co1rrw.webp",
-        },
-        {
-          id: 51,
-          nombre: "Assassin's Creed: Bloodlines",
-          imagen:
-            "https://images.igdb.com/igdb/image/upload/t_cover_big/co1xia.webp",
-        },
-        {
-          id: 52,
-          nombre: "Assassin's Creed II",
-          imagen:
-            "https://images.igdb.com/igdb/image/upload/t_cover_big/co1rcf.webp",
-        },
-        {
-          id: 53,
-          nombre: "Assassin's Creed Brotherhood",
-          imagen:
-            "https://images.igdb.com/igdb/image/upload/t_cover_big/co6t4d.webp",
-        },
-        {
-          id: 54,
-          nombre: "Assassin's Creed Revelations",
-          imagen:
-            "https://images.igdb.com/igdb/image/upload/t_cover_big/co1xih.webp",
-        },
-        {
-          id: 55,
-          nombre: "Assassin's Creed III",
-          imagen:
-            "https://images.igdb.com/igdb/image/upload/t_cover_big/co1xii.webp",
-        },
-        {
-          id: 56,
-          nombre: "Assassin's Creed IV Black Flag",
-          imagen:
-            "https://images.igdb.com/igdb/image/upload/t_cover_big/co4qfn.webp",
-        },
-        {
-          id: 57,
-          nombre: "Assassin's Creed Unity",
-          imagen:
-            "https://images.igdb.com/igdb/image/upload/t_cover_big/co1xiq.webp",
-        },
-        {
-          id: 58,
-          nombre: "Assassin's Creed Rogue",
-          imagen:
-            "https://images.igdb.com/igdb/image/upload/t_cover_big/co1xir.webp",
-        },
-        {
-          id: 59,
-          nombre: "Assassin's Creed Mirage",
-          imagen:
-            "https://images.igdb.com/igdb/image/upload/t_cover_big/co57sj.webp",
-        },
-      ],
-    },
-  ];
+  // Datos del usuario
+  const [user, setUser] = useState(null);
+  const [stats, setStats] = useState(null);
+  const [juegos, setJuegos] = useState([]);
+  const [wishlist, setWishlist] = useState([]);
+  const [reviews, setReviews] = useState([]);
+  const [listas, setListas] = useState([]);
+  const [amigos, setAmigos] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
 
-  const WISHLIST_DATA = [
-    {
-      id: 90,
-      nombre: "MySims Kingdom",
-      imagen:
-        "https://images.igdb.com/igdb/image/upload/t_original/co9jux.webp",
-    },
-    {
-      id: 92,
-      nombre: "Code Vein II",
-      imagen:
-        "https://images.igdb.com/igdb/image/upload/t_cover_big/co9xhi.webp",
-    },
-  ];
-
-  const JUEGOS_DATA = [
-    {
-      id: 1,
-      nombre: "The Witcher 3: Wild Hunt",
-      imagen:
-        "https://image.api.playstation.com/vulcan/ap/rnd/202211/0711/qezXTVn1ExqBjVjR5Ipm97IK.png",
-    },
-    {
-      id: 2,
-      nombre: "Cyberpunk 2077",
-      imagen:
-        "https://image.api.playstation.com/vulcan/ap/rnd/202008/0416/6Bo40lnWU0BhgrOUm7Cb6by3.png",
-    },
-    {
-      id: 3,
-      nombre: "Pokémon Zafiro",
-      imagen:
-        "https://images.igdb.com/igdb/image/upload/t_cover_big/co1zhp.webp",
-    },
-    {
-      id: 4,
-      nombre: "Harry Potter y la Piedra Filosofal",
-      imagen:
-        "https://images.igdb.com/igdb/image/upload/t_cover_big/co3jh0.webp",
-    },
-    {
-      id: 5,
-      nombre: "Ronaldinho Soccer 64",
-      imagen: "https://tse3.mm.bing.net/th/id/OIP.1XS4wUMa1Gm1jHWX4h6hgAHaFZ?rs=1&pid=ImgDetMain&o=7&rm=3",
+  const loadProfileData = async () => {
+    // Si hay un ID en la URL, es el perfil de otro usuario
+    // Si no, es el perfil propio
+    let idUsuario;
+    
+    if (id) {
+      // Perfil de otro usuario
+      idUsuario = parseInt(id);
+    } else {
+      // Perfil propio
+      const userStr = localStorage.getItem("user");
+      if (!userStr) {
+        navigate("/login");
+        return;
+      }
+      const userData = JSON.parse(userStr);
+      idUsuario = userData.id;
     }
-  ];
 
-  const AMIGOS_DATA = [
-    { id: 1, nombre: "John Bloodborne", juegos: 124 },
-    { id: 2, nombre: "Relajao Relajao", juegos: 36 },
-  ];
+    try {
+      const [
+        perfilRes,
+        juegosRes,
+        wishlistRes,
+        reviewsRes,
+        listasRes,
+        amigosRes,
+      ] = await Promise.all([
+        fetch(`http://localhost:8000/api/get_perfil.php?id_usuario=${idUsuario}`),
+        fetch(`http://localhost:8000/api/get_juegos_usuario.php?id_usuario=${idUsuario}`),
+        fetch(`http://localhost:8000/api/get_wishlist.php?id_usuario=${idUsuario}`),
+        fetch(`http://localhost:8000/api/get_resenas_usuario.php?id_usuario=${idUsuario}`),
+        fetch(`http://localhost:8000/api/get_listas_usuario.php?id_usuario=${idUsuario}`),
+        fetch(`http://localhost:8000/api/get_amigos.php?id_usuario=${idUsuario}&tipo=siguiendo`),
+      ]);
 
-  const REVIEWS_DATA = [
-    {
-      id: 101,
-      juegoId: 1,
-      titulo: "The Witcher 3: Wild Hunt",
-      contenido: "Obra maestra absoluta.",
-      puntuacion: 4.5,
-      imagen:
-        "https://image.api.playstation.com/vulcan/ap/rnd/202211/0711/kh4MUIuMmHlktOHar3lVl6rY.png",
-    },
-    {
-      id: 102,
-      juegoId: 2,
-      titulo: "Cyberpunk 2077",
-      contenido: "Ha mejorado mucho con los parches.",
-      puntuacion: 5,
-      imagen:
-        "https://image.api.playstation.com/vulcan/ap/rnd/202008/0416/6Bo40lnWU0BhgrOUm7Cb6by3.png",
-    },
-  ];
+      const perfilData = await perfilRes.json();
+      const juegosData = await juegosRes.json();
+      const wishlistData = await wishlistRes.json();
+      const reviewsData = await reviewsRes.json();
+      const listasData = await listasRes.json();
+      const amigosData = await amigosRes.json();
+
+      if (perfilData.ok) {
+        setUser(perfilData.user);
+        setStats(perfilData.stats);
+      }
+
+      if (Array.isArray(juegosData)) {
+        setJuegos(juegosData.map(j => ({
+          ...j,
+          titulo: j.nombre,
+          portada: j.imagen
+        })));
+      }
+      if (Array.isArray(wishlistData)) {
+        setWishlist(wishlistData.map(j => ({
+          ...j,
+          titulo: j.nombre,
+          portada: j.imagen
+        })));
+      }
+      if (Array.isArray(reviewsData)) setReviews(reviewsData);
+      if (Array.isArray(listasData)) setListas(listasData);
+      if (Array.isArray(amigosData)) setAmigos(amigosData);
+    } catch (error) {
+      console.error("Error cargando datos del perfil:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadProfileData();
+  }, [navigate, id]); // Recargar cuando cambie el ID de usuario
+
+  // Buscar usuarios
+  const handleSearchUsers = async () => {
+    if (!searchQuery.trim()) return;
+
+    setIsSearching(true);
+    try {
+      const userStr = localStorage.getItem("user");
+      const userData = userStr ? JSON.parse(userStr) : null;
+      const idUsuarioActual = userData ? userData.id : 0;
+
+      const res = await fetch(
+        `http://localhost:8000/api/buscar_usuarios.php?q=${encodeURIComponent(searchQuery)}&id_usuario_actual=${idUsuarioActual}`
+      );
+      const data = await res.json();
+
+      if (data.ok) {
+        setSearchResults(data.usuarios);
+      } else {
+        console.error("Error buscando usuarios:", data.message);
+        setSearchResults([]);
+      }
+    } catch (error) {
+      console.error("Error buscando usuarios:", error);
+      setSearchResults([]);
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  // Seguir/Dejar de seguir usuario
+  const handleFollowUser = async (idUsuarioSeguido, yaSigues) => {
+    const userStr = localStorage.getItem("user");
+    if (!userStr) {
+      alert("Debes estar logeado para seguir usuarios");
+      return;
+    }
+
+    const userData = JSON.parse(userStr);
+    const idUsuarioSeguidor = userData?.id;
+
+    if (!idUsuarioSeguidor || !idUsuarioSeguido) {
+      alert("Error: IDs de usuario no válidos");
+      console.error("ID seguidor:", idUsuarioSeguidor, "ID seguido:", idUsuarioSeguido);
+      return;
+    }
+
+    if (idUsuarioSeguidor === idUsuarioSeguido) {
+      alert("No puedes seguirte a ti mismo");
+      return;
+    }
+
+    try {
+      const endpoint = yaSigues
+        ? "http://localhost:8000/api/dejar_seguir_usuario.php"
+        : "http://localhost:8000/api/seguir_usuario.php";
+
+      const body = {
+        id_usuario_seguidor: idUsuarioSeguidor,
+        id_usuario_seguido: idUsuarioSeguido,
+      };
+
+      console.log("Enviando:", body);
+
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+
+      const data = await res.json();
+      console.log("Respuesta:", data);
+
+      if (data.ok) {
+        // Actualizar el estado local
+        setSearchResults((prev) =>
+          prev.map((u) =>
+            u.id === idUsuarioSeguido ? { ...u, ya_sigues: !yaSigues } : u
+          )
+        );
+        // Recargar lista de amigos
+        await loadProfileData();
+      } else {
+        alert(data.message || "Error al seguir/dejar de seguir usuario");
+      }
+    } catch (error) {
+      console.error("Error al seguir/dejar de seguir usuario:", error);
+      alert("Error al seguir/dejar de seguir usuario");
+    }
+  };
 
   const getReviewScore = (gameId) => {
-    const review = REVIEWS_DATA.find((r) => r.juegoId === gameId);
+    const review = reviews.find((r) => r.juegoId === gameId);
     return review ? review.puntuacion : undefined;
   };
 
+  if (loading || !user) {
+    return (
+      <div style={{ textAlign: "center", padding: "2rem", color: "#ffffff" }}>
+        <p>Cargando perfil...</p>
+      </div>
+    );
+  }
 
+  // Avatar por defecto si no hay
+  const avatarUrl = user.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.nombre}`;
+
+  // Determinar si es el perfil propio o de otro usuario
+  const userStr = localStorage.getItem("user");
+  const currentUser = userStr ? JSON.parse(userStr) : null;
+  const isOwnProfile = !id || (currentUser && currentUser.id === user.id);
 
   return (
-    <div style={{ paddingBottom: "50px" }} >
+    <div style={{ paddingBottom: "50px" }}>
       <div
         style={{ textAlign: "center", marginBottom: "30px", marginTop: "10px" }}
       >
@@ -187,17 +238,15 @@ function Perfil() {
               overflow: "hidden",
             }}
           >
-
             <img
-              src="https://api.dicebear.com/7.x/avataaars/svg?seed=Gordon"
+              src={avatarUrl}
               alt="avatar"
               style={{ width: "100%", height: "100%" }}
             />
           </div>
           <div>
-
             <h2 style={{ margin: "0 0 5px 0", fontSize: "1.8rem", color: "white" }}>
-              Gordon Freeman
+              {user.nombre}
             </h2>
             <p
               style={{
@@ -207,7 +256,7 @@ function Perfil() {
                 fontSize: "1.5rem",
               }}
             >
-              Se unió el 14-11-1998
+              Se unió el {user.fecha_creacion}
             </p>
           </div>
           <div>
@@ -219,7 +268,7 @@ function Perfil() {
                 fontSize: "0.9rem",
               }}
             >
-
+              {stats?.juegos || 0} juegos
             </p>
             <p
               style={{
@@ -229,7 +278,7 @@ function Perfil() {
                 fontSize: "0.9rem",
               }}
             >
-
+              {stats?.reseñas || 0} reseñas
             </p>
             <p
               style={{
@@ -239,7 +288,7 @@ function Perfil() {
                 fontSize: "0.9rem",
               }}
             >
-              Poner algo para rellenar el espacio
+              {stats?.listas || 0} listas
             </p>
             <p
               style={{
@@ -249,17 +298,7 @@ function Perfil() {
                 fontSize: "0.9rem",
               }}
             >
-              y que no quede tan vacío,
-            </p>
-            <p
-              style={{
-                color: "#9ca3af",
-                margin: 0,
-                fontFamily: "m6x11plus",
-                fontSize: "0.9rem",
-              }}
-            >
-              aunque no se me ocurre nada xd
+              {stats?.siguiendo || 0} siguiendo
             </p>
           </div>
         </aside>
@@ -302,42 +341,57 @@ function Perfil() {
       <div style={{ maxWidth: "800px", margin: "0 auto", padding: "0 20px" }}>
         {activeTab === "perfil" && (
           <div>
-            <h2>Favoritos</h2>
-            <div className="games-grid" style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "20px",
-              justifyContent: "left",
-            }}
+            <h2 style={{ color: "#ffffff" }}>Favoritos</h2>
+            <div
+              className="games-grid"
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: "20px",
+                justifyContent: "left",
+              }}
             >
-              {JUEGOS_DATA.map((juego) => (
-                <GameLibraryCard
+              {juegos.slice(0, 5).map((juego) => (
+                <div
                   key={juego.id}
-                  nombre={juego.nombre}
-                  portada={juego.imagen}
-                />
+                  onClick={() => navigate(`/game/${juego.id}`)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <GameLibraryCard
+                    titulo={juego.titulo || juego.nombre}
+                    portada={juego.portada || juego.imagen}
+                    puntuacion={juego.rating}
+                  />
+                </div>
               ))}
             </div>
-            <h2>Actividad Reciente</h2>
-            <div className="games-grid" style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "20px",
-              justifyContent: "left",
-            }}
+            <h2 style={{ color: "#ffffff", marginTop: "30px" }}>Actividad Reciente</h2>
+            <div
+              className="games-grid"
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: "20px",
+                justifyContent: "left",
+              }}
             >
-              {JUEGOS_DATA.map((juego) => (
-                <GameLibraryCard
+              {juegos.slice(0, 5).map((juego) => (
+                <div
                   key={juego.id}
-                  nombre={juego.nombre}
-                  portada={juego.imagen}
-                  puntuacion={getReviewScore(juego.id)}
-                />
+                  onClick={() => navigate(`/game/${juego.id}`)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <GameLibraryCard
+                    titulo={juego.titulo || juego.nombre}
+                    portada={juego.portada || juego.imagen}
+                    puntuacion={getReviewScore(juego.id)}
+                  />
+                </div>
               ))}
             </div>
           </div>
-
         )}
+
         {activeTab === "juegos" && (
           <div
             style={{
@@ -347,16 +401,22 @@ function Perfil() {
               justifyContent: "center",
             }}
           >
-            {JUEGOS_DATA.map((juego) => (
-              <GameLibraryCard
+            {juegos.map((juego) => (
+              <div
                 key={juego.id}
-                nombre={juego.nombre}
-                portada={juego.imagen}
-                puntuacion={getReviewScore(juego.id)}
-              />
+                onClick={() => navigate(`/game/${juego.id}`)}
+                style={{ cursor: "pointer" }}
+              >
+                <GameLibraryCard
+                  titulo={juego.titulo || juego.nombre}
+                  portada={juego.portada || juego.imagen}
+                  puntuacion={getReviewScore(juego.id)}
+                />
+              </div>
             ))}
           </div>
         )}
+
         {activeTab === "wishlist" && (
           <div
             style={{
@@ -366,109 +426,288 @@ function Perfil() {
               justifyContent: "center",
             }}
           >
-            {WISHLIST_DATA.map((juego) => (
-              <GameLibraryCard
+            {wishlist.map((juego) => (
+              <div
                 key={juego.id}
-                nombre={juego.nombre}
-                portada={juego.imagen}
-                puntuacion={getReviewScore(juego.id)}
-              />
+                onClick={() => navigate(`/game/${juego.id}`)}
+                style={{ cursor: "pointer" }}
+              >
+                <GameLibraryCard
+                  titulo={juego.titulo || juego.nombre}
+                  portada={juego.portada || juego.imagen}
+                  puntuacion={juego.rating}
+                />
+              </div>
             ))}
           </div>
         )}
+
         {activeTab === "reviews" && (
           <div>
-            {REVIEWS_DATA.map((review) => (
-              <UserReviewCard
+            {reviews.map((review) => (
+              <div
                 key={review.id}
-                titulo={review.titulo}
-                contenido={review.contenido}
-                puntuacion={review.puntuacion}
-                imagen={review.imagen}
-              />
+                onClick={() => navigate(`/game/${review.juegoId}`)}
+                style={{ cursor: "pointer" }}
+              >
+                <UserReviewCard
+                  titulo={review.titulo}
+                  contenido={review.contenido}
+                  puntuacion={review.puntuacion}
+                  imagen={review.imagen}
+                />
+              </div>
             ))}
           </div>
         )}
+
         {activeTab === "listas" && (
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-            <div style={{ display: "flex", gap: "20px", justifyContent: "center" }}>
-              <button style={{
-                padding: "10px 20px",
-                background: "#2b303b",
-                border: "1px solid #3e4451",
-                borderRadius: "8px",
-                color: "#ffffff",
-                cursor: "pointer"
-              }}>
-                Buscar lista
-              </button>
-              <button 
-                onClick={() => setIsModalOpen(true)}
-                style={{
-                  padding: "10px 20px",
-                  background: "#2b303b",
-                  border: "1px solid #3e4451",
-                  borderRadius: "8px",
-                  color: "#ffffff",
-                  cursor: "pointer"
-                }}
-              >
-                Crear lista
-              </button>
-            </div>
-            <div style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "20px",
-              justifyContent: "center",
-            }}>
-              {LISTAS_DATA.map((lista) => (
-                <ProfileListCard
+            {isOwnProfile && (
+              <div style={{ display: "flex", gap: "20px", justifyContent: "center" }}>
+                <button
+                  style={{
+                    padding: "10px 20px",
+                    background: "#2b303b",
+                    border: "1px solid #3e4451",
+                    borderRadius: "8px",
+                    color: "#ffffff",
+                    cursor: "pointer",
+                  }}
+                >
+                  Buscar lista
+                </button>
+                <button
+                  onClick={() => setIsModalOpen(true)}
+                  style={{
+                    padding: "10px 20px",
+                    background: "#2b303b",
+                    border: "1px solid #3e4451",
+                    borderRadius: "8px",
+                    color: "#ffffff",
+                    cursor: "pointer",
+                  }}
+                >
+                  Crear lista
+                </button>
+              </div>
+            )}
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: "20px",
+                justifyContent: "center",
+              }}
+            >
+              {listas.map((lista) => (
+                <div
                   key={lista.id}
-                  nombre={lista.nombre}
-                  autor={lista.autor}
-                  juegos={lista.juegos}
-                />
+                  onClick={() => navigate(`/list/${lista.id}`)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <ProfileListCard
+                    nombre={lista.nombre}
+                    autor={lista.autor}
+                    juegos={lista.juegos}
+                  />
+                </div>
               ))}
             </div>
           </div>
         )}
+
         {activeTab === "amigos" && (
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-              gap: "20px",
-            }}
-          >
-            {AMIGOS_DATA.map((amigo) => (
-              <FriendCard
-                key={amigo.id}
-                nombre={amigo.nombre}
-                juegos={amigo.juegos}
-              />
-            ))}
+          <div>
+            {/* Buscador de usuarios - solo en perfil propio */}
+            {isOwnProfile && (
+              <div style={{ marginBottom: "30px", maxWidth: "500px" }}>
+              <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+                <input
+                  type="text"
+                  placeholder="Buscar usuarios..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyPress={async (e) => {
+                    if (e.key === "Enter" && searchQuery.trim()) {
+                      await handleSearchUsers();
+                    }
+                  }}
+                  style={{
+                    flex: 1,
+                    padding: "10px 15px",
+                    background: "#2b303b",
+                    border: "1px solid #3e4451",
+                    borderRadius: "8px",
+                    color: "#ffffff",
+                    fontSize: "1rem",
+                  }}
+                />
+                <button
+                  onClick={handleSearchUsers}
+                  disabled={!searchQuery.trim() || isSearching}
+                  style={{
+                    padding: "10px 20px",
+                    background: searchQuery.trim() && !isSearching ? "#29CDF2" : "#2b303b",
+                    border: "1px solid #3e4451",
+                    borderRadius: "8px",
+                    color: searchQuery.trim() && !isSearching ? "#000000" : "#9ca3af",
+                    cursor: searchQuery.trim() && !isSearching ? "pointer" : "not-allowed",
+                    fontFamily: "upheaval, system-ui",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {isSearching ? "Buscando..." : "Buscar"}
+                </button>
+              </div>
+
+              {/* Resultados de búsqueda */}
+              {searchResults.length > 0 && (
+                <div style={{ marginBottom: "30px" }}>
+                  <h3 style={{ color: "#ffffff", marginBottom: "15px" }}>Resultados de búsqueda</h3>
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+                      gap: "20px",
+                    }}
+                  >
+                    {searchResults.map((usuario) => (
+                      <div
+                        key={usuario.id}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "15px",
+                          backgroundColor: "#2b303b",
+                          padding: "15px 20px",
+                          borderRadius: "12px",
+                          border: "1px solid #3e4451",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <div
+                          style={{ display: "flex", alignItems: "center", gap: "15px", flex: 1, cursor: "pointer" }}
+                          onClick={() => navigate(`/user/${usuario.id}`)}
+                        >
+                          {usuario.avatar ? (
+                            <img
+                              src={usuario.avatar}
+                              alt={usuario.nombre}
+                              style={{
+                                width: "50px",
+                                height: "50px",
+                                borderRadius: "50%",
+                                objectFit: "cover",
+                              }}
+                            />
+                          ) : (
+                            <div
+                              style={{
+                                width: "50px",
+                                height: "50px",
+                                borderRadius: "50%",
+                                backgroundColor: "#3e4451",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                color: "#9ca3af",
+                              }}
+                            >
+                              {usuario.nombre.charAt(0).toUpperCase()}
+                            </div>
+                          )}
+                          <div>
+                            <div style={{ color: "#ffffff", fontWeight: "bold" }}>
+                              {usuario.nombre}
+                            </div>
+                            <div style={{ color: "#9ca3af", fontSize: "0.9rem" }}>
+                              {usuario.juegos} {usuario.juegos === 1 ? "juego" : "juegos"}
+                            </div>
+                          </div>
+                        </div>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleFollowUser(usuario.id, usuario.ya_sigues);
+                          }}
+                          style={{
+                            padding: "8px 16px",
+                            background: usuario.ya_sigues ? "#2b303b" : "#29CDF2",
+                            border: usuario.ya_sigues ? "1px solid #3e4451" : "none",
+                            borderRadius: "8px",
+                            color: usuario.ya_sigues ? "#9ca3af" : "#000000",
+                            cursor: "pointer",
+                            fontFamily: "upheaval, system-ui",
+                            fontWeight: "bold",
+                            fontSize: "0.9rem",
+                          }}
+                        >
+                          {usuario.ya_sigues ? "Siguiendo" : "Seguir"}
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+            )}
+
+            {/* Lista de amigos (usuarios que sigues) */}
+            <h3 style={{ color: "#ffffff", marginBottom: "15px" }}>Usuarios que sigues</h3>
+            {amigos.length === 0 ? (
+              <p style={{ color: "#9ca3af", textAlign: "center", padding: "40px" }}>
+                No sigues a ningún usuario todavía. ¡Busca usuarios para seguir!
+              </p>
+            ) : (
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+                  gap: "20px",
+                }}
+              >
+                {amigos.map((amigo) => (
+                  <FriendCard
+                    key={amigo.id}
+                    id={amigo.id}
+                    nombre={amigo.nombre}
+                    juegos={amigo.juegos}
+                    avatar={amigo.avatar}
+                    onClick={() => navigate(`/user/${amigo.id}`)}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>
 
       {isModalOpen && (
-        <div style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: "rgba(0, 0, 0, 0.6)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          zIndex: 1000,
-        }}>
-          <ListCreator onClose={() => setIsModalOpen(false)} autor="Gordon Freeman" />
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: "rgba(0, 0, 0, 0.6)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000,
+          }}
+        >
+          <ListCreator
+            onClose={() => {
+              setIsModalOpen(false);
+              loadProfileData(); // Recargar datos después de crear lista
+            }}
+            autor={user.nombre}
+          />
         </div>
       )}
-    </div >
+    </div>
   );
 }
 

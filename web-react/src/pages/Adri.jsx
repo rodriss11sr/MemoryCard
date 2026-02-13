@@ -218,7 +218,7 @@ function Adri() {
           fontSize: "0.8rem",
         }}
       >
-        TFG - Equipo GameBoxd - 2025
+        TFG - Equipo Memory Card - 2025
       </footer>
     </div>
   );

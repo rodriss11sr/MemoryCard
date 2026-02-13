@@ -5,12 +5,34 @@ function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  //TODO: Implementar la logica del backend para iniciar sesion
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.log("Logueando con:", email, password);
-    navigate("/");
+    setError("");
+
+    try {
+      const response = await fetch("http://localhost:8000/api/login.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.ok) {
+        setError(data.message || "No se pudo iniciar sesión");
+        return;
+      }
+
+      // Guardar usuario en localStorage para mantener la sesión
+      localStorage.setItem("user", JSON.stringify(data.user));
+      navigate("/");
+    } catch (err) {
+      setError("Error de red al intentar conectar con el servidor");
+    }
   };
 
   // Estilos
@@ -21,6 +43,8 @@ function Login() {
     alignItems: "center", // Centra verticalmente (↕)
     height: "100vh",
     width: "100vw",
+    backgroundColor: "#111827", // fondo oscuro como el resto de la app
+    color: "#ffffff",
   };
   const inputStyle = {
     width: "100%",
@@ -64,6 +88,17 @@ function Login() {
         >
           Nos alegra verte de nuevo!! :)
         </p>
+        {error && (
+          <p
+            style={{
+              color: "#ff6b6b",
+              fontFamily: "m6x11plus",
+              fontSize: "0.9rem",
+            }}
+          >
+            {error}
+          </p>
+        )}
       </div>
 
       <form onSubmit={handleLogin}>
@@ -79,7 +114,7 @@ function Login() {
             Correo Electrónico
           </label>
           <input
-            type="email"
+            type="text"
             placeholder="email@domain.com"
             style={inputStyle}
             value={email}
@@ -124,10 +159,8 @@ function Login() {
             </span>
           </p>
         </div>
-        {/* TODO: Cambiar a "submit" cuando este implementada la logica de inicio de sesion en el backend*/}
         <button
-          type="button"
-          onClick={handleLogin}
+          type="submit"
           style={buttonStyle}
           onMouseOver={(e) => (e.target.style.opacity = "0.9")}
           onMouseOut={(e) => (e.target.style.opacity = "1")}

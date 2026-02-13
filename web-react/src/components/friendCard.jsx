@@ -1,6 +1,6 @@
 
 
-const FriendCard = ({ nombre, juegos }) => {
+const FriendCard = ({ id, nombre, juegos, avatar, onClick }) => {
   const cardStyle = {
     display: "flex",
     alignItems: "center",
@@ -28,6 +28,7 @@ const FriendCard = ({ nombre, juegos }) => {
   return (
     <div
       style={cardStyle}
+      onClick={onClick}
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = "translateY(-2px)";
         e.currentTarget.style.backgroundColor = "#323844";
@@ -39,7 +40,7 @@ const FriendCard = ({ nombre, juegos }) => {
     >
       <div style={avatarContainerStyle}>
         <img
-          src={`https://api.dicebear.com/9.x/avataaars/svg?seed=${nombre}`}
+          src={avatar || `https://api.dicebear.com/9.x/avataaars/svg?seed=${nombre}`}
           alt={nombre}
           style={{ width: "100%", height: "100%", objectFit: "cover" }}
         />
