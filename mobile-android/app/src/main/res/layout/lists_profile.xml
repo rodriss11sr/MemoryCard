@@ -70,7 +70,7 @@
                 android:backgroundTint="#00FFFFFF"
                 android:fontFamily="@font/upheavtt"
                 android:text="wishlist"
-                android:textColor="#29CDF2"
+                android:textColor="#FFFFFF"
                 android:textSize="30sp" />
         </LinearLayout>
 
@@ -97,7 +97,7 @@
                 android:backgroundTint="#00FFFFFF"
                 android:fontFamily="@font/upheavtt"
                 android:text="LISTAS"
-                android:textColor="#FFFFFF"
+                android:textColor="#29CDF2"
                 android:textSize="30sp" />
         </LinearLayout>
 
@@ -114,83 +114,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
-
-    <View
-        android:id="@+id/divider9"
-        android:layout_width="392dp"
-        android:layout_height="1dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="52dp"
-        android:layout_marginEnd="10dp"
-        android:background="#818387"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
-
-    <TextView
-        android:id="@+id/textView22"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="27dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="27dp"
-        android:fontFamily="@font/m6x11plus"
-        android:text="Tienes (nº) juegos en tu wishlist"
-        android:textColor="#A8A8A8"
-        android:textSize="32sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider8" />
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="670dp"
-        android:layout_marginTop="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/divider9">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/game_mhwilds"
-                android:layout_width="111dp"
-                android:layout_height="162dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/game_miniature_shape"
-                android:clipToOutline="true"
-                android:scaleType="centerCrop"
-                android:src="@drawable/mhwilds" />
-
-            <ImageButton
-                android:id="@+id/game_mhworld"
-                android:layout_width="111dp"
-                android:layout_height="162dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/game_miniature_shape"
-                android:clipToOutline="true"
-                android:scaleType="centerCrop"
-                android:src="@drawable/mhworld" />
-
-            <ImageButton
-                android:id="@+id/game_ror2"
-                android:layout_width="111dp"
-                android:layout_height="162dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/game_miniature_shape"
-                android:clipToOutline="true"
-
-                android:scaleType="centerCrop"
-                android:src="@drawable/ror2" />
-
-        </LinearLayout>
-    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

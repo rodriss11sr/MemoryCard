@@ -54,7 +54,7 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/gamesProfile"
+                android:id="@+id/gamesProfileBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#00FFFFFF"
@@ -64,7 +64,7 @@
                 android:textSize="30sp" />
 
             <Button
-                android:id="@+id/wishlistProfile"
+                android:id="@+id/wishlistProfileBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#00FFFFFF"
@@ -81,7 +81,7 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/reviewsProfile"
+                android:id="@+id/reviewsProfileBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#00FFFFFF"
@@ -91,7 +91,7 @@
                 android:textSize="30sp" />
 
             <Button
-                android:id="@+id/listProfile"
+                android:id="@+id/listProfileBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#00FFFFFF"
