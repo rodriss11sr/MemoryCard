@@ -66,6 +66,42 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET /api/juegos/buscar?q=texto - Buscar juegos por título
+router.get('/buscar', async (req, res) => {
+  try {
+    const { q } = req.query;
+
+    if (!q || q.trim().length === 0) {
+      return res.json([]);
+    }
+
+    const [juegos] = await pool.query(`
+      SELECT 
+        j.id_juego,
+        j.titulo,
+        j.portada,
+        j.fecha_lanzamiento,
+        (SELECT AVG(nota) FROM reseña WHERE id_juego = j.id_juego) AS nota_promedio
+      FROM juego j
+      WHERE j.titulo LIKE ?
+      ORDER BY j.titulo ASC
+      LIMIT 10
+    `, [`%${q.trim()}%`]);
+
+    const resultados = juegos.map(row => ({
+      id: row.id_juego,
+      titulo: row.titulo,
+      imagen: row.portada,
+      rating: row.nota_promedio ? Math.round(row.nota_promedio * 10) / 10 : null,
+    }));
+
+    res.json(resultados);
+  } catch (error) {
+    console.error('Error al buscar juegos:', error);
+    res.status(500).json({ error: 'Error al buscar juegos', detalle: error.message });
+  }
+});
+
 // GET /api/juegos/:id - Obtener un juego por ID (formato compatible con PHP)
 router.get('/:id', async (req, res) => {
   try {
