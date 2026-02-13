@@ -78,6 +78,11 @@ const UserReviewCard = ({ titulo, contenido, puntuacion, imagen }) => {
             fontSize: "1.0rem",
             marginTop: "2px",
             fontWeight: "500",
+            display: "-webkit-box",
+            WebkitLineClamp: 3,
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
           }}
         >
           {contenido}

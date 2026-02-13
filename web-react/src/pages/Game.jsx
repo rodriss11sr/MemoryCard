@@ -7,14 +7,14 @@ function Game() {
   // Datos de ejemplo del juego
   const game = {
     id: 50,
-    titulo: "Assassin's Creed",
-    imagen: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1rrw.webp",
+    titulo: "Ronaldinho Soccer 64",
+    imagen: "https://tse3.mm.bing.net/th/id/OIP.1XS4wUMa1Gm1jHWX4h6hgAHaFZ?rs=1&pid=ImgDetMain&o=7&rm=3",
     fecha: "13/11/2007",
     plataforma: ["PS3", "Xbox 360"],
     desarrollador: "Ubisoft",
     genero: "Platform, Adventure, Action",
     descripcion:
-      "Assassin's Creed is a non-linear action-adventure video game, during which the player controls a 12th-century Levantine Assassin named Altaïr Ibn-La'Ahad during the Third Crusade, whose life is experienced through the Animus by his 21st century descendant, Desmond Miles.",
+      "El juego cuenta con la modalidad de partido amistoso llamado Open Game. La modalidad international permite al jugador seleccionar un equipo y participar con él en un modo torneo. La modalidad World League, da la posibilidad de jugar hasta 70 partidos. La modalidad P.K. permite al jugador jugar una tanda de penales. El modo Scenario, permite al jugador jugar partidos con pruebas para que el jugador pueda superar. El modo Training permite al jugador realizar diferentes tipos de entrenamiento. El modo opciones permite al jugador editar el juego incluyendo la creación de personajes. El juego contiene un total de 24 selecciones para la versión japonesa agregando 8 selecciones para la versión americana y europea para un total de 36 selecciones nacionales. El juego cuenta con la modalidad de partido amistoso llamado Open Game. La modalidad international permite al jugador seleccionar un equipo y participar con él en un modo torneo. La modalidad World League, da la posibilidad de jugar hasta 70 partidos. La modalidad P.K. permite al jugador jugar una tanda de penales. El modo Scenario, permite al jugador jugar partidos con pruebas para que el jugador pueda superar. El modo Training permite al jugador realizar diferentes tipos de entrenamiento. El modo opciones permite al jugador editar el juego incluyendo la creación de personajes. ",
     rating: 4.7,
   };
 
@@ -105,20 +105,21 @@ function Game() {
 
       {/* Sección principal del juego */}
       <div
-        style={{ textAlign: "center", marginBottom: "30px", marginTop: "10px" }}
+        style={{ textAlign: "center", marginBottom: "10px", marginTop: "10px" }}
       >
         <aside
           style={{
             display: "flex",
-            alignItems: "center",
+            alignItems: "flex-start",
             justifyContent: "center",
             gap: "15px",
             margin: "0 auto",
             width: "fit-content",
             maxWidth: "1200px",
+            flexWrap: "wrap",
           }}
         >
-          <div className="game-cover">
+          <div className="game-cover"style={{ flex: "0 0 auto" }}>
             <img
               style={{ objectFit: "cover", borderRadius: "12px" }}
               src={game.imagen}
@@ -126,13 +127,13 @@ function Game() {
             />
           </div>
 
-          <div className="game-info">
-            <p className="game-description" style={{ maxWidth: "600px" }}>
+          <div className="game-info"style={{ flex: "1 1 400px", minWidth: "300px" }}>
+            <p className="game-description" style={{ fontSize: "1.2rem", maxWidth: "500px", textAlign: "justify" }}>
               {game.descripcion}
             </p>
           </div>
-          <div className="game-details">
-            <div className="detail-row">
+          <div className="game-details" style={{ fontSize: "1.2rem", maxWidth: "500px", flex: "1 1 400px", minWidth: "300px" }}>
+            <div className="detail-row" >
               <span className="label">Fecha de lanzamiento: </span>
               <span className="value" style={{ color: "#29CDF2" }}>
                 {game.fechaLanzamiento}

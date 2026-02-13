@@ -124,7 +124,8 @@ function Perfil() {
     {
       id: 5,
       nombre: "Ronaldinho Soccer 64",
-      imagen: "https://tse3.mm.bing.net/th/id/OIP.1XS4wUMa1Gm1jHWX4h6hgAHaFZ?rs=1&pid=ImgDetMain&o=7&rm=3",
+      imagen:
+        "https://tse3.mm.bing.net/th/id/OIP.1XS4wUMa1Gm1jHWX4h6hgAHaFZ?rs=1&pid=ImgDetMain&o=7&rm=3",
     }
   ];
 
@@ -402,7 +403,7 @@ function Perfil() {
               }}>
                 Buscar lista
               </button>
-              <button 
+              <button
                 onClick={() => setIsModalOpen(true)}
                 style={{
                   padding: "10px 20px",

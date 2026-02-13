@@ -93,35 +93,40 @@ function ReviewCard({ imagen, usuario, contenido, puntuacion, avatar }) {
             color: "#d1d5db",
             fontSize: "0.9rem",
             margin: "5px 0 0 0",
-            lineHeight: "1.5",
-            fontStyle: "italic",
+            marginTop: "2px",
+            fontWeight: "500",
+            display: "-webkit-box",
+            WebkitLineClamp: 3,
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
           }}
         >
-          {contenido}
-        </p>
+        {contenido}
+      </p>
 
-        {/* Puntuación con estrellas */}
-        <div
+      {/* Puntuación con estrellas */}
+      <div
+        style={{
+          display: "flex",
+          gap: "4px",
+          alignItems: "center",
+          marginTop: "5px",
+        }}
+      >
+        <StarRating nota={puntuacion} size="1.2rem" />
+        <span
           style={{
-            display: "flex",
-            gap: "4px",
-            alignItems: "center",
-            marginTop: "5px",
+            color: "#9ca3af",
+            fontSize: "0.85rem",
+            marginLeft: "5px",
           }}
         >
-          <StarRating nota={puntuacion} size="1.2rem" />
-          <span
-            style={{
-              color: "#9ca3af",
-              fontSize: "0.85rem",
-              marginLeft: "5px",
-            }}
-          >
-            {puntuacion}
-          </span>
-        </div>
+          {puntuacion}
+        </span>
       </div>
     </div>
+    </div >
   );
 }
 

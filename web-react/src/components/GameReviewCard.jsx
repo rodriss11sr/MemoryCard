@@ -45,6 +45,13 @@ const GameReviewCard = ({ foto, usuario, desc, puntuacion, fecha }) => {
     fontSize: "0.85rem",
     color: "#9ca3af",
     margin: "0.5rem 0 0 0",
+    marginTop: "2px",
+    fontWeight: "500",
+    display: "-webkit-box",
+    WebkitLineClamp: 3,
+    WebkitBoxOrient: "vertical",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
   };
 
   const dateStyle = {
