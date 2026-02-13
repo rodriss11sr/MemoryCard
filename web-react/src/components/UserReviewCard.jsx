@@ -1,8 +1,9 @@
-import React from "react";
+import { useState } from "react";
 import StarRating from "./StarRating.jsx";
 
 const UserReviewCard = ({ titulo, contenido, puntuacion, imagen }) => {
 
+  //Estilo de la tarjeta
   const cardStyle = {
     display: "flex",
     backgroundColor: "#2b303b",
@@ -15,6 +16,33 @@ const UserReviewCard = ({ titulo, contenido, puntuacion, imagen }) => {
     alignItems: "center",
   };
 
+  //Contenido de la reseña
+  const [expanded, setExpanded] = useState(false);
+  const toggleExpanded = () => setExpanded((v) => !v);
+  const onKeyDownToggle = (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      toggleExpanded();
+    }
+  };
+  const descStyle = {
+    color: "#d1d5db",
+    fontSize: "0.9rem",
+    margin: "5px 0 0 0",
+    marginTop: "2px",
+    fontWeight: "500",
+    cursor: "pointer",
+    display: "-webkit-box",
+    WebkitLineClamp: expanded ? "unset" : 3,
+    WebkitBoxOrient: "vertical",
+    overflow: expanded ? "visible" : "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: expanded ? "normal" : "initial",
+  };
+
+
+
+  // Estilos para la imagen del juego
   const imageContainerStyle = {
     width: "85px",
     height: "100%",
@@ -69,25 +97,38 @@ const UserReviewCard = ({ titulo, contenido, puntuacion, imagen }) => {
           {titulo}
         </span>
 
-        <div><StarRating nota={puntuacion} size="1rem" /></div>
+        <p
+          role="button"
+          tabIndex={0}
+          aria-expanded={expanded}
+          onClick={toggleExpanded}
+          onKeyDown={onKeyDownToggle}
+          style={descStyle}
+        >
+          {contenido}
+        </p>
+      </div>
 
+      <div
+        style={{
+          display: "flex",
+          gap: "4px",
+          alignItems: "center",
+          marginTop: "5px",
+        }}
+      >
+        <StarRating nota={puntuacion} size="1.2rem" />
         <span
           style={{
             color: "#9ca3af",
-            fontFamily: "m6x11plus, system-ui",
-            fontSize: "1.0rem",
-            marginTop: "2px",
-            fontWeight: "500",
-            display: "-webkit-box",
-            WebkitLineClamp: 3,
-            WebkitBoxOrient: "vertical",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
+            fontSize: "0.85rem",
+            marginLeft: "5px",
           }}
         >
-          {contenido}
+          {puntuacion}
         </span>
       </div>
+
     </div>
   );
 };

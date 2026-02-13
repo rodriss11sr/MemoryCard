@@ -1,6 +1,9 @@
+import { useState } from "react";
 import StarRating from "./StarRating";
 
 const GameReviewCard = ({ foto, usuario, desc, puntuacion, fecha }) => {
+
+  //Estilo de la tarjeta
   const cardStyle = {
     display: "flex",
     alignItems: "center",
@@ -11,6 +14,31 @@ const GameReviewCard = ({ foto, usuario, desc, puntuacion, fecha }) => {
     padding: "1.5rem",
     width: "100%",
     maxWidth: "600px",
+  };
+
+  //Contenido de la reseña
+  const [expanded, setExpanded] = useState(false);
+  const toggleExpanded = () => setExpanded((v) => !v);
+  const onKeyDownToggle = (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      toggleExpanded();
+    }
+  };
+
+  const descStyle = {
+    color: "#d1d5db",
+    fontSize: "0.9rem",
+    margin: "5px 0 0 0",
+    marginTop: "2px",
+    fontWeight: "500",
+    cursor: "pointer",
+    display: "-webkit-box",
+    WebkitLineClamp: expanded ? "unset" : 3,
+    WebkitBoxOrient: "vertical",
+    overflow: expanded ? "visible" : "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: expanded ? "normal" : "initial",
   };
 
   const userImageStyle = {
@@ -41,18 +69,6 @@ const GameReviewCard = ({ foto, usuario, desc, puntuacion, fecha }) => {
     fontFamily: "'Upheaval', system-ui",
   };
 
-  const descriptionStyle = {
-    fontSize: "0.85rem",
-    color: "#9ca3af",
-    margin: "0.5rem 0 0 0",
-    marginTop: "2px",
-    fontWeight: "500",
-    display: "-webkit-box",
-    WebkitLineClamp: 3,
-    WebkitBoxOrient: "vertical",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-  };
 
   const dateStyle = {
     fontSize: "0.85rem",
@@ -77,7 +93,16 @@ const GameReviewCard = ({ foto, usuario, desc, puntuacion, fecha }) => {
           <h3 style={userNameStyle}>{usuario}</h3>
           <StarRating rating={puntuacion} />
         </div>
-        <p style={descriptionStyle}>{desc}</p>
+        <p
+          role="button"
+          tabIndex={0}
+          aria-expanded={expanded}
+          onClick={toggleExpanded}
+          onKeyDown={onKeyDownToggle}
+          style={descStyle}
+        >
+          {desc}
+        </p>
       </div>
       <span style={dateStyle}>{fecha}</span>
     </div>
