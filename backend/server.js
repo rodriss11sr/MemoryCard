@@ -6,6 +6,8 @@ import juegosRoutes from './routes/juegos.routes.js';
 import usuariosRoutes from './routes/usuarios.routes.js';
 import listasRoutes from './routes/listas.routes.js';
 import reseñasRoutes from './routes/reseñas.routes.js';
+import authRoutes from './routes/auth.routes.js';
+import perfilRoutes from './routes/perfil.routes.js';
 
 dotenv.config();
 
@@ -21,18 +23,20 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/juegos', juegosRoutes);
 app.use('/api/usuarios', usuariosRoutes);
 app.use('/api/listas', listasRoutes);
-app.use('/api/reseñas', reseñasRoutes);
+app.use('/api/resenas', reseñasRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/perfil', perfilRoutes);
 
 // Ruta de prueba
 app.get('/', (req, res) => {
   res.json({ 
-    message: '🎮 GameBoxd API está funcionando!',
+    message: '🎮 Memory Card API está funcionando!',
     version: '1.0.0',
     endpoints: {
       juegos: '/api/juegos',
       usuarios: '/api/usuarios',
       listas: '/api/listas',
-      reseñas: '/api/reseñas'
+      reseñas: '/api/resenas'
     }
   });
 });

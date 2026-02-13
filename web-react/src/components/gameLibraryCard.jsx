@@ -34,7 +34,7 @@ const GameLibraryCard = ({ titulo, portada, puntuacion }) => {
       <img src={portada} alt={titulo} style={imageStyle} />
       {puntuacion !== undefined && puntuacion !== null && (
         <div style={{ display: "flex", justifyContent: "center" }}>
-          <StarRating nota={puntuacion} size="0.9rem" />
+          <StarRating nota={puntuacion / 2} size="0.9rem" />
         </div>
       )}
     </div>

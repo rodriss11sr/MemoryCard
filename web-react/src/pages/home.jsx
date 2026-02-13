@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import GameLibraryCard from "../components/GameLibraryCard.jsx";
 import ReviewCard from "../components/ReviewCard.jsx";
+
+const API_BASE_URL = '/api';
 
 function Home() {
     const [juegos, setJuegos] = useState([]);
@@ -12,8 +14,8 @@ function Home() {
         const fetchData = async () => {
             try {
                 const [juegosRes, reviewsRes] = await Promise.all([
-                    fetch("http://localhost:8000/api/get_juegos.php"),
-                    fetch("http://localhost:8000/api/get_resenas.php"),
+                    fetch(`${API_BASE_URL}/juegos`),
+                    fetch(`${API_BASE_URL}/resenas`),
                 ]);
 
                 const juegosData = await juegosRes.json();
@@ -23,7 +25,7 @@ function Home() {
                     setJuegos(juegosData);
                 }
                 if (Array.isArray(reviewsData)) {
-                    // Nos quedamos solo con unas cuantas reseñas destacadas
+                    // Nos quedamos solo con unas cuantas reseÃ±as destacadas
                     setReviews(reviewsData.slice(0, 5));
                 }
             } catch (error) {
@@ -42,9 +44,9 @@ function Home() {
             const [db, mb, ab] = b.fecha.split("/").map(Number);
             const dateA = new Date(aa, ma - 1, da);
             const dateB = new Date(ab, mb - 1, db);
-            return dateB - dateA; // más recientes primero
+            return dateB - dateA; // mÃ¡s recientes primero
         })
-        .slice(0, 10); // por ejemplo, los 10 últimos lanzamientos
+        .slice(0, 10); // por ejemplo, los 10 Ãºltimos lanzamientos
 
     return (
         <div className="home-container">
@@ -80,7 +82,7 @@ function Home() {
                 ))}
             </div>
 
-            <h2 style={{ color: "#ffffff" }}>Reseñas destacadas</h2>
+            <h2 style={{ color: "#ffffff" }}>ReseÃ±as destacadas</h2>
             <div className="reviews-grid" style={{ maxWidth: "800px", margin: "0 auto", padding: "0 20px" }}>
                 {reviews.map((review) => (
                     <ReviewCard
@@ -98,3 +100,4 @@ function Home() {
     );
 }
 export default Home;
+

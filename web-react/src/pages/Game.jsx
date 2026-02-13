@@ -4,6 +4,8 @@ import StarRating from "../components/StarRating";
 import GameLibraryCard from "../components/GameLibraryCard";
 import GameReviewCard from "../components/GameReviewCard";
 
+const API_BASE_URL = '/api';
+
 function Game() {
   const { id } = useParams();
   const [game, setGame] = useState(null);
@@ -18,8 +20,8 @@ function Game() {
     const fetchData = async () => {
       try {
         const [gameRes, reviewsRes] = await Promise.all([
-          fetch(`http://localhost:8000/api/get_juego.php?id=${id}`),
-          fetch(`http://localhost:8000/api/get_resenas.php?id_juego=${id}`),
+          fetch(`${API_BASE_URL}/juegos/${id}`),
+          fetch(`${API_BASE_URL}/resenas?id_juego=${id}`),
         ]);
 
         const gameData = await gameRes.json();
@@ -58,11 +60,10 @@ function Game() {
     }
 
     try {
-      const res = await fetch("http://localhost:8000/api/add_juego_usuario.php", {
+      const res = await fetch(`${API_BASE_URL}/usuarios/${user.id}/juegos`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          id_usuario: user.id,
           id_juego: parseInt(id),
           estado: "pendiente",
         }),
@@ -87,11 +88,10 @@ function Game() {
     }
 
     try {
-      const res = await fetch("http://localhost:8000/api/add_juego_usuario.php", {
+      const res = await fetch(`${API_BASE_URL}/usuarios/${user.id}/juegos`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          id_usuario: user.id,
           id_juego: parseInt(id),
           estado: estado,
         }),
@@ -122,7 +122,7 @@ function Game() {
     }
 
     try {
-      const res = await fetch("http://localhost:8000/api/create_resena.php", {
+      const res = await fetch(`${API_BASE_URL}/resenas`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -143,7 +143,7 @@ function Game() {
         // Esperar un momento para que la base de datos se actualice
         await new Promise(resolve => setTimeout(resolve, 500));
         // Recargar reseñas
-        const reviewsRes = await fetch(`http://localhost:8000/api/get_resenas.php?id_juego=${id}`);
+        const reviewsRes = await fetch(`${API_BASE_URL}/resenas?id_juego=${id}`);
         const reviewsData = await reviewsRes.json();
         console.log("Reseñas recargadas:", reviewsData);
         if (Array.isArray(reviewsData)) {
@@ -492,7 +492,7 @@ function Game() {
           <button
             onClick={async () => {
               try {
-                const reviewsRes = await fetch(`http://localhost:8000/api/get_resenas.php?id_juego=${id}`);
+                const reviewsRes = await fetch(`${API_BASE_URL}/resenas?id_juego=${id}`);
                 const reviewsData = await reviewsRes.json();
                 console.log("Reseñas recargadas manualmente:", reviewsData);
                 if (Array.isArray(reviewsData)) {

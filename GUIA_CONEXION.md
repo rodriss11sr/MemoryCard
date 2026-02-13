@@ -1,11 +1,14 @@
-# 🚀 Guía de Conexión - GameBoxd
+# 🚀 Guía de Conexión - Memory Card
 
 ## ✅ Lo que ya tienes
 
-1. ✅ Base de datos MySQL creada (`gameboxd`)
+1. ✅ Base de datos MySQL creada (`memory_card`)
 2. ✅ Tablas creadas con el esquema SQL
 3. ✅ Backend API creado (Node.js + Express)
-4. ✅ Frontend React actualizado para conectarse al backend
+4. ✅ Frontend React conectado al backend via proxy Vite
+5. ✅ Login y registro de usuarios
+6. ✅ Perfil completo (juegos, reseñas, listas, amigos)
+7. ✅ Wishlist, seguir/dejar de seguir usuarios, crear listas
 
 ## 📋 Pasos para conectar todo
 
@@ -22,12 +25,16 @@ npm install
 ```
 
 3. **Configura las variables de entorno:**
-   - Abre el archivo `backend/.env`
-   - Ajusta la contraseña de MySQL si la tienes:
+   - Crea/edita el archivo `backend/.env`:
      ```
-     DB_PASSWORD=tu_contraseña_aqui
+     DB_HOST=localhost
+     DB_USER=root
+     DB_PASSWORD=
+     DB_NAME=memory_card
+     DB_PORT=3306
+     PORT=3000
      ```
-   - Si no tienes contraseña, déjalo vacío: `DB_PASSWORD=`
+   - Ajusta `DB_PASSWORD` si tienes contraseña en MySQL
 
 4. **Inicia el servidor backend:**
 ```bash
@@ -43,9 +50,9 @@ Deberías ver:
 ### Paso 2: Probar el Backend
 
 Abre tu navegador y ve a:
-- `http://localhost:3000` - Deberías ver información de la API
+- `http://localhost:3000` - Información de la API
 - `http://localhost:3000/api/health` - Estado de la conexión
-- `http://localhost:3000/api/juegos` - Lista de juegos (probablemente vacía)
+- `http://localhost:3000/api/juegos` - Lista de juegos
 
 ### Paso 3: Iniciar el Frontend
 
@@ -56,66 +63,26 @@ Abre tu navegador y ve a:
 cd web-react
 ```
 
-3. **Inicia el servidor de desarrollo:**
+3. **Instala las dependencias:**
+```bash
+npm install
+```
+
+4. **Inicia el servidor de desarrollo:**
 ```bash
 npm run dev
 ```
 
-4. **Abre tu navegador** en la URL que te muestra (normalmente `http://localhost:5173`)
+5. **Abre tu navegador** en la URL que te muestra (normalmente `http://localhost:5173`)
 
-### Paso 4: Agregar algunos datos de prueba
+### Paso 4: Configurar la Base de Datos
 
-Para ver juegos en tu aplicación, necesitas agregar algunos datos. Puedes hacerlo de varias formas:
+Si es la primera vez:
+1. Crea la base de datos `memory_card` en phpMyAdmin
+2. Ejecuta `docs/01_schema.sql` (estructura)
+3. Ejecuta `docs/02_datos_ejemplo.sql` (datos de prueba - opcional)
 
-#### Opción A: Desde phpMyAdmin (SQL)
-
-Ejecuta este SQL en phpMyAdmin:
-
-```sql
--- Insertar algunos juegos de ejemplo
-INSERT INTO juego (titulo, fecha_lanzamiento, descripcion) VALUES
-('Elden Ring', '2022-02-25', 'Un RPG de acción de mundo abierto'),
-('The Legend of Zelda: Breath of the Wild', '2017-03-03', 'Aventura épica en Hyrule'),
-('Hollow Knight', '2017-02-24', 'Metroidvania con hermoso arte');
-
--- Asignar plataformas
-INSERT INTO lanza (id_juego, nombre_plataforma) VALUES
-(1, 'PC'),
-(1, 'PlayStation 5'),
-(2, 'Nintendo Switch'),
-(3, 'PC'),
-(3, 'Nintendo Switch');
-
--- Asignar géneros
-INSERT INTO pertenece (id_juego, nombre_genero) VALUES
-(1, 'RPG'),
-(1, 'Acción'),
-(2, 'Aventura'),
-(2, 'RPG'),
-(3, 'Plataformas'),
-(3, 'Aventura');
-
--- Asignar desarrolladoras
-INSERT INTO desarrolla (id_juego, nombre_desarrolladora) VALUES
-(1, 'FromSoftware'),
-(2, 'Nintendo'),
-(3, 'Team Cherry');
-```
-
-#### Opción B: Desde la API (usando curl o Postman)
-
-```bash
-curl -X POST http://localhost:3000/api/juegos \
-  -H "Content-Type: application/json" \
-  -d '{
-    "titulo": "Elden Ring",
-    "fecha_lanzamiento": "2022-02-25",
-    "descripcion": "Un RPG de acción de mundo abierto",
-    "plataformas": ["PC", "PlayStation 5"],
-    "generos": ["RPG", "Acción"],
-    "desarrolladoras": ["FromSoftware"]
-  }'
-```
+**Usuario de prueba:** `gordon@example.com` / `123456`
 
 ## 🎯 Estructura del Proyecto
 
@@ -124,12 +91,19 @@ TFG-Minusvalia/
 ├── backend/              # API REST (Node.js + Express)
 │   ├── config/          # Configuración de BD
 │   ├── routes/          # Rutas de la API
+│   │   ├── auth.routes.js      # Login y registro
+│   │   ├── juegos.routes.js    # CRUD de juegos
+│   │   ├── usuarios.routes.js  # Usuarios, amigos, seguir
+│   │   ├── listas.routes.js    # Listas personalizadas
+│   │   ├── reseñas.routes.js   # Reseñas y puntuaciones
+│   │   └── perfil.routes.js    # Perfil con estadísticas
 │   └── server.js        # Servidor principal
 ├── web-react/           # Frontend (React + Vite)
 │   └── src/
-│       └── App.jsx      # Componente principal
-├── mobile-android/      # App Android (futuro)
-└── docs/                # Documentación y esquemas
+│       ├── components/  # Componentes reutilizables
+│       └── pages/       # Páginas de la aplicación
+├── mobile-android/      # App Android
+└── docs/                # Documentación y esquemas SQL
 ```
 
 ## 🔍 Verificar que todo funciona
@@ -139,47 +113,37 @@ TFG-Minusvalia/
    - `http://localhost:3000/api/health` muestra `"database": "connected"`
 
 2. **Frontend conectado:**
-   - La app muestra: `✅ Conectado a: http://localhost:3000`
+   - La app carga en `http://localhost:5173`
    - Los juegos se cargan desde la base de datos
 
 3. **Base de datos:**
-   - phpMyAdmin muestra las tablas creadas
-   - Hay datos en las tablas (juegos, plataformas, etc.)
+   - phpMyAdmin muestra las tablas en `memory_card`
 
 ## 🐛 Solución de Problemas
 
 ### Error: "No se pudo conectar con el servidor"
-- ✅ Verifica que el backend esté corriendo (`npm start` en la carpeta `backend`)
+- ✅ Verifica que el backend esté corriendo (`npm start` en `backend/`)
 - ✅ Verifica que el puerto 3000 no esté ocupado
 - ✅ Revisa la configuración en `backend/.env`
 
 ### Error: "Conexión a la base de datos fallida"
-- ✅ Verifica que MySQL esté corriendo
+- ✅ Verifica que MySQL/XAMPP esté corriendo
 - ✅ Verifica las credenciales en `backend/.env`
-- ✅ Verifica que la base de datos `gameboxd` exista
+- ✅ Verifica que la base de datos `memory_card` exista
 
-### Error CORS en el navegador
-- ✅ El backend ya tiene CORS configurado
-- ✅ Si persiste, verifica que el frontend esté en el puerto correcto
+### Error: proxy error /api/...
+- ✅ El backend debe estar corriendo ANTES que el frontend
+- ✅ Vite usa un proxy configurado en `vite.config.js` para redirigir `/api` a `localhost:3000`
 
 ### No se muestran juegos
 - ✅ Verifica que haya datos en la tabla `juego` en phpMyAdmin
-- ✅ Agrega algunos juegos usando el SQL de ejemplo arriba
-
-## 📚 Próximos Pasos
-
-1. ✅ Backend y Frontend conectados
-2. ⬜ Implementar autenticación de usuarios
-3. ⬜ Crear formularios para agregar juegos desde la web
-4. ⬜ Implementar búsqueda de juegos
-5. ⬜ Agregar funcionalidad de reseñas
-6. ⬜ Conectar la app Android
+- ✅ Ejecuta `docs/02_datos_ejemplo.sql` para añadir datos de prueba
 
 ## 💡 Tips
 
 - **Mantén dos terminales abiertas**: una para el backend y otra para el frontend
-- **Usa Postman o Thunder Client** para probar la API fácilmente
 - **Revisa la consola del navegador** (F12) para ver errores del frontend
 - **Revisa la terminal del backend** para ver errores del servidor
+- **Usa `npm run dev`** en backend para recarga automática al cambiar código
 
 ¡Ya tienes todo listo para empezar a desarrollar! 🎮

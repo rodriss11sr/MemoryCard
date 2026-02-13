@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import GameLibraryCard from "../components/GameLibraryCard.jsx";
 
+const API_BASE_URL = '/api';
+
 function Games() {
   const navigate = useNavigate();
   const [juegos, setJuegos] = useState([]);
@@ -10,7 +12,7 @@ function Games() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const juegosRes = await fetch("http://localhost:8000/api/get_juegos.php");
+        const juegosRes = await fetch(`${API_BASE_URL}/juegos`);
         const juegosData = await juegosRes.json();
 
         if (Array.isArray(juegosData)) {

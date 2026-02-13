@@ -109,7 +109,9 @@ function ReviewCard({ imagen, usuario, contenido, puntuacion, avatar }) {
             marginTop: "5px",
           }}
         >
-          <StarRating nota={puntuacion} size="1.2rem" />
+          {puntuacion !== null && puntuacion !== undefined && (
+            <StarRating nota={puntuacion / 2} size="1.2rem" />
+          )}
           <span
             style={{
               color: "#9ca3af",

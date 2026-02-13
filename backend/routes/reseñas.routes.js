@@ -3,26 +3,86 @@ import pool from '../config/database.js';
 
 const router = express.Router();
 
-// GET /api/reseñas - Obtener todas las reseñas
+// GET /api/reseñas - Obtener todas las reseñas (formato compatible con PHP)
 router.get('/', async (req, res) => {
   try {
-    const [reseñas] = await pool.query(`
-      SELECT 
-        r.*,
-        u.nombre AS nombre_usuario,
-        u.avatar AS avatar_usuario,
-        j.titulo AS titulo_juego,
-        j.portada AS portada_juego
-      FROM reseña r
-      INNER JOIN usuario u ON r.id_usuario = u.id_usuario
-      INNER JOIN juego j ON r.id_juego = j.id_juego
-      ORDER BY r.fecha_publicacion DESC
-    `);
+    const { id_juego } = req.query;
     
-    res.json(reseñas);
+    let reseñas;
+    try {
+      if (id_juego) {
+        [reseñas] = await pool.query(
+          'SELECT * FROM vista_reseñas_completas WHERE id_juego = ? ORDER BY fecha_publicacion DESC',
+          [id_juego]
+        );
+      } else {
+        [reseñas] = await pool.query('SELECT * FROM vista_reseñas_completas ORDER BY fecha_publicacion DESC');
+      }
+    } catch (error) {
+      // Si la vista no existe, usar consulta directa
+      if (id_juego) {
+        [reseñas] = await pool.query(`
+          SELECT 
+            r.id_reseña,
+            r.id_juego,
+            r.texto,
+            r.nota,
+            r.fecha_publicacion,
+            u.nombre AS nombre_usuario,
+            u.avatar AS avatar_usuario,
+            j.titulo AS titulo_juego,
+            j.portada AS portada_juego
+          FROM reseña r
+          INNER JOIN usuario u ON r.id_usuario = u.id_usuario
+          INNER JOIN juego j ON r.id_juego = j.id_juego
+          WHERE r.id_juego = ?
+          ORDER BY r.fecha_publicacion DESC
+        `, [id_juego]);
+      } else {
+        [reseñas] = await pool.query(`
+          SELECT 
+            r.id_reseña,
+            r.id_juego,
+            r.texto,
+            r.nota,
+            r.fecha_publicacion,
+            u.nombre AS nombre_usuario,
+            u.avatar AS avatar_usuario,
+            j.titulo AS titulo_juego,
+            j.portada AS portada_juego
+          FROM reseña r
+          INNER JOIN usuario u ON r.id_usuario = u.id_usuario
+          INNER JOIN juego j ON r.id_juego = j.id_juego
+          ORDER BY r.fecha_publicacion DESC
+        `);
+      }
+    }
+
+    // Formatear para que coincida con el formato PHP
+    const reseñasFormateadas = reseñas.map(row => {
+      let fecha = null;
+      if (row.fecha_publicacion) {
+        const date = new Date(row.fecha_publicacion);
+        fecha = date.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+      }
+
+      return {
+        id: row.id_reseña,
+        juegoId: row.id_juego,
+        usuario: row.nombre_usuario || null,
+        avatar: row.avatar_usuario || null,
+        titulo: row.titulo_juego || null,
+        contenido: row.texto || '',
+        puntuacion: row.nota !== null ? parseFloat(row.nota) : null,
+        imagen: row.portada_juego || null,
+        fecha: fecha,
+      };
+    });
+    
+    res.json(reseñasFormateadas);
   } catch (error) {
     console.error('Error al obtener reseñas:', error);
-    res.status(500).json({ error: 'Error al obtener las reseñas' });
+    res.status(500).json({ error: 'Error al obtener las reseñas', detalle: error.message });
   }
 });
 
@@ -55,13 +115,17 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// POST /api/reseñas - Crear una nueva reseña
+// POST /api/reseñas - Crear o actualizar una reseña (formato compatible con PHP)
 router.post('/', async (req, res) => {
   try {
     const { texto, nota, spoilers, id_usuario, id_juego } = req.body;
     
     if (!texto || !id_usuario || !id_juego) {
-      return res.status(400).json({ error: 'Texto, id_usuario e id_juego son obligatorios' });
+      return res.status(400).json({ ok: false, message: 'El texto de la reseña es obligatorio' });
+    }
+
+    if (nota !== null && nota !== undefined && (nota < 0 || nota > 10)) {
+      return res.status(400).json({ ok: false, message: 'La nota debe estar entre 0 y 10' });
     }
     
     // Verificar si el usuario ya tiene una reseña para este juego
@@ -71,21 +135,31 @@ router.post('/', async (req, res) => {
     );
     
     if (reseñasExistentes.length > 0) {
-      return res.status(400).json({ error: 'Ya existe una reseña de este usuario para este juego' });
+      // Actualizar reseña existente
+      await pool.query(
+        'UPDATE reseña SET texto = ?, nota = ?, spoilers = ? WHERE id_usuario = ? AND id_juego = ?',
+        [texto, nota || null, spoilers || false, id_usuario, id_juego]
+      );
+      
+      return res.json({ 
+        ok: true,
+        message: 'Reseña actualizada correctamente'
+      });
+    } else {
+      // Crear nueva reseña
+      const [result] = await pool.query(
+        'INSERT INTO reseña (texto, nota, spoilers, id_usuario, id_juego) VALUES (?, ?, ?, ?, ?)',
+        [texto, nota || null, spoilers || false, id_usuario, id_juego]
+      );
+      
+      return res.json({ 
+        ok: true,
+        message: 'Reseña creada correctamente'
+      });
     }
-    
-    const [result] = await pool.query(
-      'INSERT INTO reseña (texto, nota, spoilers, id_usuario, id_juego) VALUES (?, ?, ?, ?, ?)',
-      [texto, nota || null, spoilers || false, id_usuario, id_juego]
-    );
-    
-    res.status(201).json({ 
-      message: 'Reseña creada exitosamente',
-      id: result.insertId 
-    });
   } catch (error) {
-    console.error('Error al crear reseña:', error);
-    res.status(500).json({ error: 'Error al crear la reseña' });
+    console.error('Error al crear/actualizar reseña:', error);
+    res.status(500).json({ ok: false, message: 'Error al crear/actualizar la reseña', detalle: error.message });
   }
 });
 

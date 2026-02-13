@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+const API_BASE_URL = '/api';
+
 function Signin() {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
@@ -23,13 +25,13 @@ function Signin() {
     }
 
     try {
-      const response = await fetch("http://localhost:8000/api/register.php", {
+      const response = await fetch(`${API_BASE_URL}/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username,
+          nombre: username,
           email,
           password,
         }),

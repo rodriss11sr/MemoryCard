@@ -1,7 +1,7 @@
 {
-  "name": "gameboxd-backend",
+  "name": "memory-card-backend",
   "version": "1.0.0",
-  "description": "Backend API para GameBoxd - Aplicación tipo Letterboxd para videojuegos",
+  "description": "Backend API para Memory Card - Aplicación tipo Letterboxd para videojuegos",
   "main": "server.js",
   "type": "module",
   "scripts": {

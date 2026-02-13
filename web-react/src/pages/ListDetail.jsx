@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import GameLibraryCard from "../components/GameLibraryCard.jsx";
 
+const API_BASE_URL = '/api';
+
 function ListDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -11,7 +13,7 @@ function ListDetail() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(`http://localhost:8000/api/get_lista.php?id_lista=${id}`);
+        const res = await fetch(`${API_BASE_URL}/listas/${id}`);
         const data = await res.json();
 
         if (data.ok) {

@@ -1,6 +1,8 @@
 
 import { useState } from "react";
 
+const API_BASE_URL = '/api';
+
 function ListCreator({ onClose, autor }) {
     const [nombre, setNombre] = useState("");
     const [juego, setJuego] = useState("");
@@ -27,7 +29,7 @@ function ListCreator({ onClose, autor }) {
 
         try {
             // Crear la lista
-            const res = await fetch("http://localhost:8000/api/create_lista.php", {
+            const res = await fetch(`${API_BASE_URL}/listas`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({

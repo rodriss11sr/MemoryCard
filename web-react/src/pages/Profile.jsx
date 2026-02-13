@@ -6,6 +6,8 @@ import GameLibraryCard from "../components/GameLibraryCard.jsx";
 import ProfileListCard from "../components/ProfileListCard.jsx";
 import ListCreator from "../components/ListCreator.jsx";
 
+const API_BASE_URL = '/api';
+
 function Perfil() {
   const navigate = useNavigate();
   const { id } = useParams(); // ID del usuario a ver (si viene de /user/:id)
@@ -53,12 +55,12 @@ function Perfil() {
         listasRes,
         amigosRes,
       ] = await Promise.all([
-        fetch(`http://localhost:8000/api/get_perfil.php?id_usuario=${idUsuario}`),
-        fetch(`http://localhost:8000/api/get_juegos_usuario.php?id_usuario=${idUsuario}`),
-        fetch(`http://localhost:8000/api/get_wishlist.php?id_usuario=${idUsuario}`),
-        fetch(`http://localhost:8000/api/get_resenas_usuario.php?id_usuario=${idUsuario}`),
-        fetch(`http://localhost:8000/api/get_listas_usuario.php?id_usuario=${idUsuario}`),
-        fetch(`http://localhost:8000/api/get_amigos.php?id_usuario=${idUsuario}&tipo=siguiendo`),
+        fetch(`${API_BASE_URL}/perfil/${idUsuario}`),
+        fetch(`${API_BASE_URL}/usuarios/${idUsuario}/juegos`),
+        fetch(`${API_BASE_URL}/usuarios/${idUsuario}/wishlist`),
+        fetch(`${API_BASE_URL}/usuarios/${idUsuario}/resenas`),
+        fetch(`${API_BASE_URL}/listas/usuario/${idUsuario}`),
+        fetch(`${API_BASE_URL}/usuarios/${idUsuario}/amigos?tipo=siguiendo`),
       ]);
 
       const perfilData = await perfilRes.json();
@@ -112,7 +114,7 @@ function Perfil() {
       const idUsuarioActual = userData ? userData.id : 0;
 
       const res = await fetch(
-        `http://localhost:8000/api/buscar_usuarios.php?q=${encodeURIComponent(searchQuery)}&id_usuario_actual=${idUsuarioActual}`
+        `${API_BASE_URL}/usuarios/buscar?query=${encodeURIComponent(searchQuery)}&id_usuario_actual=${idUsuarioActual}`
       );
       const data = await res.json();
 
@@ -154,21 +156,27 @@ function Perfil() {
 
     try {
       const endpoint = yaSigues
-        ? "http://localhost:8000/api/dejar_seguir_usuario.php"
-        : "http://localhost:8000/api/seguir_usuario.php";
+        ? `${API_BASE_URL}/usuarios/${idUsuarioSeguidor}/seguir/${idUsuarioSeguido}`
+        : `${API_BASE_URL}/usuarios/${idUsuarioSeguidor}/seguir`;
 
-      const body = {
-        id_usuario_seguidor: idUsuarioSeguidor,
-        id_usuario_seguido: idUsuarioSeguido,
-      };
+      const body = yaSigues
+        ? {} // DELETE no necesita body
+        : {
+            id_seguido: idUsuarioSeguido,
+          };
 
       console.log("Enviando:", body);
 
-      const res = await fetch(endpoint, {
-        method: "POST",
+      const fetchOptions = {
+        method: yaSigues ? "DELETE" : "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
+      };
+      
+      if (!yaSigues && Object.keys(body).length > 0) {
+        fetchOptions.body = JSON.stringify(body);
+      }
+      
+      const res = await fetch(endpoint, fetchOptions);
 
       const data = await res.json();
       console.log("Respuesta:", data);

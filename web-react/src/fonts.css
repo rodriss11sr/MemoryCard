@@ -1,3 +1,6 @@
+/* Fuente: Aclonica (Google Fonts) - @import DEBE ir al principio del archivo */
+@import url('https://fonts.googleapis.com/css2?family=Aclonica&display=swap');
+
 /* Fuentes personalizadas del proyecto */
 
 /* Fuente: M6x11 Plus */
@@ -15,6 +18,3 @@
     font-weight: normal;
     font-style: normal;
 }
-
-/* Fuente: Aclonica (Google Fonts) */
-@import url('https://fonts.googleapis.com/css2?family=Aclonica&display=swap');
