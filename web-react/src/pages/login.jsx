@@ -30,6 +30,7 @@ function Login() {
     backgroundColor: "#ffffff",
     color: "#828282",
     border: "1px solid var(--border-color)",
+    fontFamily: "m6x11plus",
     fontSize: "1rem",
     boxSizing: "border-box",
   };
@@ -42,6 +43,7 @@ function Login() {
     border: "none",
     backgroundColor: "#0466c8",
     color: "white",
+    fontFamily: "upheaval",
     fontWeight: "bold",
     fontSize: "1rem",
     cursor: "pointer",
@@ -56,7 +58,8 @@ function Login() {
           style={{
             color: "var(--text-secondary)",
             marginBottom: "30px",
-            fontSize: "0.9rem",
+            fontFamily: "m6x11plus",
+            fontSize: "1rem",
           }}
         >
           Nos alegra verte de nuevo!! :)
@@ -70,6 +73,7 @@ function Login() {
               fontSize: "0.8rem",
               marginLeft: "5px",
               color: "var(--text-secondary)",
+              fontFamily: "m6x11plus",
             }}
           >
             Correo Electrónico
@@ -89,6 +93,7 @@ function Login() {
               fontSize: "0.8rem",
               marginLeft: "5px",
               color: "var(--text-secondary)",
+              fontFamily: "m6x11plus",
             }}
           >
             Contraseña
@@ -104,18 +109,22 @@ function Login() {
           <p
             style={{
               marginTop: "1px",
-              fontSize: "0.8rem",
+              fontFamily: "m6x11plus",
+              fontSize: "0.9rem",
               color: "var(--text-secondary)",
               textAlign: "right",
               width: "100%",
             }}
           >
-            <span style={{ color: "#29CDF2", cursor: "pointer" }}>
+            <span
+              style={{ color: "#29CDF2", cursor: "pointer", }}
+              onClick={() => navigate("/password")}
+            >
               Olvidé la contraseña
             </span>
           </p>
         </div>
-        // TODO: Cambiar a "submit" cuando este implementada la logica de inicio de sesion en el backend
+        {/* TODO: Cambiar a "submit" cuando este implementada la logica de inicio de sesion en el backend*/}
         <button
           type="button"
           onClick={handleLogin}
@@ -130,6 +139,7 @@ function Login() {
       <p
         style={{
           marginTop: "20px",
+          fontFamily: "m6x11plus",
           fontSize: "0.8rem",
           color: "var(--text-secondary)",
         }}
@@ -145,5 +155,4 @@ function Login() {
     </div>
   );
 }
-
 export default Login;

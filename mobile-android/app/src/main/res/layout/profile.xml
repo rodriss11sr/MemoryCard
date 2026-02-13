@@ -335,7 +335,7 @@
                         android:src="@drawable/dredge" />
 
                         <RatingBar
-                            android:id="@+id/ratingBarReview"
+                            android:id="@+id/ratingBarReview2"
                             style="?android:attr/ratingBarStyleSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -363,7 +363,7 @@
                             android:scaleType="centerCrop"
                             android:src="@drawable/mhwilds" />
                         <RatingBar
-                            android:id="@+id/ratingBarReview"
+                            android:id="@+id/ratingBarReview3"
                             style="?android:attr/ratingBarStyleSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -392,7 +392,7 @@
                             android:scaleType="centerCrop"
                             android:src="@drawable/gow" />
                         <RatingBar
-                            android:id="@+id/ratingBarReview"
+                            android:id="@+id/ratingBarReview4"
                             style="?android:attr/ratingBarStyleSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

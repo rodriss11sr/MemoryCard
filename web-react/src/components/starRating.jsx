@@ -12,7 +12,8 @@ const StarRating = ({ nota, size = "1rem" }) => {
     stars.push(
       <span 
         key={i} 
-        style={{ 
+        style={{
+          justifyContent: "center", 
           color: isActive ? "#fbbf24" : "#4b5563", 
           fontSize: size,
           marginRight: "2px",
