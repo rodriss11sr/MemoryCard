@@ -31,10 +31,10 @@ public class ProfileActivity extends AppCompatActivity {
         NavigationView navigationView = findViewById(R.id.nav_view);
 
 
-        gamesProfile = findViewById(R.id.gamesProfile);
-        wishlistProfile = findViewById(R.id.wishlistProfile);
-        reviewsProfile = findViewById(R.id.reviewsProfile);
-        listProfile = findViewById(R.id.listProfile);
+        gamesProfile = findViewById(R.id.gamesProfileBtn);
+        wishlistProfile = findViewById(R.id.wishlistProfileBtn);
+        reviewsProfile = findViewById(R.id.reviewsProfileBtn);
+        listProfile = findViewById(R.id.listProfileBtn);
 
         wishlistProfile.setOnClickListener(new View.OnClickListener() {
             @Override

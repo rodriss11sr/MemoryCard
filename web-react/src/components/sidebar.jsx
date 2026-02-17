@@ -50,7 +50,7 @@ const Sidebar = () => {
           <span style={{ fontSize: "25px" }}>Perfil</span>
         </NavLink>
 
-        <NavLink to="/game" style={getStyle}>
+        <NavLink to="/games" style={getStyle}>
           {/*<span style={{ fontSize: "25px" }}>🎮</span>*/}
           <span style={{ fontSize: "25px" }}>Juegos</span>
         </NavLink>

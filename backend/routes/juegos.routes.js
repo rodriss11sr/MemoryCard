@@ -3,63 +3,167 @@ import pool from '../config/database.js';
 
 const router = express.Router();
 
-// GET /api/juegos - Obtener todos los juegos
+// GET /api/juegos - Obtener todos los juegos (formato compatible con PHP)
 router.get('/', async (req, res) => {
   try {
-    const [juegos] = await pool.query(`
-      SELECT 
-        j.*,
-        GROUP_CONCAT(DISTINCT p.nombre SEPARATOR ', ') AS plataformas,
-        GROUP_CONCAT(DISTINCT g.nombre SEPARATOR ', ') AS generos,
-        GROUP_CONCAT(DISTINCT d.nombre SEPARATOR ', ') AS desarrolladoras
-      FROM juego j
-      LEFT JOIN lanza l ON j.id_juego = l.id_juego
-      LEFT JOIN plataforma p ON l.nombre_plataforma = p.nombre
-      LEFT JOIN pertenece pe ON j.id_juego = pe.id_juego
-      LEFT JOIN genero g ON pe.nombre_genero = g.nombre
-      LEFT JOIN desarrolla de ON j.id_juego = de.id_juego
-      LEFT JOIN desarrolladora d ON de.nombre_desarrolladora = d.nombre
-      GROUP BY j.id_juego
-      ORDER BY j.titulo ASC
-    `);
-    
-    res.json(juegos);
+    // Intentar usar la vista primero
+    let juegos;
+    try {
+      [juegos] = await pool.query('SELECT * FROM vista_juegos_completos ORDER BY titulo ASC');
+    } catch (error) {
+      // Si la vista no existe, usar consulta directa
+      [juegos] = await pool.query(`
+        SELECT 
+          j.*,
+          GROUP_CONCAT(DISTINCT p.nombre SEPARATOR ', ') AS plataformas,
+          GROUP_CONCAT(DISTINCT g.nombre SEPARATOR ', ') AS generos,
+          GROUP_CONCAT(DISTINCT d.nombre SEPARATOR ', ') AS desarrolladoras,
+          (SELECT AVG(nota) FROM reseña WHERE id_juego = j.id_juego) AS nota_promedio
+        FROM juego j
+        LEFT JOIN lanza l ON j.id_juego = l.id_juego
+        LEFT JOIN plataforma p ON l.nombre_plataforma = p.nombre
+        LEFT JOIN pertenece pe ON j.id_juego = pe.id_juego
+        LEFT JOIN genero g ON pe.nombre_genero = g.nombre
+        LEFT JOIN desarrolla de ON j.id_juego = de.id_juego
+        LEFT JOIN desarrolladora d ON de.nombre_desarrolladora = d.nombre
+        GROUP BY j.id_juego
+        ORDER BY j.titulo ASC
+      `);
+    }
+
+    // Formatear para que coincida con el formato PHP
+    const juegosFormateados = juegos.map(row => {
+      // Formatear fecha
+      let fecha = null;
+      if (row.fecha_lanzamiento) {
+        const date = new Date(row.fecha_lanzamiento);
+        fecha = date.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+      }
+
+      // Plataformas como array
+      const plataformas = row.plataformas ? row.plataformas.split(', ').map(p => p.trim()) : [];
+
+      // Rating
+      const rating = row.nota_promedio ? Math.round(row.nota_promedio * 10) / 10 : null;
+
+      return {
+        id: row.id_juego,
+        titulo: row.titulo,
+        imagen: row.portada,
+        fecha: fecha,
+        plataforma: plataformas,
+        desarrollador: row.desarrolladoras || null,
+        genero: row.generos || null,
+        descripcion: row.descripcion || null,
+        rating: rating,
+      };
+    });
+
+    res.json(juegosFormateados);
   } catch (error) {
     console.error('Error al obtener juegos:', error);
-    res.status(500).json({ error: 'Error al obtener los juegos' });
+    res.status(500).json({ error: 'Error al obtener los juegos', detalle: error.message });
   }
 });
 
-// GET /api/juegos/:id - Obtener un juego por ID
+// GET /api/juegos/buscar?q=texto - Buscar juegos por título
+router.get('/buscar', async (req, res) => {
+  try {
+    const { q } = req.query;
+
+    if (!q || q.trim().length === 0) {
+      return res.json([]);
+    }
+
+    const [juegos] = await pool.query(`
+      SELECT 
+        j.id_juego,
+        j.titulo,
+        j.portada,
+        j.fecha_lanzamiento,
+        (SELECT AVG(nota) FROM reseña WHERE id_juego = j.id_juego) AS nota_promedio
+      FROM juego j
+      WHERE j.titulo LIKE ?
+      ORDER BY j.titulo ASC
+      LIMIT 10
+    `, [`%${q.trim()}%`]);
+
+    const resultados = juegos.map(row => ({
+      id: row.id_juego,
+      titulo: row.titulo,
+      imagen: row.portada,
+      rating: row.nota_promedio ? Math.round(row.nota_promedio * 10) / 10 : null,
+    }));
+
+    res.json(resultados);
+  } catch (error) {
+    console.error('Error al buscar juegos:', error);
+    res.status(500).json({ error: 'Error al buscar juegos', detalle: error.message });
+  }
+});
+
+// GET /api/juegos/:id - Obtener un juego por ID (formato compatible con PHP)
 router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     
-    const [juegos] = await pool.query(`
-      SELECT 
-        j.*,
-        GROUP_CONCAT(DISTINCT p.nombre SEPARATOR ', ') AS plataformas,
-        GROUP_CONCAT(DISTINCT g.nombre SEPARATOR ', ') AS generos,
-        GROUP_CONCAT(DISTINCT d.nombre SEPARATOR ', ') AS desarrolladoras
-      FROM juego j
-      LEFT JOIN lanza l ON j.id_juego = l.id_juego
-      LEFT JOIN plataforma p ON l.nombre_plataforma = p.nombre
-      LEFT JOIN pertenece pe ON j.id_juego = pe.id_juego
-      LEFT JOIN genero g ON pe.nombre_genero = g.nombre
-      LEFT JOIN desarrolla de ON j.id_juego = de.id_juego
-      LEFT JOIN desarrolladora d ON de.nombre_desarrolladora = d.nombre
-      WHERE j.id_juego = ?
-      GROUP BY j.id_juego
-    `, [id]);
-    
-    if (juegos.length === 0) {
-      return res.status(404).json({ error: 'Juego no encontrado' });
+    let juego;
+    try {
+      [juego] = await pool.query('SELECT * FROM vista_juegos_completos WHERE id_juego = ?', [id]);
+    } catch (error) {
+      // Si la vista no existe, usar consulta directa
+      [juego] = await pool.query(`
+        SELECT 
+          j.*,
+          GROUP_CONCAT(DISTINCT p.nombre SEPARATOR ', ') AS plataformas,
+          GROUP_CONCAT(DISTINCT g.nombre SEPARATOR ', ') AS generos,
+          GROUP_CONCAT(DISTINCT d.nombre SEPARATOR ', ') AS desarrolladoras,
+          (SELECT AVG(nota) FROM reseña WHERE id_juego = j.id_juego) AS nota_promedio
+        FROM juego j
+        LEFT JOIN lanza l ON j.id_juego = l.id_juego
+        LEFT JOIN plataforma p ON l.nombre_plataforma = p.nombre
+        LEFT JOIN pertenece pe ON j.id_juego = pe.id_juego
+        LEFT JOIN genero g ON pe.nombre_genero = g.nombre
+        LEFT JOIN desarrolla de ON j.id_juego = de.id_juego
+        LEFT JOIN desarrolladora d ON de.nombre_desarrolladora = d.nombre
+        WHERE j.id_juego = ?
+        GROUP BY j.id_juego
+      `, [id]);
     }
     
-    res.json(juegos[0]);
+    if (juego.length === 0) {
+      return res.status(404).json({ error: 'Juego no encontrado' });
+    }
+
+    const row = juego[0];
+
+    // Formatear fecha
+    let fecha = null;
+    if (row.fecha_lanzamiento) {
+      const date = new Date(row.fecha_lanzamiento);
+      fecha = date.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    }
+
+    // Plataformas como array
+    const plataformas = row.plataformas ? row.plataformas.split(', ').map(p => p.trim()) : [];
+
+    // Rating
+    const rating = row.nota_promedio ? Math.round(row.nota_promedio * 10) / 10 : null;
+
+    res.json({
+      id: row.id_juego,
+      titulo: row.titulo,
+      imagen: row.portada,
+      fecha: fecha,
+      plataforma: plataformas,
+      desarrollador: row.desarrolladoras || null,
+      genero: row.generos || null,
+      descripcion: row.descripcion || null,
+      rating: rating,
+    });
   } catch (error) {
     console.error('Error al obtener juego:', error);
-    res.status(500).json({ error: 'Error al obtener el juego' });
+    res.status(500).json({ error: 'Error al obtener el juego', detalle: error.message });
   }
 });
 

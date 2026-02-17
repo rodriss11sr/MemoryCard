@@ -91,7 +91,9 @@ const GameReviewCard = ({ foto, usuario, desc, puntuacion, fecha }) => {
       <div style={contentStyle}>
         <div style={headerStyle}>
           <h3 style={userNameStyle}>{usuario}</h3>
-          <StarRating rating={puntuacion} />
+          {puntuacion !== null && puntuacion !== undefined && (
+            <StarRating nota={puntuacion / 2} />
+          )}
         </div>
         <p
           role="button"
