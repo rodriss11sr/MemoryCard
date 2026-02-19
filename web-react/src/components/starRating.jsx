@@ -1,6 +1,5 @@
 import { useState } from 'react';
 
-/* ---- iconos inline (copiados de tus SVG) ---- */
 const FullStar = ({ size }) => (
   <svg
     width={size}
