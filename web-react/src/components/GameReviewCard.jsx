@@ -1,18 +1,27 @@
 import { useState } from "react";
 import StarRating from "./StarRating";
-const API_BASE_URL = '/api';
+const API_BASE_URL = "/api";
 
-const GameReviewCard = ({ id, foto, usuario, desc, puntuacion, fecha, likes: likesInicial = 0 }) => {
+const GameReviewCard = ({
+  id,
+  foto,
+  usuario,
+  desc,
+  puntuacion,
+  fecha,
+  likes: likesInicial = 0,
+}) => {
   const [likes, setLikes] = useState(likesInicial);
   const [liked, setLiked] = useState(() => {
     // Comprobar si ya dio like (guardado en localStorage) - usar Set para evitar duplicados
-    const likedReviews = JSON.parse(localStorage.getItem("likedReviews") || "[]");
+    const likedReviews = JSON.parse(
+      localStorage.getItem("likedReviews") || "[]",
+    );
     return likedReviews.some((rid) => rid === id);
   });
   const [animating, setAnimating] = useState(false);
 
-
-//Estilo de la tarjeta
+  //Estilo de la tarjeta
   const cardStyle = {
     display: "flex",
     alignItems: "center",
@@ -71,35 +80,43 @@ const GameReviewCard = ({ id, foto, usuario, desc, puntuacion, fecha, likes: lik
         return;
       }
 
-        const dateStyle = {
-    fontSize: "0.85rem",
-    color: "#9ca3af",
-    flexShrink: 0,
-    minWidth: "100px",
-    textAlign: "right",
-  };
+      const dateStyle = {
+        fontSize: "0.85rem",
+        color: "#9ca3af",
+        flexShrink: 0,
+        minWidth: "100px",
+        textAlign: "right",
+      };
 
-  const wrapperStyle = {
-    display: "flex",
-    gap: "1.5rem",
-    width: "100%",
-    alignItems: "center",
-  };
+      const wrapperStyle = {
+        display: "flex",
+        gap: "1.5rem",
+        width: "100%",
+        alignItems: "center",
+      };
 
       // Leer localStorage actual y limpiar duplicados
-      const likedReviews = [...new Set(JSON.parse(localStorage.getItem("likedReviews") || "[]"))];
+      const likedReviews = [
+        ...new Set(JSON.parse(localStorage.getItem("likedReviews") || "[]")),
+      ];
       if (liked) {
         // Quitar like
         setLikes((prev) => Math.max(prev - 1, 0));
         setLiked(false);
-        localStorage.setItem("likedReviews", JSON.stringify(likedReviews.filter((rid) => rid !== id)));
+        localStorage.setItem(
+          "likedReviews",
+          JSON.stringify(likedReviews.filter((rid) => rid !== id)),
+        );
       } else {
         // Dar like
         setLikes((prev) => prev + 1);
         setLiked(true);
         setAnimating(true);
         setTimeout(() => setAnimating(false), 400);
-        localStorage.setItem("likedReviews", JSON.stringify([...likedReviews, id]));
+        localStorage.setItem(
+          "likedReviews",
+          JSON.stringify([...likedReviews, id]),
+        );
       }
     } catch (error) {
       console.error("Error al toggle like:", error);
@@ -107,21 +124,25 @@ const GameReviewCard = ({ id, foto, usuario, desc, puntuacion, fecha, likes: lik
   };
 
   return (
-    <div style={{
-      backgroundColor: "#2b303b",
-      border: "1px solid #3e4451",
-      borderRadius: "12px",
-      padding: "1.5rem",
-      width: "100%",
-      maxWidth: "600px",
-    }}>
+    <div
+      style={{
+        backgroundColor: "#2b303b",
+        border: "1px solid #3e4451",
+        borderRadius: "12px",
+        padding: "1.5rem",
+        width: "100%",
+        maxWidth: "600px",
+      }}
+    >
       {/* Cabecera: avatar + usuario + estrellas + fecha */}
-      <div style={{
-        display: "flex",
-        alignItems: "center",
-        gap: "1rem",
-        marginBottom: "0.75rem",
-      }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "1rem",
+          marginBottom: "0.75rem",
+        }}
+      >
         <img
           src={foto}
           alt={usuario}
@@ -134,49 +155,57 @@ const GameReviewCard = ({ id, foto, usuario, desc, puntuacion, fecha, likes: lik
           }}
         />
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-            <h3 style={{
-              fontSize: "1rem",
-              fontWeight: 700,
-              color: "#ffffff",
-              margin: 0,
-              fontFamily: "'Upheaval', system-ui",
-            }}>
+          <div
+            style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+          >
+            <h3
+              style={{
+                fontSize: "1rem",
+                fontWeight: 700,
+                color: "#ffffff",
+                margin: 0,
+                fontFamily: "'Upheaval', system-ui",
+              }}
+            >
               {usuario}
             </h3>
             {puntuacion !== null && puntuacion !== undefined && (
               <StarRating nota={puntuacion / 2} />
             )}
           </div>
-          <p style={{
-            margin: "2px 0 0 0",
-            color: "#6b7280",
-            fontSize: "0.78rem",
-          }}>
+          <p
+            style={{
+              margin: "2px 0 0 0",
+              color: "#6b7280",
+              fontSize: "0.78rem",
+            }}
+          >
             {fecha}
           </p>
         </div>
       </div>
       {/* Contenido de la reseña */}
       <p
-          role="button"
-          tabIndex={0}
-          aria-expanded={expanded}
-          onClick={toggleExpanded}
-          onKeyDown={onKeyDownToggle}
-          style={descStyle}
-        >
-          {desc}
-        </p>
+        role="button"
+        tabIndex={0}
+        aria-expanded={expanded}
+        onClick={toggleExpanded}
+        onKeyDown={onKeyDownToggle}
+        style={descStyle}
+      >
+        {desc}
+      </p>
 
       {/* Footer: like */}
-      <div style={{
-        display: "flex",
-        alignItems: "center",
-        gap: "12px",
-        borderTop: "1px solid #3e4451",
-        paddingTop: "0.75rem",
-      }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "12px",
+          borderTop: "1px solid #3e4451",
+          paddingTop: "0.75rem",
+        }}
+      >
         <button
           onClick={handleToggleLike}
           style={{
@@ -213,8 +242,7 @@ const GameReviewCard = ({ id, foto, usuario, desc, puntuacion, fecha, likes: lik
             ? "¡Te gustó esta reseña!"
             : likes > 0
               ? `A ${likes} persona${likes !== 1 ? "s" : ""} les gustó`
-              : "Sé el primero en darle like"
-          }
+              : "Sé el primero en darle like"}
         </span>
       </div>
     </div>
