@@ -83,17 +83,6 @@ CREATE TABLE IF NOT EXISTS guarda (
     INDEX idx_estado (estado)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Relación: Contiene (Lista N:M Juego)
-CREATE TABLE IF NOT EXISTS contiene (
-    id_lista INT NOT NULL,
-    id_juego INT NOT NULL,
-    orden INT DEFAULT 0,
-    fecha_agregado DATETIME DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id_lista, id_juego),
-    FOREIGN KEY (id_lista) REFERENCES lista(id_lista) ON DELETE CASCADE,
-    FOREIGN KEY (id_juego) REFERENCES juego(id_juego) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
 -- Relación: Lanza (Juego N:M Plataforma)
 CREATE TABLE IF NOT EXISTS lanza (
     id_juego INT NOT NULL,
@@ -142,6 +131,17 @@ CREATE TABLE IF NOT EXISTS lista (
     id_usuario INT NOT NULL,
     FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE,
     INDEX idx_id_usuario (id_usuario)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Relación: Contiene (Lista N:M Juego)
+CREATE TABLE IF NOT EXISTS contiene (
+    id_lista INT NOT NULL,
+    id_juego INT NOT NULL,
+    orden INT DEFAULT 0,
+    fecha_agregado DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id_lista, id_juego),
+    FOREIGN KEY (id_lista) REFERENCES lista(id_lista) ON DELETE CASCADE,
+    FOREIGN KEY (id_juego) REFERENCES juego(id_juego) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ============================================

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-const API_BASE_URL = '/api';
+const API_BASE_URL = "/api";
 
 function Header() {
   const navigate = useNavigate();
@@ -19,7 +19,9 @@ function Header() {
 
     const timer = setTimeout(async () => {
       try {
-        const res = await fetch(`${API_BASE_URL}/juegos/buscar?q=${encodeURIComponent(query.trim())}`);
+        const res = await fetch(
+          `${API_BASE_URL}/juegos/buscar?q=${encodeURIComponent(query.trim())}`,
+        );
         if (res.ok) {
           const data = await res.json();
           setResultados(data);
@@ -53,11 +55,14 @@ function Header() {
 
   // Obtener avatar del usuario logueado
   const user = JSON.parse(localStorage.getItem("user") || "{}");
-  const avatarUrl = user.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.nombre || 'User'}`;
+  const avatarUrl =
+    user.avatar ||
+    `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.nombre || "User"}`;
 
   return (
     <header
       style={{
+        position: "relative",
         height: "100%",
         display: "flex",
         alignItems: "center",
@@ -66,12 +71,24 @@ function Header() {
         justifyContent: "space-between",
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
+      <div
+        onClick={() => navigate("/")}
+        style={{ display: "flex", alignItems: "center", gap: "15px" }}
+      >
+        <img
+          src="/flaticon.png"
+          alt="Memory Card"
+          style={{ width: "10%", height: "10%", objectFit: "cover" }}
+        />
         <h1
-          onClick={() => navigate("/")}
-          style={{ margin: 0, fontSize: "24px", cursor: "pointer" }}
+          style={{
+            color: "#ffffff",
+            fontFamily: "upheaval, system-ui",
+            fontSize: "1.5rem",
+            cursor: "pointer",
+          }}
         >
-          Memory Card 🎮
+          Memory Card
         </h1>
       </div>
 
@@ -79,11 +96,16 @@ function Header() {
       <div
         ref={searchRef}
         style={{
-          flex: 1,
+          position: "absolute",
+          left: "50%",
+          top: "50%",
+          transform: "translate(-50%, -50%)",
+          width: "60%",
+          maxWidth: "600px",
           display: "flex",
           justifyContent: "center",
           padding: "0 20px",
-          position: "relative",
+          zIndex: 2,
         }}
       >
         <div style={{ width: "100%", maxWidth: "500px", position: "relative" }}>
@@ -100,7 +122,10 @@ function Header() {
               border: "1px solid #4b5563",
               color: "#1a1a1a",
               padding: "8px 20px",
-              borderRadius: mostrarResultados && resultados.length > 0 ? "10px 10px 0 0" : "10px",
+              borderRadius:
+                mostrarResultados && resultados.length > 0
+                  ? "10px 10px 0 0"
+                  : "10px",
               width: "100%",
               outline: "none",
               fontFamily: "m6x11plus",
@@ -141,8 +166,12 @@ function Header() {
                     transition: "background-color 0.15s",
                     borderBottom: "1px solid #3e4451",
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#3e4451")}
-                  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.backgroundColor = "#3e4451")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.backgroundColor = "transparent")
+                  }
                 >
                   {/* Miniatura del juego */}
                   <div
@@ -214,27 +243,29 @@ function Header() {
           )}
 
           {/* Mensaje si no hay resultados */}
-          {mostrarResultados && query.trim().length >= 2 && resultados.length === 0 && (
-            <div
-              style={{
-                position: "absolute",
-                top: "100%",
-                left: 0,
-                right: 0,
-                backgroundColor: "#2b303b",
-                border: "1px solid #4b5563",
-                borderTop: "none",
-                borderRadius: "0 0 10px 10px",
-                padding: "15px",
-                textAlign: "center",
-                color: "#9ca3af",
-                fontSize: "0.9rem",
-                zIndex: 100,
-              }}
-            >
-              No se encontraron juegos para "{query}"
-            </div>
-          )}
+          {mostrarResultados &&
+            query.trim().length >= 2 &&
+            resultados.length === 0 && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: "100%",
+                  left: 0,
+                  right: 0,
+                  backgroundColor: "#2b303b",
+                  border: "1px solid #4b5563",
+                  borderTop: "none",
+                  borderRadius: "0 0 10px 10px",
+                  padding: "15px",
+                  textAlign: "center",
+                  color: "#9ca3af",
+                  fontSize: "0.9rem",
+                  zIndex: 100,
+                }}
+              >
+                No se encontraron juegos para "{query}"
+              </div>
+            )}
         </div>
       </div>
 
@@ -301,8 +332,12 @@ function Header() {
             borderRadius: "6px",
             transition: "background 0.2s ease",
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(239,68,68,0.15)")}
-          onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+          onMouseEnter={(e) =>
+            (e.currentTarget.style.background = "rgba(239,68,68,0.15)")
+          }
+          onMouseLeave={(e) =>
+            (e.currentTarget.style.background = "transparent")
+          }
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
