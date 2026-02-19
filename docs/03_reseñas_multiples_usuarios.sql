@@ -31,23 +31,23 @@ SET @juego_id = IFNULL(@juego_id, (SELECT MIN(id_juego) FROM juego LIMIT 1));
 
 -- Reseña de Gordon Freeman (si no existe ya)
 INSERT IGNORE INTO reseña (id_usuario, id_juego, texto, nota, fecha_publicacion) VALUES
-(@gordon_id, @juego_id, 'Increíble juego. La historia es envolvente y el combate es fluido. Definitivamente uno de mis favoritos.', 9.0, NOW() - INTERVAL 5 DAY);
+(@gordon_id, @juego_id, 'Increíble juego. La historia es envolvente y el combate es fluido. Definitivamente uno de mis favoritos.', 4.5, NOW() - INTERVAL 5 DAY);
 
 -- Reseña de María García
 INSERT IGNORE INTO reseña (id_usuario, id_juego, texto, nota, fecha_publicacion) VALUES
-(@maria_id, @juego_id, 'Me encantó este juego. Los gráficos son impresionantes y la jugabilidad es muy adictiva. Lo recomiendo totalmente.', 8.5, NOW() - INTERVAL 4 DAY);
+(@maria_id, @juego_id, 'Me encantó este juego. Los gráficos son impresionantes y la jugabilidad es muy adictiva. Lo recomiendo totalmente.', 4.0, NOW() - INTERVAL 4 DAY);
 
 -- Reseña de Juan Pérez
 INSERT IGNORE INTO reseña (id_usuario, id_juego, texto, nota, fecha_publicacion) VALUES
-(@juan_id, @juego_id, 'Buen juego en general, aunque tiene algunos bugs menores. La historia es interesante pero se vuelve repetitiva hacia el final.', 7.5, NOW() - INTERVAL 3 DAY);
+(@juan_id, @juego_id, 'Buen juego en general, aunque tiene algunos bugs menores. La historia es interesante pero se vuelve repetitiva hacia el final.', 3.5, NOW() - INTERVAL 3 DAY);
 
 -- Reseña de Ana López
 INSERT IGNORE INTO reseña (id_usuario, id_juego, texto, nota, fecha_publicacion) VALUES
-(@ana_id, @juego_id, 'Obra maestra. Cada detalle está cuidado al máximo. El mundo abierto es enorme y lleno de secretos por descubrir.', 10.0, NOW() - INTERVAL 2 DAY);
+(@ana_id, @juego_id, 'Obra maestra. Cada detalle está cuidado al máximo. El mundo abierto es enorme y lleno de secretos por descubrir.', 5.0, NOW() - INTERVAL 2 DAY);
 
 -- Reseña de Carlos Ruiz
 INSERT IGNORE INTO reseña (id_usuario, id_juego, texto, nota, fecha_publicacion) VALUES
-(@carlos_id, @juego_id, 'No está mal, pero esperaba más. La jugabilidad es sólida pero la historia no me enganchó tanto como pensaba.', 6.5, NOW() - INTERVAL 1 DAY);
+(@carlos_id, @juego_id, 'No está mal, pero esperaba más. La jugabilidad es sólida pero la historia no me enganchó tanto como pensaba.', 3.0, NOW() - INTERVAL 1 DAY);
 
 -- ============================================
 -- AÑADIR MÁS RESEÑAS PARA OTROS JUEGOS POPULARES
@@ -55,26 +55,26 @@ INSERT IGNORE INTO reseña (id_usuario, id_juego, texto, nota, fecha_publicacion
 
 -- Reseñas para Elden Ring (si existe)
 INSERT IGNORE INTO reseña (id_usuario, id_juego, texto, nota, fecha_publicacion)
-SELECT @gordon_id, id_juego, 'El mejor soulslike que he jugado. El mundo es enorme y cada rincón tiene algo que descubrir.', 9.5, NOW() - INTERVAL 10 DAY
+SELECT @gordon_id, id_juego, 'El mejor soulslike que he jugado. El mundo es enorme y cada rincón tiene algo que descubrir.', 4.5, NOW() - INTERVAL 10 DAY
 FROM juego WHERE titulo = 'Elden Ring' LIMIT 1;
 
 INSERT IGNORE INTO reseña (id_usuario, id_juego, texto, nota, fecha_publicacion)
-SELECT @maria_id, id_juego, 'Muy difícil pero satisfactorio cuando logras vencer a los jefes. El diseño de niveles es increíble.', 9.0, NOW() - INTERVAL 9 DAY
+SELECT @maria_id, id_juego, 'Muy difícil pero satisfactorio cuando logras vencer a los jefes. El diseño de niveles es increíble.', 4.5, NOW() - INTERVAL 9 DAY
 FROM juego WHERE titulo = 'Elden Ring' LIMIT 1;
 
 INSERT IGNORE INTO reseña (id_usuario, id_juego, texto, nota, fecha_publicacion)
-SELECT @juan_id, id_juego, 'Demasiado difícil para mi gusto, pero entiendo por qué a otros les encanta. Los gráficos son preciosos.', 7.0, NOW() - INTERVAL 8 DAY
+SELECT @juan_id, id_juego, 'Demasiado difícil para mi gusto, pero entiendo por qué a otros les encanta. Los gráficos son preciosos.', 3.5, NOW() - INTERVAL 8 DAY
 FROM juego WHERE titulo = 'Elden Ring' LIMIT 1;
 
 -- Reseñas para The Witcher 3 (si existe)
 INSERT IGNORE INTO reseña (id_usuario, id_juego, texto, nota, fecha_publicacion)
-SELECT @gordon_id, id_juego, 'Obra maestra absoluta. La mejor historia y mundo abierto que he experimentado.', 10.0, NOW() - INTERVAL 15 DAY
+SELECT @gordon_id, id_juego, 'Obra maestra absoluta. La mejor historia y mundo abierto que he experimentado.', 5.0, NOW() - INTERVAL 15 DAY
 FROM juego WHERE titulo LIKE '%Witcher 3%' LIMIT 1;
 
 INSERT IGNORE INTO reseña (id_usuario, id_juego, texto, nota, fecha_publicacion)
-SELECT @ana_id, id_juego, 'Increíble narrativa y personajes memorables. Las misiones secundarias son tan buenas como la principal.', 9.5, NOW() - INTERVAL 14 DAY
+SELECT @ana_id, id_juego, 'Increíble narrativa y personajes memorables. Las misiones secundarias son tan buenas como la principal.', 5.0, NOW() - INTERVAL 14 DAY
 FROM juego WHERE titulo LIKE '%Witcher 3%' LIMIT 1;
 
 INSERT IGNORE INTO reseña (id_usuario, id_juego, texto, nota, fecha_publicacion)
-SELECT @carlos_id, id_juego, 'Muy bueno, aunque el combate se vuelve repetitivo después de un tiempo. La historia compensa.', 8.0, NOW() - INTERVAL 13 DAY
+SELECT @carlos_id, id_juego, 'Muy bueno, aunque el combate se vuelve repetitivo después de un tiempo. La historia compensa.', 4.0, NOW() - INTERVAL 13 DAY
 FROM juego WHERE titulo LIKE '%Witcher 3%' LIMIT 1;

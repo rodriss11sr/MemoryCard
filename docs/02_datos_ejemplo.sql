@@ -147,19 +147,19 @@ SELECT @user_id, id_juego, 'jugando', 25.5 FROM juego WHERE titulo IN (
 -- 10. RESEÑAS DEL USUARIO
 -- ============================================
 INSERT IGNORE INTO reseña (id_usuario, id_juego, texto, nota)
-SELECT @user_id, id_juego, 'Obra maestra absoluta. La mejor historia y mundo abierto que he experimentado.', 10.0
+SELECT @user_id, id_juego, 'Obra maestra absoluta. La mejor historia y mundo abierto que he experimentado.', 5.0
 FROM juego WHERE titulo = 'The Witcher 3: Wild Hunt';
 
 INSERT IGNORE INTO reseña (id_usuario, id_juego, texto, nota)
-SELECT @user_id, id_juego, 'Increíblemente desafiante pero satisfactorio. El combate es perfecto.', 9.0
+SELECT @user_id, id_juego, 'Increíblemente desafiante pero satisfactorio. El combate es perfecto.', 4.5
 FROM juego WHERE titulo = 'Elden Ring';
 
 INSERT IGNORE INTO reseña (id_usuario, id_juego, texto, nota)
-SELECT @user_id, id_juego, 'El mejor RPG que he jugado. La libertad de elección es impresionante.', 10.0
+SELECT @user_id, id_juego, 'El mejor RPG que he jugado. La libertad de elección es impresionante.', 5.0
 FROM juego WHERE titulo = 'Baldur''s Gate 3';
 
 INSERT IGNORE INTO reseña (id_usuario, id_juego, texto, nota)
-SELECT @user_id, id_juego, 'Muy adictivo. Cada run es diferente y emocionante.', 9.0
+SELECT @user_id, id_juego, 'Muy adictivo. Cada run es diferente y emocionante.', 4.5
 FROM juego WHERE titulo = 'Hades';
 
 -- ============================================
