@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import GameLibraryCard from "../components/GameLibraryCard.jsx";
 import ReviewCard from "../components/ReviewCard.jsx";
@@ -25,7 +25,6 @@ function Home() {
                     setJuegos(juegosData);
                 }
                 if (Array.isArray(reviewsData)) {
-                    // Nos quedamos solo con unas cuantas reseÃ±as destacadas
                     setReviews(reviewsData.slice(0, 5));
                 }
             } catch (error) {
@@ -36,17 +35,16 @@ function Home() {
         fetchData();
     }, []);
 
-    // Solo juegos recientes para "Nuevos lanzamientos"
     const juegosNuevos = [...juegos]
-        .filter((j) => j.fecha) // solo los que tienen fecha
+        .filter((j) => j.fecha)
         .sort((a, b) => {
             const [da, ma, aa] = a.fecha.split("/").map(Number);
             const [db, mb, ab] = b.fecha.split("/").map(Number);
             const dateA = new Date(aa, ma - 1, da);
             const dateB = new Date(ab, mb - 1, db);
-            return dateB - dateA; // mÃ¡s recientes primero
+            return dateB - dateA;
         })
-        .slice(0, 10); // por ejemplo, los 10 Ãºltimos lanzamientos
+        .slice(0, 10);
 
     return (
         <div className="home-container">
@@ -82,7 +80,7 @@ function Home() {
                 ))}
             </div>
 
-            <h2 style={{ color: "#ffffff" }}>ReseÃ±as destacadas</h2>
+            <h2 style={{ color: "#ffffff" }}>{"Rese\u00f1as destacadas"}</h2>
             <div className="reviews-grid" style={{ maxWidth: "800px", margin: "0 auto", padding: "0 20px" }}>
                 {reviews.map((review) => (
                     <ReviewCard
@@ -96,8 +94,7 @@ function Home() {
                     />
                 ))}
             </div>
-        </div >
+        </div>
     );
 }
 export default Home;
-

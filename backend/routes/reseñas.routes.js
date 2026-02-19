@@ -28,6 +28,7 @@ router.get('/', async (req, res) => {
             r.texto,
             r.nota,
             r.fecha_publicacion,
+            r.likes,
             u.nombre AS nombre_usuario,
             u.avatar AS avatar_usuario,
             j.titulo AS titulo_juego,
@@ -46,6 +47,7 @@ router.get('/', async (req, res) => {
             r.texto,
             r.nota,
             r.fecha_publicacion,
+            r.likes,
             u.nombre AS nombre_usuario,
             u.avatar AS avatar_usuario,
             j.titulo AS titulo_juego,
@@ -75,6 +77,7 @@ router.get('/', async (req, res) => {
         contenido: row.texto || '',
         puntuacion: row.nota !== null ? parseFloat(row.nota) : null,
         imagen: row.portada_juego || null,
+        likes: row.likes || 0,
         fecha: fecha,
       };
     });
@@ -83,6 +86,57 @@ router.get('/', async (req, res) => {
   } catch (error) {
     console.error('Error al obtener reseñas:', error);
     res.status(500).json({ error: 'Error al obtener las reseñas', detalle: error.message });
+  }
+});
+
+// GET /api/resenas/populares - Obtener reseñas populares (más likes)
+router.get('/populares', async (req, res) => {
+  try {
+    const [reseñas] = await pool.query(`
+      SELECT 
+        r.id_reseña,
+        r.id_juego,
+        r.texto,
+        r.nota,
+        r.fecha_publicacion,
+        r.likes,
+        u.nombre AS nombre_usuario,
+        u.avatar AS avatar_usuario,
+        u.id_usuario,
+        j.titulo AS titulo_juego,
+        j.portada AS portada_juego
+      FROM reseña r
+      INNER JOIN usuario u ON r.id_usuario = u.id_usuario
+      INNER JOIN juego j ON r.id_juego = j.id_juego
+      ORDER BY r.likes DESC, r.fecha_publicacion DESC
+      LIMIT 20
+    `);
+
+    const reseñasFormateadas = reseñas.map(row => {
+      let fecha = null;
+      if (row.fecha_publicacion) {
+        const date = new Date(row.fecha_publicacion);
+        fecha = date.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+      }
+      return {
+        id: row.id_reseña,
+        juegoId: row.id_juego,
+        usuario: row.nombre_usuario || null,
+        usuarioId: row.id_usuario,
+        avatar: row.avatar_usuario || null,
+        titulo: row.titulo_juego || null,
+        contenido: row.texto || '',
+        puntuacion: row.nota !== null ? parseFloat(row.nota) : null,
+        imagen: row.portada_juego || null,
+        likes: row.likes || 0,
+        fecha: fecha,
+      };
+    });
+
+    res.json(reseñasFormateadas);
+  } catch (error) {
+    console.error('Error al obtener reseñas populares:', error);
+    res.status(500).json({ error: 'Error al obtener reseñas populares' });
   }
 });
 
@@ -173,10 +227,27 @@ router.put('/:id/like', async (req, res) => {
       [id]
     );
     
-    res.json({ message: 'Like agregado exitosamente' });
+    res.json({ ok: true, message: 'Like agregado exitosamente' });
   } catch (error) {
     console.error('Error al dar like:', error);
     res.status(500).json({ error: 'Error al dar like' });
+  }
+});
+
+// PUT /api/reseñas/:id/unlike - Quitar like de una reseña
+router.put('/:id/unlike', async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    await pool.query(
+      'UPDATE reseña SET likes = GREATEST(likes - 1, 0) WHERE id_reseña = ?',
+      [id]
+    );
+    
+    res.json({ ok: true, message: 'Like eliminado exitosamente' });
+  } catch (error) {
+    console.error('Error al quitar like:', error);
+    res.status(500).json({ error: 'Error al quitar like' });
   }
 });
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import StarRating from "../components/StarRating";
 import GameLibraryCard from "../components/GameLibraryCard";
 import GameReviewCard from "../components/GameReviewCard";
@@ -8,6 +8,7 @@ const API_BASE_URL = '/api';
 
 function Game() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [game, setGame] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -15,6 +16,7 @@ function Game() {
   const [reviewText, setReviewText] = useState("");
   const [reviewRating, setReviewRating] = useState(0);
   const [message, setMessage] = useState(null);
+  const [relacionados, setRelacionados] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,7 +35,6 @@ function Game() {
           setGame(gameData);
         }
 
-        console.log("Reseñas cargadas inicialmente:", reviewsData);
         if (Array.isArray(reviewsData)) {
           setReviews(reviewsData);
         } else if (reviewsData.error) {
@@ -43,6 +44,19 @@ function Game() {
         console.error("Error cargando datos del juego:", error);
       } finally {
         setLoading(false);
+      }
+
+      // Cargar juegos relacionados aparte para que no bloquee la página
+      try {
+        const relacionadosRes = await fetch(`${API_BASE_URL}/juegos/${id}/relacionados`);
+        if (relacionadosRes.ok) {
+          const relacionadosData = await relacionadosRes.json();
+          if (Array.isArray(relacionadosData)) {
+            setRelacionados(relacionadosData);
+          }
+        }
+      } catch (error) {
+        console.error("Error cargando juegos relacionados:", error);
       }
     };
 
@@ -162,64 +176,6 @@ function Game() {
     }
 
   };
-
-  // Juegos relacionados
-  const RELACIONADOS_DATA = [
-    {
-      id: 51,
-      nombre: "Assassin's Creed: Bloodlines",
-      imagen:
-        "https://images.igdb.com/igdb/image/upload/t_cover_big/co1xia.webp",
-    },
-    {
-      id: 52,
-      nombre: "Assassin's Creed II",
-      imagen:
-        "https://images.igdb.com/igdb/image/upload/t_cover_big/co1rcf.webp",
-    },
-    {
-      id: 53,
-      nombre: "Assassin's Creed Brotherhood",
-      imagen:
-        "https://images.igdb.com/igdb/image/upload/t_cover_big/co6t4d.webp",
-    },
-    {
-      id: 54,
-      nombre: "Assassin's Creed Revelations",
-      imagen:
-        "https://images.igdb.com/igdb/image/upload/t_cover_big/co1xih.webp",
-    },
-    {
-      id: 55,
-      nombre: "Assassin's Creed III",
-      imagen:
-        "https://images.igdb.com/igdb/image/upload/t_cover_big/co1xii.webp",
-    },
-    {
-      id: 56,
-      nombre: "Assassin's Creed IV Black Flag",
-      imagen:
-        "https://images.igdb.com/igdb/image/upload/t_cover_big/co4qfn.webp",
-    },
-    {
-      id: 57,
-      nombre: "Assassin's Creed Unity",
-      imagen:
-        "https://images.igdb.com/igdb/image/upload/t_cover_big/co1xiq.webp",
-    },
-    {
-      id: 58,
-      nombre: "Assassin's Creed Rogue",
-      imagen:
-        "https://images.igdb.com/igdb/image/upload/t_cover_big/co1xir.webp",
-    },
-    {
-      id: 59,
-      nombre: "Assassin's Creed Mirage",
-      imagen:
-        "https://images.igdb.com/igdb/image/upload/t_cover_big/co57sj.webp",
-    },
-  ];
 
   if (loading) {
     return (
@@ -472,18 +428,24 @@ function Game() {
             scrollSnapType: "x mandatory",
           }}
         >
-          {RELACIONADOS_DATA.map((juego) => (
-            <div
-              key={juego.id}
-              style={{ flex: "0 0 auto", scrollSnapAlign: "start" }}
-            >
-              <GameLibraryCard
+          {relacionados.length > 0 ? (
+            relacionados.map((juego) => (
+              <div
                 key={juego.id}
-                nombre={juego.nombre}
-                portada={juego.imagen}
-              />
-            </div>
-          ))}
+                style={{ flex: "0 0 auto", scrollSnapAlign: "start", cursor: "pointer" }}
+                onClick={() => navigate(`/game/${juego.id}`)}
+              >
+                <GameLibraryCard
+                  nombre={juego.nombre}
+                  portada={juego.imagen}
+                />
+              </div>
+            ))
+          ) : (
+            <p style={{ color: "#9ca3af", padding: "20px" }}>
+              No se encontraron juegos relacionados.
+            </p>
+          )}
         </div>
       </section>
 
@@ -535,11 +497,13 @@ function Game() {
             reviews.map((review) => (
               <GameReviewCard
                 key={review.id}
-                foto={review.avatar || "https://via.placeholder.com/50"}
+                id={review.id}
+                foto={review.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${review.usuario}`}
                 usuario={review.usuario || "Usuario anónimo"}
                 desc={review.contenido || ""}
                 puntuacion={review.puntuacion}
                 fecha={review.fecha || ""}
+                likes={review.likes || 0}
               />
             ))
           )}
