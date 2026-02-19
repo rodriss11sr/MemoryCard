@@ -242,40 +242,83 @@ function Header() {
         style={{
           display: "flex",
           alignItems: "center",
-          gap: "10px",
-          cursor: "pointer",
+          gap: "12px",
         }}
-        onClick={() => navigate("/profile")}
       >
-        <span
-          style={{
-            color: "#ffffff",
-            fontFamily: "upheaval, system-ui",
-            fontSize: "0.95rem",
-            letterSpacing: "0.5px",
-          }}
-        >
-          {user.nombre || "Usuario"}
-        </span>
         <div
           style={{
-            width: "45px",
-            height: "45px",
-            borderRadius: "50%",
-            background: "#fff",
-            border: "2px solid #ffffff",
-            overflow: "hidden",
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            cursor: "pointer",
+          }}
+          onClick={() => navigate("/profile")}
+        >
+          <span
+            style={{
+              color: "#ffffff",
+              fontFamily: "upheaval, system-ui",
+              fontSize: "0.95rem",
+              letterSpacing: "0.5px",
+            }}
+          >
+            {user.nombre || "Usuario"}
+          </span>
+          <div
+            style={{
+              width: "45px",
+              height: "45px",
+              borderRadius: "50%",
+              background: "#fff",
+              border: "2px solid #ffffff",
+              overflow: "hidden",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexShrink: 0,
+            }}
+          >
+            <img
+              src={avatarUrl}
+              alt="avatar"
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            />
+          </div>
+        </div>
+        <div
+          title="Cerrar sesión"
+          onClick={() => {
+            localStorage.removeItem("user");
+            navigate("/login");
+          }}
+          style={{
+            cursor: "pointer",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            flexShrink: 0,
+            width: "32px",
+            height: "32px",
+            borderRadius: "6px",
+            transition: "background 0.2s ease",
           }}
+          onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(239,68,68,0.15)")}
+          onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
         >
-          <img
-            src={avatarUrl}
-            alt="avatar"
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
-          />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#ef4444"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg>
         </div>
       </div>
     </header>
