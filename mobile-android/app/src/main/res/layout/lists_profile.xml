@@ -137,7 +137,7 @@
             app:backgroundTint="#0466C8" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/createListBtn"
             android:layout_width="73dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
