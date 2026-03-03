@@ -1,5 +1,5 @@
 import { useState } from "react";
-import StarRating from "./StarRating";
+import StarRating from "./starRating";
 const API_BASE_URL = "/api";
 
 const GameReviewCard = ({
@@ -170,7 +170,7 @@ const GameReviewCard = ({
               {usuario}
             </h3>
             {puntuacion !== null && puntuacion !== undefined && (
-              <StarRating nota={puntuacion / 2} />
+              <StarRating nota={puntuacion} />
             )}
           </div>
           <p

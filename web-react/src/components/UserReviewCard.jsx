@@ -1,5 +1,5 @@
 import { useState } from "react";
-import StarRating from "./StarRating.jsx";
+import StarRating from "./starRating.jsx";
 
 const UserReviewCard = ({ titulo, contenido, puntuacion, imagen }) => {
 

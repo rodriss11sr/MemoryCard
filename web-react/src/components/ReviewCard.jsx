@@ -1,5 +1,5 @@
 import { useState } from "react";
-import StarRating from "./StarRating";
+import StarRating from "./starRating";
 
 function ReviewCard({ imagen, titulo, usuario, contenido, puntuacion, avatar }) {
 
@@ -144,7 +144,7 @@ function ReviewCard({ imagen, titulo, usuario, contenido, puntuacion, avatar }) 
           }}
         >
           {puntuacion !== null && puntuacion !== undefined && (
-            <StarRating nota={puntuacion / 2} size="1.2rem" />
+            <StarRating nota={puntuacion} size="1.2rem" />
           )}
           <span
             style={{
