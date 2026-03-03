@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -29,7 +30,6 @@ public class HeaderManager {
         ShapeableImageView profileBtn = headerView.findViewById(R.id.profileBtn);
         ImageButton searchBtn = headerView.findViewById(R.id.searchBtn);
 
-        // Lógica para abrir el Drawer (Menú lateral)
         if (slideMenu != null) {
             slideMenu.setOnClickListener(v -> {
                 View rootView = ((ViewGroup) activity.findViewById(android.R.id.content)).getChildAt(0);
@@ -49,7 +49,7 @@ public class HeaderManager {
 
         if (searchBtn != null) {
             searchBtn.setOnClickListener(v -> {
-                // Logica del buscador
+                
             });
         }
     }
