@@ -6,8 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
+
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -48,8 +52,14 @@ public class HeaderManager {
         }
 
         if (searchBtn != null) {
-            searchBtn.setOnClickListener(v -> {
-                
+            searchBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (activity instanceof AppCompatActivity) {
+                        SearchPopUp searchPopUp = new SearchPopUp();
+                        searchPopUp.show(((AppCompatActivity) activity).getSupportFragmentManager(), "SearchPopUp");
+                    }
+                }
             });
         }
     }

@@ -1,6 +1,5 @@
 package com.example.mobileapp;
 
-import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -30,14 +29,10 @@ public class CreateList extends DialogFragment {
     public void onStart() {
         super.onStart();
         if (getDialog() != null && getDialog().getWindow() != null) {
-            // Esto hace que el diálogo ocupe el 90% del ancho de la pantalla
             int width = (int)(getResources().getDisplayMetrics().widthPixels * 0.90);
-            // El alto se mantiene en wrap_content para que se ajuste a los elementos internos
             int height = ViewGroup.LayoutParams.WRAP_CONTENT;
 
             getDialog().getWindow().setLayout(width, height);
-
-            // También asegúrate de que el fondo sea transparente para que se vean tus bordes redondeados
             getDialog().getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
         }
     }
