@@ -11,6 +11,7 @@ function Friends() {
   const [siguiendo, setSiguiendo] = useState([]);
   const [seguidores, setSeguidores] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // Buscar usuarios
   const [searchQuery, setSearchQuery] = useState("");
@@ -19,23 +20,30 @@ function Friends() {
 
   // Cargar amigos
   const fetchAmigos = async () => {
-    if (!user.id) return;
+    if (!user.id) {
+      setError("Debes iniciar sesión para ver tus amigos.");
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
+    setError(null);
     try {
       const [sigRes, segRes] = await Promise.all([
         fetch(`${API_BASE_URL}/usuarios/${user.id}/amigos?tipo=siguiendo`),
         fetch(`${API_BASE_URL}/usuarios/${user.id}/amigos?tipo=seguidores`),
       ]);
 
-      if (sigRes.ok) {
-        const data = await sigRes.json();
-        if (Array.isArray(data)) setSiguiendo(data);
+      if (!sigRes.ok || !segRes.ok) {
+        throw new Error("Error al conectar con el servidor");
       }
-      if (segRes.ok) {
-        const data = await segRes.json();
-        if (Array.isArray(data)) setSeguidores(data);
-      }
-    } catch (error) {
-      console.error("Error cargando amigos:", error);
+
+      const sigData = await sigRes.json();
+      const segData = await segRes.json();
+      if (Array.isArray(sigData)) setSiguiendo(sigData);
+      if (Array.isArray(segData)) setSeguidores(segData);
+    } catch (err) {
+      console.error("Error cargando amigos:", err);
+      setError("No se pudieron cargar los amigos. Comprueba que el servidor esté encendido.");
     } finally {
       setLoading(false);
     }
@@ -77,7 +85,10 @@ function Friends() {
   }, [searchQuery]);
 
   // Seguir usuario
+  const [actionError, setActionError] = useState(null);
+
   const handleFollow = async (idSeguido) => {
+    setActionError(null);
     try {
       const res = await fetch(`${API_BASE_URL}/usuarios/${user.id}/seguir`, {
         method: "POST",
@@ -85,34 +96,39 @@ function Friends() {
         body: JSON.stringify({ id_seguido: idSeguido }),
       });
       if (res.ok) {
-        // Actualizar resultados de busqueda
         setSearchResults((prev) =>
           prev.map((u) => (u.id === idSeguido ? { ...u, ya_sigues: true } : u))
         );
-        // Recargar amigos
         fetchAmigos();
+      } else {
+        const data = await res.json();
+        setActionError(data.message || "No se pudo seguir al usuario");
       }
-    } catch (error) {
-      console.error("Error al seguir:", error);
+    } catch (err) {
+      console.error("Error al seguir:", err);
+      setActionError("Error de conexión al seguir al usuario");
     }
   };
 
   // Dejar de seguir
   const handleUnfollow = async (idSeguido) => {
+    setActionError(null);
     try {
       const res = await fetch(`${API_BASE_URL}/usuarios/${user.id}/seguir/${idSeguido}`, {
         method: "DELETE",
       });
       if (res.ok) {
-        // Actualizar resultados de busqueda
         setSearchResults((prev) =>
           prev.map((u) => (u.id === idSeguido ? { ...u, ya_sigues: false } : u))
         );
-        // Actualizar lista de siguiendo localmente
         setSiguiendo((prev) => prev.filter((u) => u.id !== idSeguido));
+      } else {
+        const data = await res.json();
+        setActionError(data.message || "No se pudo dejar de seguir al usuario");
       }
-    } catch (error) {
-      console.error("Error al dejar de seguir:", error);
+    } catch (err) {
+      console.error("Error al dejar de seguir:", err);
+      setActionError("Error de conexión al dejar de seguir al usuario");
     }
   };
 
@@ -125,6 +141,63 @@ function Friends() {
     return (
       <div style={{ backgroundColor: "#111827", minHeight: "100vh", padding: "40px 20px", color: "#fff", textAlign: "center" }}>
         <p>Cargando amigos...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div style={{ backgroundColor: "#111827", minHeight: "100vh", padding: "60px 20px" }}>
+        <div style={{
+          backgroundColor: "#2b303b",
+          border: "1px solid #ef4444",
+          borderRadius: "12px",
+          padding: "30px",
+          maxWidth: "500px",
+          margin: "0 auto",
+          textAlign: "center",
+        }}>
+          <p style={{ color: "#ef4444", fontSize: "1.5rem", margin: "0 0 10px 0" }}>⚠️</p>
+          <p style={{ color: "#ffffff", fontSize: "1rem", margin: "0 0 8px 0" }}>{error}</p>
+          <p style={{ color: "#9ca3af", fontSize: "0.85rem", margin: "0 0 20px 0" }}>
+            Puede que el servidor no esté iniciado o haya un problema de conexión.
+          </p>
+          <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
+            <button
+              onClick={fetchAmigos}
+              style={{
+                padding: "10px 24px",
+                borderRadius: "8px",
+                border: "none",
+                backgroundColor: "#29CDF2",
+                color: "#000",
+                cursor: "pointer",
+                fontFamily: "upheaval, system-ui",
+                fontWeight: "bold",
+                fontSize: "0.95rem",
+              }}
+            >
+              🔄 Reintentar
+            </button>
+            {!user.id && (
+              <button
+                onClick={() => navigate("/login")}
+                style={{
+                  padding: "10px 24px",
+                  borderRadius: "8px",
+                  border: "1px solid #3e4451",
+                  backgroundColor: "#2b303b",
+                  color: "#9ca3af",
+                  cursor: "pointer",
+                  fontFamily: "upheaval, system-ui",
+                  fontSize: "0.95rem",
+                }}
+              >
+                Iniciar sesión
+              </button>
+            )}
+          </div>
+        </div>
       </div>
     );
   }
@@ -253,6 +326,23 @@ function Friends() {
           </div>
         )}
       </div>
+
+      {/* Mensaje de error de acción */}
+      {actionError && (
+        <div style={{
+          maxWidth: "500px",
+          margin: "0 auto 20px auto",
+          padding: "12px 20px",
+          backgroundColor: "rgba(239, 68, 68, 0.1)",
+          border: "1px solid #ef4444",
+          borderRadius: "8px",
+          color: "#ef4444",
+          textAlign: "center",
+          fontSize: "0.9rem",
+        }}>
+          {actionError}
+        </div>
+      )}
 
       {/* Tabs */}
       <div style={{

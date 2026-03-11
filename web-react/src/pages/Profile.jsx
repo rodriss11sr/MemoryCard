@@ -23,8 +23,12 @@ function Perfil() {
   const [reviews, setReviews] = useState([]);
   const [listas, setListas] = useState([]);
   const [amigos, setAmigos] = useState([]);
+  const [error, setError] = useState(null);
 
   const loadProfileData = async () => {
+    setLoading(true);
+    setError(null);
+
     // Si hay un ID en la URL, es el perfil de otro usuario
     // Si no, es el perfil propio
     let idUsuario;
@@ -60,6 +64,10 @@ function Perfil() {
         fetch(`${API_BASE_URL}/usuarios/${idUsuario}/amigos?tipo=siguiendo`),
       ]);
 
+      if (!perfilRes.ok) {
+        throw new Error("No se pudo cargar el perfil del usuario");
+      }
+
       const perfilData = await perfilRes.json();
       const juegosData = await juegosRes.json();
       const wishlistData = await wishlistRes.json();
@@ -70,6 +78,8 @@ function Perfil() {
       if (perfilData.ok) {
         setUser(perfilData.user);
         setStats(perfilData.stats);
+      } else {
+        throw new Error(perfilData.message || "Error al cargar el perfil");
       }
 
       if (Array.isArray(juegosData)) {
@@ -89,8 +99,9 @@ function Perfil() {
       if (Array.isArray(reviewsData)) setReviews(reviewsData);
       if (Array.isArray(listasData)) setListas(listasData);
       if (Array.isArray(amigosData)) setAmigos(amigosData);
-    } catch (error) {
-      console.error("Error cargando datos del perfil:", error);
+    } catch (err) {
+      console.error("Error cargando datos del perfil:", err);
+      setError(err.message || "Error al cargar el perfil. Comprueba tu conexión.");
     } finally {
       setLoading(false);
     }
@@ -105,10 +116,66 @@ function Perfil() {
     return review ? review.puntuacion : undefined;
   };
 
-  if (loading || !user) {
+  if (loading) {
     return (
       <div style={{ textAlign: "center", padding: "2rem", color: "#ffffff" }}>
         <p>Cargando perfil...</p>
+      </div>
+    );
+  }
+
+  if (error || !user) {
+    return (
+      <div style={{ textAlign: "center", padding: "60px 20px" }}>
+        <div style={{
+          backgroundColor: "#2b303b",
+          border: "1px solid #ef4444",
+          borderRadius: "12px",
+          padding: "30px",
+          maxWidth: "500px",
+          margin: "0 auto",
+        }}>
+          <p style={{ color: "#ef4444", fontSize: "1.5rem", margin: "0 0 10px 0" }}>⚠️</p>
+          <p style={{ color: "#ffffff", fontSize: "1rem", margin: "0 0 8px 0" }}>
+            {error || "No se pudo cargar el perfil"}
+          </p>
+          <p style={{ color: "#9ca3af", fontSize: "0.85rem", margin: "0 0 20px 0" }}>
+            Puede que el usuario no exista o haya un problema con el servidor.
+          </p>
+          <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
+            <button
+              onClick={loadProfileData}
+              style={{
+                padding: "10px 24px",
+                borderRadius: "8px",
+                border: "none",
+                backgroundColor: "#29CDF2",
+                color: "#000",
+                cursor: "pointer",
+                fontFamily: "upheaval, system-ui",
+                fontWeight: "bold",
+                fontSize: "0.95rem",
+              }}
+            >
+              🔄 Reintentar
+            </button>
+            <button
+              onClick={() => navigate("/")}
+              style={{
+                padding: "10px 24px",
+                borderRadius: "8px",
+                border: "1px solid #3e4451",
+                backgroundColor: "#2b303b",
+                color: "#9ca3af",
+                cursor: "pointer",
+                fontFamily: "upheaval, system-ui",
+                fontSize: "0.95rem",
+              }}
+            >
+              Volver al inicio
+            </button>
+          </div>
+        </div>
       </div>
     );
   }

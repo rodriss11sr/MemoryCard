@@ -8,30 +8,41 @@ const API_BASE_URL = '/api';
 function Home() {
     const [juegos, setJuegos] = useState([]);
     const [reviews, setReviews] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const [juegosRes, reviewsRes] = await Promise.all([
-                    fetch(`${API_BASE_URL}/juegos`),
-                    fetch(`${API_BASE_URL}/resenas`),
-                ]);
+    const fetchData = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const [juegosRes, reviewsRes] = await Promise.all([
+                fetch(`${API_BASE_URL}/juegos`),
+                fetch(`${API_BASE_URL}/resenas`),
+            ]);
 
-                const juegosData = await juegosRes.json();
-                const reviewsData = await reviewsRes.json();
-
-                if (Array.isArray(juegosData)) {
-                    setJuegos(juegosData);
-                }
-                if (Array.isArray(reviewsData)) {
-                    setReviews(reviewsData.slice(0, 5));
-                }
-            } catch (error) {
-                console.error("Error cargando datos de inicio:", error);
+            if (!juegosRes.ok || !reviewsRes.ok) {
+                throw new Error("Error al conectar con el servidor");
             }
-        };
 
+            const juegosData = await juegosRes.json();
+            const reviewsData = await reviewsRes.json();
+
+            if (Array.isArray(juegosData)) {
+                setJuegos(juegosData);
+            }
+            if (Array.isArray(reviewsData)) {
+                setReviews(reviewsData.slice(0, 5));
+            }
+        } catch (err) {
+            console.error("Error cargando datos de inicio:", err);
+            setError("No se pudieron cargar los datos. Comprueba que el servidor esté encendido.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
         fetchData();
     }, []);
 
@@ -45,6 +56,51 @@ function Home() {
             return dateB - dateA;
         })
         .slice(0, 10);
+
+    if (loading) {
+        return (
+            <div className="home-container" style={{ textAlign: "center", padding: "60px 20px" }}>
+                <p style={{ color: "#9ca3af", fontSize: "1.1rem" }}>Cargando contenido...</p>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="home-container" style={{ textAlign: "center", padding: "60px 20px" }}>
+                <div style={{
+                    backgroundColor: "#2b303b",
+                    border: "1px solid #ef4444",
+                    borderRadius: "12px",
+                    padding: "30px",
+                    maxWidth: "500px",
+                    margin: "0 auto",
+                }}>
+                    <p style={{ color: "#ef4444", fontSize: "1.5rem", margin: "0 0 10px 0" }}>⚠️</p>
+                    <p style={{ color: "#ffffff", fontSize: "1rem", margin: "0 0 8px 0" }}>{error}</p>
+                    <p style={{ color: "#9ca3af", fontSize: "0.85rem", margin: "0 0 20px 0" }}>
+                        Puede que el servidor no esté iniciado o haya un problema de conexión.
+                    </p>
+                    <button
+                        onClick={fetchData}
+                        style={{
+                            padding: "10px 24px",
+                            borderRadius: "8px",
+                            border: "none",
+                            backgroundColor: "#29CDF2",
+                            color: "#000",
+                            cursor: "pointer",
+                            fontFamily: "upheaval, system-ui",
+                            fontWeight: "bold",
+                            fontSize: "0.95rem",
+                        }}
+                    >
+                        🔄 Reintentar
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="home-container">

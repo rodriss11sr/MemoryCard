@@ -17,50 +17,59 @@ function Game() {
   const [reviewRating, setReviewRating] = useState(0);
   const [message, setMessage] = useState(null);
   const [relacionados, setRelacionados] = useState([]);
+  const [error, setError] = useState(null);
+
+  const fetchGameData = async () => {
+    setLoading(true);
+    setError(null);
+    setGame(null);
+    setReviews([]);
+    setRelacionados([]);
+
+    try {
+      const [gameRes, reviewsRes] = await Promise.all([
+        fetch(`${API_BASE_URL}/juegos/${id}`),
+        fetch(`${API_BASE_URL}/resenas?id_juego=${id}`),
+      ]);
+
+      if (!gameRes.ok) {
+        throw new Error("No se pudo cargar la información del juego");
+      }
+
+      const gameData = await gameRes.json();
+      const reviewsData = await reviewsRes.json();
+
+      if (gameData.error) {
+        throw new Error(gameData.error);
+      }
+      setGame(gameData);
+
+      if (Array.isArray(reviewsData)) {
+        setReviews(reviewsData);
+      }
+    } catch (err) {
+      console.error("Error cargando datos del juego:", err);
+      setError(err.message || "Error al cargar el juego. Comprueba tu conexión.");
+    } finally {
+      setLoading(false);
+    }
+
+    // Cargar juegos relacionados aparte para que no bloquee la página
+    try {
+      const relacionadosRes = await fetch(`${API_BASE_URL}/juegos/${id}/relacionados`);
+      if (relacionadosRes.ok) {
+        const relacionadosData = await relacionadosRes.json();
+        if (Array.isArray(relacionadosData)) {
+          setRelacionados(relacionadosData);
+        }
+      }
+    } catch (err) {
+      console.error("Error cargando juegos relacionados:", err);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [gameRes, reviewsRes] = await Promise.all([
-          fetch(`${API_BASE_URL}/juegos/${id}`),
-          fetch(`${API_BASE_URL}/resenas?id_juego=${id}`),
-        ]);
-
-        const gameData = await gameRes.json();
-        const reviewsData = await reviewsRes.json();
-
-        if (!gameRes.ok || gameData.error) {
-          console.error("Error cargando juego:", gameData.error || gameData);
-        } else {
-          setGame(gameData);
-        }
-
-        if (Array.isArray(reviewsData)) {
-          setReviews(reviewsData);
-        } else if (reviewsData.error) {
-          console.error("Error al cargar reseñas:", reviewsData.error);
-        }
-      } catch (error) {
-        console.error("Error cargando datos del juego:", error);
-      } finally {
-        setLoading(false);
-      }
-
-      // Cargar juegos relacionados aparte para que no bloquee la página
-      try {
-        const relacionadosRes = await fetch(`${API_BASE_URL}/juegos/${id}/relacionados`);
-        if (relacionadosRes.ok) {
-          const relacionadosData = await relacionadosRes.json();
-          if (Array.isArray(relacionadosData)) {
-            setRelacionados(relacionadosData);
-          }
-        }
-      } catch (error) {
-        console.error("Error cargando juegos relacionados:", error);
-      }
-    };
-
-    fetchData();
+    fetchGameData();
   }, [id]);
 
   // Obtener usuario del localStorage
@@ -159,7 +168,6 @@ function Game() {
         // Recargar reseñas
         const reviewsRes = await fetch(`${API_BASE_URL}/resenas?id_juego=${id}`);
         const reviewsData = await reviewsRes.json();
-        console.log("Reseñas recargadas:", reviewsData);
         if (Array.isArray(reviewsData)) {
           setReviews(reviewsData);
         } else if (reviewsData.error) {
@@ -185,10 +193,58 @@ function Game() {
     );
   }
 
-  if (!game) {
+  if (error || !game) {
     return (
-      <div className="game-page" style={{ textAlign: "center", padding: "2rem", color: "#ffffff", backgroundColor: "#111827", minHeight: "100vh" }}>
-        <p>No se ha encontrado el juego.</p>
+      <div className="game-page" style={{ textAlign: "center", padding: "60px 20px", backgroundColor: "#111827", minHeight: "100vh" }}>
+        <div style={{
+          backgroundColor: "#2b303b",
+          border: "1px solid #ef4444",
+          borderRadius: "12px",
+          padding: "30px",
+          maxWidth: "500px",
+          margin: "0 auto",
+        }}>
+          <p style={{ color: "#ef4444", fontSize: "1.5rem", margin: "0 0 10px 0" }}>⚠️</p>
+          <p style={{ color: "#ffffff", fontSize: "1rem", margin: "0 0 8px 0" }}>
+            {error || "No se ha encontrado el juego"}
+          </p>
+          <p style={{ color: "#9ca3af", fontSize: "0.85rem", margin: "0 0 20px 0" }}>
+            Puede que el juego no exista o haya un problema con el servidor.
+          </p>
+          <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
+            <button
+              onClick={fetchGameData}
+              style={{
+                padding: "10px 24px",
+                borderRadius: "8px",
+                border: "none",
+                backgroundColor: "#29CDF2",
+                color: "#000",
+                cursor: "pointer",
+                fontFamily: "upheaval, system-ui",
+                fontWeight: "bold",
+                fontSize: "0.95rem",
+              }}
+            >
+              🔄 Reintentar
+            </button>
+            <button
+              onClick={() => navigate("/")}
+              style={{
+                padding: "10px 24px",
+                borderRadius: "8px",
+                border: "1px solid #3e4451",
+                backgroundColor: "#2b303b",
+                color: "#9ca3af",
+                cursor: "pointer",
+                fontFamily: "upheaval, system-ui",
+                fontSize: "0.95rem",
+              }}
+            >
+              Volver al inicio
+            </button>
+          </div>
+        </div>
       </div>
     );
   }
@@ -458,7 +514,6 @@ function Game() {
               try {
                 const reviewsRes = await fetch(`${API_BASE_URL}/resenas?id_juego=${id}`);
                 const reviewsData = await reviewsRes.json();
-                console.log("Reseñas recargadas manualmente:", reviewsData);
                 if (Array.isArray(reviewsData)) {
                   setReviews(reviewsData);
                 }

@@ -9,6 +9,7 @@ function Reviews() {
   const [resenas, setResenas] = useState([]);
   const [tab, setTab] = useState("populares");
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [likedReviews, setLikedReviews] = useState(() => {
     // Limpiar duplicados al cargar
     const raw = JSON.parse(localStorage.getItem("likedReviews") || "[]");
@@ -21,14 +22,18 @@ function Reviews() {
 
   // Función para cargar reseñas del servidor
   const fetchResenas = async () => {
+    setLoading(true);
+    setError(null);
     try {
       const res = await fetch(`${API_BASE_URL}/resenas`);
-      if (res.ok) {
-        const data = await res.json();
-        if (Array.isArray(data)) setResenas(data);
+      if (!res.ok) {
+        throw new Error("Error al conectar con el servidor");
       }
-    } catch (error) {
-      console.error("Error cargando reseñas:", error);
+      const data = await res.json();
+      if (Array.isArray(data)) setResenas(data);
+    } catch (err) {
+      console.error("Error cargando reseñas:", err);
+      setError("No se pudieron cargar las reseñas. Comprueba que el servidor esté encendido.");
     } finally {
       setLoading(false);
     }
@@ -94,6 +99,44 @@ function Reviews() {
     return (
       <div style={{ backgroundColor: "#111827", minHeight: "100vh", padding: "40px 20px", color: "#fff", textAlign: "center" }}>
         <p>Cargando reseñas...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div style={{ backgroundColor: "#111827", minHeight: "100vh", padding: "60px 20px" }}>
+        <div style={{
+          backgroundColor: "#2b303b",
+          border: "1px solid #ef4444",
+          borderRadius: "12px",
+          padding: "30px",
+          maxWidth: "500px",
+          margin: "0 auto",
+          textAlign: "center",
+        }}>
+          <p style={{ color: "#ef4444", fontSize: "1.5rem", margin: "0 0 10px 0" }}>⚠️</p>
+          <p style={{ color: "#ffffff", fontSize: "1rem", margin: "0 0 8px 0" }}>{error}</p>
+          <p style={{ color: "#9ca3af", fontSize: "0.85rem", margin: "0 0 20px 0" }}>
+            Puede que el servidor no esté iniciado o haya un problema de conexión.
+          </p>
+          <button
+            onClick={fetchResenas}
+            style={{
+              padding: "10px 24px",
+              borderRadius: "8px",
+              border: "none",
+              backgroundColor: "#29CDF2",
+              color: "#000",
+              cursor: "pointer",
+              fontFamily: "upheaval, system-ui",
+              fontWeight: "bold",
+              fontSize: "0.95rem",
+            }}
+          >
+            🔄 Reintentar
+          </button>
+        </div>
       </div>
     );
   }
