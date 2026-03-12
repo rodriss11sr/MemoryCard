@@ -10,15 +10,12 @@ import android.widget.EditText;
 import androidx.fragment.app.DialogFragment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AddGame extends DialogFragment {
-
-    private GameAdapter gameAdapter;
-    private List<Game> allGames;
-
 
     @Nullable
     @Override
@@ -27,12 +24,6 @@ public class AddGame extends DialogFragment {
         if(getDialog() != null && getDialog().getWindow() != null){
             getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
-        EditText gameSearch = view.findViewById(R.id.itemNameSearch);
-        RecyclerView gameResults = view.findViewById(R.id.itemGameResults);
-
-        allGames = new ArrayList<>();
-        allGames.add(new Game("Ball x Pit", "PC / PS5 / Switch", R.drawable.ballxpit));
-
         return view;
     }
     @Override
@@ -44,7 +35,6 @@ public class AddGame extends DialogFragment {
 
             getDialog().getWindow().setLayout(width, height);
             getDialog().getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
-
         }
     }
 }
