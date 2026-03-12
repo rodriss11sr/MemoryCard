@@ -4,6 +4,7 @@ import AppLayout from "./components/AppLayout.jsx";
 import LogIn from "./pages/LogIn.jsx";
 import SignIn from "./pages/SignIn.jsx";
 import Password from "./pages/Password.jsx";
+import ResetPassword from "./pages/ResetPassword.jsx";
 import Home from "./pages/Home.jsx";
 import Profile from "./pages/Profile.jsx";
 import Game from "./pages/Game.jsx";
@@ -31,6 +32,8 @@ function App() {
         <Route path="/signin" element={<SignIn />} />
         {/*Recuperar contraseña (Sin header ni sidebar)*/}
         <Route path="/password" element={<Password />} />
+        {/*Cambiar contraseña con token (Sin header ni sidebar)*/}
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
         {/*Inicio (con header y sidebar)*/}
         <Route
           path="/"

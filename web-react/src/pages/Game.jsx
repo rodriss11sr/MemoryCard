@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import StarRating from "../components/StarRating";
 import GameLibraryCard from "../components/GameLibraryCard";
 import GameReviewCard from "../components/GameReviewCard";
+import AddToListModal from "../components/AddToListModal";
 
 const API_BASE_URL = '/api';
 
@@ -18,6 +19,7 @@ function Game() {
   const [message, setMessage] = useState(null);
   const [relacionados, setRelacionados] = useState([]);
   const [error, setError] = useState(null);
+  const [showListModal, setShowListModal] = useState(false);
 
   const fetchGameData = async () => {
     setLoading(true);
@@ -368,6 +370,20 @@ function Game() {
             Completado
           </button>
           <button
+            onClick={() => setShowListModal(true)}
+            style={{
+              padding: "10px 20px",
+              background: "#2b303b",
+              border: "1px solid #3e4451",
+              borderRadius: "8px",
+              color: "#ffffff",
+              cursor: "pointer",
+              fontFamily: "upheaval, system-ui",
+            }}
+          >
+            Añadir a Lista
+          </button>
+          <button
             onClick={() => setShowReviewForm(!showReviewForm)}
             style={{
               padding: "10px 20px",
@@ -383,6 +399,15 @@ function Game() {
             {showReviewForm ? "Cancelar Reseña" : "Escribir Reseña"}
           </button>
         </div>
+      )}
+
+      {/* Modal para añadir a lista */}
+      {showListModal && game && (
+        <AddToListModal
+          onClose={() => setShowListModal(false)}
+          idJuego={parseInt(id)}
+          nombreJuego={game.titulo}
+        />
       )}
 
       {message && (

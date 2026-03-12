@@ -1,36 +1,47 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const API_BASE_URL = '/api';
 
-function Password() {
+function ResetPassword() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
+  const { token } = useParams();
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handlePassword = async (e) => {
+  const isSamePassword = password === confirmPassword;
+
+  const handleReset = async (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
+
+    if (!isSamePassword) {
+      setError("Las contraseñas no coinciden");
+      return;
+    }
+
     setLoading(true);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/auth/forgot-password`, {
+      const response = await fetch(`${API_BASE_URL}/auth/reset-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ token, password }),
       });
 
       const data = await response.json();
 
       if (!response.ok || !data.ok) {
-        setError(data.message || "Error al procesar la solicitud");
+        setError(data.message || "No se pudo cambiar la contraseña");
         return;
       }
 
-      setSuccess("Si el correo existe, recibirás instrucciones para recuperar tu contraseña. Revisa la consola del backend para ver el enlace.");
+      setSuccess("Contraseña actualizada correctamente. Redirigiendo al login...");
+      setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
       setError("No se pudo conectar con el servidor. Comprueba que esté encendido e inténtalo de nuevo.");
     } finally {
@@ -79,7 +90,7 @@ function Password() {
   return (
     <div style={containerStyle}>
       <div style={{ textAlign: "center", marginBottom: "20px" }}>
-        <h2 style={{ marginBottom: "5px" }}>Recuperar contraseña</h2>
+        <h2 style={{ marginBottom: "5px" }}>Nueva Contraseña</h2>
         <p
           style={{
             color: "var(--text-secondary)",
@@ -88,7 +99,7 @@ function Password() {
             fontSize: "1rem",
           }}
         >
-          Ingresa el email y te enviaremos instrucciones para recuperar la cuenta
+          Ingresa tu nueva contraseña
         </p>
         {error && (
           <p style={{ color: "#ff6b6b", fontFamily: "m6x11plus", fontSize: "0.9rem" }}>
@@ -101,7 +112,7 @@ function Password() {
           </p>
         )}
       </div>
-      <form onSubmit={handlePassword}>
+      <form onSubmit={handleReset}>
         <div style={{ textAlign: "left" }}>
           <label
             style={{
@@ -111,25 +122,45 @@ function Password() {
               fontFamily: "m6x11plus",
             }}
           >
-            Correo Electrónico
+            Nueva Contraseña
           </label>
           <input
-            type="email"
-            placeholder="email@domain.com"
+            type="password"
+            placeholder="••••••"
             style={inputStyle}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+        <div style={{ textAlign: "left", marginTop: "10px" }}>
+          <label
+            style={{
+              fontSize: "0.8rem",
+              marginLeft: "5px",
+              color: "var(--text-secondary)",
+              fontFamily: "m6x11plus",
+            }}
+          >
+            Confirmar Contraseña
+          </label>
+          <input
+            type="password"
+            placeholder="••••••"
+            style={inputStyle}
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
         </div>
         <button
           type="submit"
-          style={{ ...buttonStyle, opacity: loading ? 0.6 : 1 }}
-          disabled={loading}
+          style={{ ...buttonStyle, opacity: loading || !isSamePassword ? 0.6 : 1 }}
+          disabled={loading || !isSamePassword}
           onMouseOver={(e) => (e.target.style.opacity = "0.9")}
           onMouseOut={(e) => (e.target.style.opacity = "1")}
         >
-          {loading ? "Enviando..." : "Recuperar"}
+          {loading ? "Cambiando..." : "Cambiar Contraseña"}
         </button>
       </form>
       <p
@@ -140,7 +171,7 @@ function Password() {
           color: "var(--text-secondary)",
         }}
       >
-        ¿Ya tienes cuenta?{" "}
+        ¿Ya recuerdas tu contraseña?{" "}
         <span
           style={{ color: "#29CDF2", cursor: "pointer" }}
           onClick={() => navigate("/login")}
@@ -152,4 +183,4 @@ function Password() {
   );
 }
 
-export default Password;
+export default ResetPassword;

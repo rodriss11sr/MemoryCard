@@ -158,6 +158,27 @@ router.post('/:id/juegos', async (req, res) => {
   }
 });
 
+// DELETE /api/listas/:id/juegos/:id_juego - Eliminar un juego de una lista
+router.delete('/:id/juegos/:id_juego', async (req, res) => {
+  try {
+    const { id, id_juego } = req.params;
+
+    const [result] = await pool.query(
+      'DELETE FROM contiene WHERE id_lista = ? AND id_juego = ?',
+      [id, id_juego]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ ok: false, message: 'El juego no estaba en la lista' });
+    }
+
+    res.json({ ok: true, message: 'Juego eliminado de la lista' });
+  } catch (error) {
+    console.error('Error al eliminar juego de la lista:', error);
+    res.status(500).json({ ok: false, message: 'Error al eliminar el juego de la lista', detalle: error.message });
+  }
+});
+
 // GET /api/listas/usuario/:id - Obtener listas de un usuario (formato compatible con PHP)
 router.get('/usuario/:id', async (req, res) => {
   try {
