@@ -1,21 +1,18 @@
 package com.example.mobileapp;
 
 public class Games {
-    private String title;
-    private String image;
-    private float rating;
+    private String name;
+    private String platforms;
+    private float imageResId;
 
-    public Games(String title, String image, float rating){
-        this.title=title;
-        this.image=image;
-        this.rating=rating;
+    public Games(String name, String platforms, int imageResId){
+        this.name=name;
+        this.platforms=platforms;
+        this.imageResId=imageResId;
     }
 
-    //Getters para los datos de los juegos.
-    public String getTitle(){return this.title;}
-    public String getImage(){return this.image;}
-    public float getRating(){return this.rating;}
-
-
+    public String getName(){return name;}
+    public String getPlatforms(){return platforms;}
+    public float getImageResId(){return this.imageResId;}
 }
 

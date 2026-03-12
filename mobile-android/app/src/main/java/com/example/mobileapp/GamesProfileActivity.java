@@ -14,6 +14,7 @@ public class GamesProfileActivity extends AppCompatActivity {
     Button wishlistProfile;
     Button reviewsProfile;
     Button listProfile;
+    Button addGame;
 
 
     @Override
@@ -21,7 +22,7 @@ public class GamesProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gamesprofile);
         new HeaderManager(this);
-        //Variables del accordion
+
         View accordionView = findViewById(R.id.accordion_games_profile);
         TextView accordionTitle = findViewById(R.id.accordion_title);
         ImageView arrowIcon = accordionView.findViewById(R.id.arrow_icon);
@@ -30,6 +31,7 @@ public class GamesProfileActivity extends AppCompatActivity {
         Button nameAccordionGamesProfile = findViewById(R.id.nameAccordionGamesProfile);
         Button ratingAccordionGamesProfile = findViewById(R.id.ratingAccordionGamesProfile);
         Button latestAddedAccordionGamesProfile = findViewById(R.id.LatestAddedAccordionGamesProfile);
+
 
         reviewsProfile = findViewById(R.id.reviewsProfileBtn);
         wishlistProfile = findViewById(R.id.wishlistProfileBtn);
@@ -88,5 +90,16 @@ public class GamesProfileActivity extends AppCompatActivity {
 
         accordionTitle.setOnClickListener(toggleAccordion);
         arrowIcon.setOnClickListener(toggleAccordion);
+
+
+        Button addGame = findViewById(R.id.addGameBtn);
+        addGame.setOnClickListener(v -> {
+            AddGame dialog = new AddGame();
+            dialog.show(getSupportFragmentManager(), "AddGame");
+
+        });
+
+
+
     }
 }

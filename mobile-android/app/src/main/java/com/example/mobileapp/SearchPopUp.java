@@ -24,10 +24,11 @@ public class SearchPopUp extends DialogFragment {
     public void onStart() {
         super.onStart();
         if (getDialog() != null && getDialog().getWindow() != null) {
-            int width = ViewGroup.LayoutParams.MATCH_PARENT;
+            int width = (int)(getResources().getDisplayMetrics().widthPixels * 0.90);
             int height = ViewGroup.LayoutParams.WRAP_CONTENT;
 
             getDialog().getWindow().setLayout(width, height);
+            getDialog().getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
 
         }
     }
