@@ -3,7 +3,7 @@ package com.example.mobileapp;
 public class Games {
     private String name;
     private String platforms;
-    private float imageResId;
+    private int imageResId;
 
     public Games(String name, String platforms, int imageResId){
         this.name=name;
@@ -13,6 +13,6 @@ public class Games {
 
     public String getName(){return name;}
     public String getPlatforms(){return platforms;}
-    public float getImageResId(){return this.imageResId;}
+    public int getImageResId(){return this.imageResId;}
 }
 

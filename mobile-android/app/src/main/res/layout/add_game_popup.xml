@@ -52,9 +52,7 @@
             android:id="@+id/itemGameResults"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:visibility="gone" />
-
-        <!-- Fila de juegos (Placeholders) -->
-
+            android:visibility="visible"
+            />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

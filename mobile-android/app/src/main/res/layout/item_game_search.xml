@@ -16,7 +16,10 @@
             android:layout_width="60dp"
             android:layout_height="80dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/ballxpit" /> <!-- replace with your placeholder -->
+            android:src="@drawable/ballxpit"
+            android:background="@drawable/game_miniature_shape"
+            android:clipToOutline="true"
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,16 +32,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textStyle="bold"
+                android:textSize="24sp"
+                android:fontFamily="@font/m6x11plus"
                 android:text="Ball x Pit" />
 
             <TextView
                 android:id="@+id/itemGamePlatforms"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#AAAAAA"
-                android:textSize="12sp"
+                android:textColor="#9C9C9C"
+                android:fontFamily="@font/m6x11plus"
+                android:textSize="20sp"
                 android:text="PC / PS5 / Switch" />
         </LinearLayout>
     </LinearLayout>

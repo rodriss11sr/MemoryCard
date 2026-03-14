@@ -3,6 +3,8 @@ package com.example.mobileapp;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import java.util.List;
 
 public class AddGame extends DialogFragment {
 
+    private GameAdapter adapter;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -24,6 +27,32 @@ public class AddGame extends DialogFragment {
         if(getDialog() != null && getDialog().getWindow() != null){
             getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
+        EditText searchInput = view.findViewById(R.id.itemNameSearch);
+        RecyclerView recyclerView = view.findViewById(R.id.itemGameResults);
+
+        List<Games> listaGames = new ArrayList<>();
+        listaGames.add(new Games("portal (2007)", "PC / PS3 / Xbox360", R.drawable.portal));
+        listaGames.add(new Games("portal 2 (2011)", "PC / PS3 / Xbox360", R.drawable.portal2));
+        listaGames.add(new Games("Dark Souls 3", "PC / PS4 / XboxOne", R.drawable.ds3));
+        listaGames.add(new Games("The Binding of Isaac", "PC / PS4 / XboxOne / Switch", R.drawable.tboi));
+        listaGames.add(new Games("Monster Hunter World", "PC / PS4 / XboxOne / Switch", R.drawable.mhworld));
+        listaGames.add(new Games("Monster Hunter Wilds", "PC / PS4 / XboxS", R.drawable.mhwilds));
+
+
+        adapter = new GameAdapter(listaGames);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(adapter);
+
+        searchInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                adapter.getFilter().filter(s);
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
         return view;
     }
     @Override
