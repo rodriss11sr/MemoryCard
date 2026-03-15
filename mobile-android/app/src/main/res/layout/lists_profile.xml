@@ -168,9 +168,11 @@
                 android:layout_gravity="center"
                 android:background="@drawable/button_shape"
                 android:backgroundTint="#2D333E"
+                android:layout_margin="8dp"
                 >
 
                 <Button
+                    android:id="@+id/rogueLike"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="#00FFFFFF"
@@ -246,6 +248,7 @@
                 android:layout_margin="8dp">
 
                 <Button
+                    android:id="@+id/peakGames"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="#00FFFFFF"

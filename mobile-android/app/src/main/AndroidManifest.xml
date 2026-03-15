@@ -48,8 +48,13 @@
         <activity android:name=".ListsProfileActivity"
             android:exported="false"
             />
-
-
+        <activity android:name=".InsideListGamesActivity"
+            android:exported="false"
+            />
+        <activity android:name=".FriendsProfileActivity"
+            android:exported="false"
+            />
+"
 
     </application>
 

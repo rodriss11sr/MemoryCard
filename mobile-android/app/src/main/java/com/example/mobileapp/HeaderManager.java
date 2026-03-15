@@ -79,6 +79,22 @@ public class HeaderManager {
                     if (!(activity instanceof MainScreenActivity)) {
                         activity.startActivity(new Intent(activity, MainScreenActivity.class));
                     }
+                } else if (itemId == R.id.nav_reviews){
+                    if(!(activity instanceof ReviewProfileActivity)){
+                        activity.startActivity(new Intent(activity, ReviewProfileActivity.class));
+                    }
+                } else if (itemId == R.id.nav_wishlist){
+                    if(!(activity instanceof WishlistProfileActivity)){
+                        activity.startActivity(new Intent(activity, WishlistProfileActivity.class));
+                    }
+                } else if (itemId == R.id.nav_friends){
+                    if(!(activity instanceof FriendsProfileActivity)){
+                        activity.startActivity(new Intent(activity, FriendsProfileActivity.class));
+                    }
+                }else if (itemId == R.id.nav_logout){
+                    if(!(activity instanceof LogInActivity)) {
+                        activity.startActivity(new Intent(activity, LogInActivity.class));
+                    }
                 }
 
                 if (drawer != null) {

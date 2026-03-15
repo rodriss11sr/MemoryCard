@@ -12,6 +12,8 @@ public class ProfileActivity extends AppCompatActivity {
     Button wishlistProfile;
     Button reviewsProfile;
     Button listProfile;
+    Button friendsProfile;
+
 
 
     @Override
@@ -24,6 +26,8 @@ public class ProfileActivity extends AppCompatActivity {
         wishlistProfile = findViewById(R.id.wishlistProfileBtn);
         reviewsProfile = findViewById(R.id.reviewsProfileBtn);
         listProfile = findViewById(R.id.listProfileBtn);
+        friendsProfile=findViewById(R.id.friendsProfileBtn);
+
 
         listProfile.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -50,6 +54,13 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ProfileActivity.this, ReviewProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+        friendsProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, FriendsProfileActivity.class);
                 startActivity(intent);
             }
         });

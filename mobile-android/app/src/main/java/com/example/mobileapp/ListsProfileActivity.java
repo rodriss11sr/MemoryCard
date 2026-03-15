@@ -11,6 +11,7 @@ public class ListsProfileActivity extends AppCompatActivity {
     Button gamesProfile;
     Button wishlistProfile;
     Button reviewsProfile;
+    Button peakGamesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +22,7 @@ public class ListsProfileActivity extends AppCompatActivity {
         gamesProfile = findViewById(R.id.gamesProfileBtn);
         wishlistProfile = findViewById(R.id.wishlistProfileBtn);
         reviewsProfile = findViewById(R.id.reviewsProfileBtn);
+        peakGamesList = findViewById(R.id.peakGames);
 
 
         reviewsProfile.setOnClickListener(new View.OnClickListener() {
@@ -46,6 +48,10 @@ public class ListsProfileActivity extends AppCompatActivity {
             }
         });
 
+        if (peakGamesList != null) {
+            peakGamesList.setOnClickListener(v -> openList("Peak Games"));
+        }
+
         Button createList = findViewById(R.id.createListBtn);
         createList.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,5 +60,11 @@ public class ListsProfileActivity extends AppCompatActivity {
                 dialog.show(getSupportFragmentManager(), "CreateList");
             }
         });
+    }
+
+    private void openList(String listName) {
+        Intent intent = new Intent(this, InsideListGamesActivity.class);
+        intent.putExtra("LIST_NAME", listName);
+        startActivity(intent);
     }
 }
