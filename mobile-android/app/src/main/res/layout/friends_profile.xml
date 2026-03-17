@@ -99,7 +99,6 @@
                     android:id="@+id/friendBtn"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:layout_centerInParent="true"
                     android:scaleType="centerCrop"
                     android:src="@drawable/john_bloodborne"
                     app:shapeAppearanceOverlay="@style/ShapeAppearance.App.CircleImageView" />
@@ -113,7 +112,7 @@
                     <TextView
                         android:id="@+id/johnBloodborne"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="0dp"
                         android:layout_gravity="center"
                         android:layout_weight="1"
                         android:fontFamily="@font/upheavtt"
@@ -166,7 +165,6 @@
                     android:id="@+id/friendBtn2"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:layout_centerInParent="true"
                     android:scaleType="centerCrop"
                     android:src="@drawable/frog"
                     app:shapeAppearanceOverlay="@style/ShapeAppearance.App.CircleImageView" />
@@ -180,7 +178,7 @@
                     <TextView
                         android:id="@+id/relajaoRelajao"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="0dp"
                         android:layout_gravity="center"
                         android:layout_weight="1"
                         android:fontFamily="@font/upheavtt"

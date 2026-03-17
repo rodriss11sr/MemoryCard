@@ -66,7 +66,6 @@ public class HeaderManager {
     private void setupNavigationMenu() {
         NavigationView navigationView = activity.findViewById(R.id.nav_view);
         DrawerLayout drawer = activity.findViewById(R.id.drawer_layout);
-
         if (navigationView != null) {
             navigationView.setNavigationItemSelectedListener(item -> {
                 int itemId = item.getItemId();
