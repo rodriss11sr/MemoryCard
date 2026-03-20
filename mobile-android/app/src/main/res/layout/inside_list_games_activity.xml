@@ -16,7 +16,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <include
-            layout="@layout/reviews_profile"
+            layout="@layout/inside_list_games"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintTop_toBottomOf="@id/header"
