@@ -43,11 +43,9 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="725dp"
+        android:layout_height="635dp"
         android:layout_marginStart="1dp"
-        android:layout_marginEnd="1dp"
         android:layout_marginTop="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/accordion_games_profile">
 
@@ -125,6 +123,7 @@
                         android:textSize="18sp" />
                 </LinearLayout>
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -194,6 +193,7 @@
                         android:textSize="18sp" />
                 </LinearLayout>
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -263,6 +263,7 @@
                         android:textSize="18sp" />
                 </LinearLayout>
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -332,6 +333,7 @@
                         android:textSize="18sp" />
                 </LinearLayout>
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -401,6 +403,8 @@
                         android:textSize="18sp" />
                 </LinearLayout>
             </LinearLayout>
+
+
         </LinearLayout>
 
     </ScrollView>

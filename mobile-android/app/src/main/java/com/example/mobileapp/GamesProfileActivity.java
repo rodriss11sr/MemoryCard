@@ -14,7 +14,6 @@ public class GamesProfileActivity extends AppCompatActivity {
     Button wishlistProfile;
     Button reviewsProfile;
     Button listProfile;
-    Button addGame;
 
 
     @Override
