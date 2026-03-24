@@ -243,13 +243,13 @@ router.get('/:id/relacionados', async (req, res) => {
     `;
 
     const params = [
-      ...nombresDesarrolladoras,
-      ...nombresGeneros,
-      ...nombresDesarrolladoras,
-      ...nombresGeneros,
-      `%${tituloActual}%`,
-      id,
-      `%${tituloActual}%`
+      ...nombresDesarrolladoras,    // CASE Tier 1: IN desarrolladoras
+      ...nombresGeneros,            // CASE Tier 1: IN generos
+      ...nombresGeneros,            // CASE Tier 2: IN generos
+      `%${tituloActual}%`,          // CASE Tier 3: LIKE titulo
+      id,                           // WHERE j.id_juego != ?
+      ...nombresGeneros,            // WHERE EXISTS IN generos
+      `%${tituloActual}%`           // WHERE LIKE titulo
     ];
 
     const [relacionados] = await pool.query(query, params);
