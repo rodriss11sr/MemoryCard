@@ -103,6 +103,7 @@ router.get('/buscar', async (req, res) => {
 });
 
 // GET /api/juegos/:id/relacionados - Obtener juegos relacionados por género
+/*
 router.get('/:id/relacionados', async (req, res) => {
   try {
     const { id } = req.params;
@@ -144,6 +145,114 @@ router.get('/:id/relacionados', async (req, res) => {
       ORDER BY coincidencias DESC, RAND()
       LIMIT 12
     `, [...nombresGeneros, id]);
+
+    res.json(relacionados.map(r => ({
+      id: r.id_juego,
+      nombre: r.titulo,
+      imagen: r.portada,
+    })));
+  } catch (error) {
+    console.error('Error al obtener juegos relacionados:', error);
+    res.status(500).json({ error: 'Error al obtener juegos relacionados' });
+  }
+});
+*/
+router.get('/:id/relacionados', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // 1. Obtener los géneros y desarrolladoras del juego actual
+    const [generos] = await pool.query(
+      'SELECT nombre_genero FROM pertenece WHERE id_juego = ?',
+      [id]
+    );
+
+    const [desarrolladoras] = await pool.query(
+      'SELECT nombre_desarrolladora FROM desarrolla WHERE id_juego = ?',
+      [id]
+    );
+
+    const [juegoActual] = await pool.query(
+      'SELECT titulo FROM juego WHERE id_juego = ?',
+      [id]
+    );
+
+    // Si no tiene géneros, devolver juegos aleatorios
+    if (generos.length === 0) {
+      const [aleatorios] = await pool.query(`
+        SELECT j.id_juego, j.titulo, j.portada
+        FROM juego j
+        WHERE j.id_juego != ?
+        ORDER BY RAND()
+        LIMIT 12
+      `, [id]);
+
+      return res.json(aleatorios.map(r => ({
+        id: r.id_juego,
+        nombre: r.titulo,
+        imagen: r.portada,
+      })));
+    }
+
+    // 2. Búsqueda en capas de relevancia
+    const nombresGeneros = generos.map(g => g.nombre_genero);
+    const nombresDesarrolladoras = desarrolladoras.map(d => d.nombre_desarrolladora);
+    const placeholdersGeneros = nombresGeneros.map(() => '?').join(',');
+    const placeholdersDesarrolladoras = nombresDesarrolladoras.map(() => '?').join(',');
+    
+    const tituloActual = juegoActual[0]?.titulo || '';
+
+    let query = `
+      SELECT j.id_juego, j.titulo, j.portada, COUNT(*) AS coincidencias, 
+             CASE 
+               -- Tier 1: mismo género + misma desarrolladora
+               WHEN EXISTS (
+                 SELECT 1 FROM desarrolla d 
+                 WHERE d.id_juego = j.id_juego 
+                 AND d.nombre_desarrolladora IN (${placeholdersDesarrolladoras})
+               ) AND EXISTS (
+                 SELECT 1 FROM pertenece p 
+                 WHERE p.id_juego = j.id_juego 
+                 AND p.nombre_genero IN (${placeholdersGeneros})
+               ) THEN 3
+               -- Tier 2: mismo género + otra desarrolladora
+               WHEN EXISTS (
+                 SELECT 1 FROM pertenece p 
+                 WHERE p.id_juego = j.id_juego 
+                 AND p.nombre_genero IN (${placeholdersGeneros})
+               ) THEN 2
+               -- Tier 3: nombre similar
+               WHEN j.titulo LIKE ? THEN 1
+               ELSE 0
+             END AS relevancia
+      FROM juego j
+      WHERE j.id_juego != ?
+        AND (
+          -- Comparte géneros
+          EXISTS (
+            SELECT 1 FROM pertenece p 
+            WHERE p.id_juego = j.id_juego 
+            AND p.nombre_genero IN (${placeholdersGeneros})
+          )
+          -- O nombre similar
+          OR j.titulo LIKE ?
+        )
+      GROUP BY j.id_juego
+      ORDER BY relevancia DESC, coincidencias DESC, RAND()
+      LIMIT 12
+    `;
+
+    const params = [
+      ...nombresDesarrolladoras,
+      ...nombresGeneros,
+      ...nombresDesarrolladoras,
+      ...nombresGeneros,
+      `%${tituloActual}%`,
+      id,
+      `%${tituloActual}%`
+    ];
+
+    const [relacionados] = await pool.query(query, params);
 
     res.json(relacionados.map(r => ({
       id: r.id_juego,
