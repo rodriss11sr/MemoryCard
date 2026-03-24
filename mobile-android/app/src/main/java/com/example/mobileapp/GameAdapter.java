@@ -72,6 +72,7 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.ViewHolder> im
         holder.title.setText(game.getName());
         holder.platforms.setText(game.getPlatforms());
         holder.cover.setImageResource(game.getImageResId());
+        holder.itemView.setOnClickListener(view -> listener.onGameClick(listaFiltrada.get(position)));
     }
 
     @Override
@@ -89,4 +90,15 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.ViewHolder> im
             cover = v.findViewById(R.id.itemGameCover);
         }
     }
+
+    public interface OnGameClickListener {
+        void onGameClick(Games game);
+    }
+    private OnGameClickListener listener;
+    public GameAdapter(List<Games> listaGames, OnGameClickListener listener) {
+    this.listaOriginal = listaGames;
+    this.listaFiltrada = new ArrayList<>();
+    this.listener = listener;
+    }
+
 }

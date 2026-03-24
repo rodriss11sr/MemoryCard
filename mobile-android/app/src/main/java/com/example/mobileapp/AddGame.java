@@ -20,6 +20,7 @@ import java.util.List;
 public class AddGame extends DialogFragment {
 
     private GameAdapter adapter;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -38,8 +39,12 @@ public class AddGame extends DialogFragment {
         listaGames.add(new Games("Monster Hunter World", "PC / PS4 / XboxOne / Switch", R.drawable.mhworld));
         listaGames.add(new Games("Monster Hunter Wilds", "PC / PS4 / XboxS", R.drawable.mhwilds));
 
-
-        adapter = new GameAdapter(listaGames);
+        adapter = new GameAdapter(listaGames, game -> {
+            dismiss();
+            AddGameFinalActivity nextPopup = AddGameFinalActivity.newInstance(game.getName(), game.getImageResId());
+            nextPopup.show(getParentFragmentManager(), "AddFinalPopUp");
+        });
+        
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
 
@@ -55,6 +60,7 @@ public class AddGame extends DialogFragment {
         });
         return view;
     }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -63,7 +69,8 @@ public class AddGame extends DialogFragment {
             int height = ViewGroup.LayoutParams.WRAP_CONTENT;
 
             getDialog().getWindow().setLayout(width, height);
-            getDialog().getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
+
     }
 }
