@@ -189,7 +189,7 @@ function Game() {
 
   if (loading) {
     return (
-      <div className="game-page" style={{ textAlign: "center", padding: "2rem", color: "#ffffff", backgroundColor: "#111827", minHeight: "100vh" }}>
+      <div className="game-page" style={{ textAlign: "center", padding: "2rem", color: "#ffffff", backgroundColor: "#1b1f27", minHeight: "100vh" }}>
         <p>Cargando juego...</p>
       </div>
     );
@@ -197,9 +197,9 @@ function Game() {
 
   if (error || !game) {
     return (
-      <div className="game-page" style={{ textAlign: "center", padding: "60px 20px", backgroundColor: "#111827", minHeight: "100vh" }}>
+      <div className="game-page" style={{ textAlign: "center", padding: "60px 20px", backgroundColor: "#1b1f27", minHeight: "100vh" }}>
         <div style={{
-          backgroundColor: "#2b303b",
+          backgroundColor: "#1b1f27",
           border: "1px solid #ef4444",
           borderRadius: "12px",
           padding: "30px",
