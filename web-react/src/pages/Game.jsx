@@ -252,7 +252,7 @@ function Game() {
   }
 
   return (
-    <div className="game-page" style={{ backgroundColor: "#111827", minHeight: "100vh", padding: "20px" }}>
+    <div className="game-page" style={{ backgroundColor: "#1b1f27", minHeight: "100vh", padding: "20px" }}>
       {/* Título del juego */}
       <h1 className="game-title" style={{ textAlign: "center", color: "#ffffff" }}>
         {game.titulo}

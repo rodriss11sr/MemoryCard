@@ -402,6 +402,22 @@ INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_eafc25, 'PC');
 INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_eafc25, 'PlayStation 5');
 INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_eafc25, 'Xbox Series X|S');
 
+-- EA FC 26
+INSERT INTO juego (titulo, fecha_lanzamiento, descripcion, portada) VALUES (
+    'EA FC 26',
+    '2025-09-26',
+    'EA FC 26 agrega más fluidez y funciones para la comunidad, con previsualización de atletas y modo club mejorado.',
+    'https://images.igdb.com/igdb/image/upload/t_cover_big/coa5wx.webp'
+);
+-- Obtener el ID del juego insertado
+SET @id_eafc26 = LAST_INSERT_ID();
+INSERT INTO pertenece (id_juego, nombre_genero) VALUES (@id_eafc26, 'Simulator');
+INSERT INTO pertenece (id_juego, nombre_genero) VALUES (@id_eafc26, 'Sport');
+INSERT INTO desarrolla (id_juego, nombre_desarrolladora) VALUES (@id_eafc26, 'EA Sports FC');
+INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_eafc26, 'PC');
+INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_eafc26, 'PlayStation 5');
+INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_eafc26, 'Xbox Series X|S');
+
 -- ============================================
 -- SEGUNDA COLECCION DE JUEGOS (Simuladores de baloncesto)
 -- ============================================
@@ -593,26 +609,4 @@ INSERT INTO desarrolla (id_juego, nombre_desarrolladora) VALUES (@id_nba_street_
 -- Relacionar con plataformas
 INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_nba_street_v3, 'PlayStation 2');
 INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_nba_street_v3, 'Xbox');
-
--- EA FC 26
-INSERT INTO juego (titulo, fecha_lanzamiento, descripcion, portada) VALUES (
-    'EA FC 26',
-    '2025-09-26',
-    'EA FC 26 agrega más fluidez y funciones para la comunidad, con previsualización de atletas y modo club mejorado.',
-    'https://images.igdb.com/igdb/image/upload/t_cover_big/coa5wx.webp'
-);
--- Obtener el ID del juego insertado
-SET @id_eafc26 = LAST_INSERT_ID();
-INSERT INTO pertenece (id_juego, nombre_genero) VALUES (@id_eafc26, 'Simulator');
-INSERT INTO pertenece (id_juego, nombre_genero) VALUES (@id_eafc26, 'Sport');
-INSERT INTO desarrolla (id_juego, nombre_desarrolladora) VALUES (@id_eafc26, 'EA Sports FC');
-INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_eafc26, 'PC');
-INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_eafc26, 'PlayStation 5');
-INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_eafc26, 'Xbox Series X|S');
-
--- ============================================
--- COLECCION DE JUEGOS 2 (NBA)
--- OPCIONAL: Ejecuta después de 02_datos_ejemplo.sql
--- ============================================
-
 

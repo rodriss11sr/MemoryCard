@@ -97,7 +97,7 @@ function Reviews() {
 
   if (loading) {
     return (
-      <div style={{ backgroundColor: "#111827", minHeight: "100vh", padding: "40px 20px", color: "#fff", textAlign: "center" }}>
+      <div style={{ backgroundColor: "#1b1f27", minHeight: "100vh", padding: "40px 20px", color: "#fff", textAlign: "center" }}>
         <p>Cargando reseñas...</p>
       </div>
     );
@@ -105,7 +105,7 @@ function Reviews() {
 
   if (error) {
     return (
-      <div style={{ backgroundColor: "#111827", minHeight: "100vh", padding: "60px 20px" }}>
+      <div style={{ backgroundColor: "#1b1f27", minHeight: "100vh", padding: "60px 20px" }}>
         <div style={{
           backgroundColor: "#2b303b",
           border: "1px solid #ef4444",
@@ -142,7 +142,7 @@ function Reviews() {
   }
 
   return (
-    <div style={{ backgroundColor: "#111827", minHeight: "100vh", padding: "40px 20px" }}>
+    <div style={{ backgroundColor: "#1b1f27", minHeight: "100vh", padding: "40px 20px" }}>
       {/* Título */}
       <div style={{ textAlign: "center", marginBottom: "10px" }}>
         <h1 style={{
