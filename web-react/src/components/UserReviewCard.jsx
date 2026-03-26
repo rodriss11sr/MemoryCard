@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import StarRating from "./starRating.jsx";
 
-const UserReviewCard = ({ titulo, contenido, puntuacion, imagen }) => {
+const UserReviewCard = ({ titulo, contenido, puntuacion, imagen, gameId }) => {
+  const navigate = useNavigate();
 
   //Estilo de la tarjeta
   const cardStyle = {
@@ -48,6 +50,7 @@ const UserReviewCard = ({ titulo, contenido, puntuacion, imagen }) => {
     height: "100%",
     flexShrink: 0,
     backgroundColor: "#1a1a1a",
+    cursor: "pointer",
   };
 
   const contentStyle = {
@@ -60,7 +63,7 @@ const UserReviewCard = ({ titulo, contenido, puntuacion, imagen }) => {
 
   return (
     <div style={cardStyle}>
-      <div style={imageContainerStyle}>
+    <div style={imageContainerStyle} onClick={() => navigate(`/game/${gameId}`)}>
         {imagen ? (
           <img
             src={imagen}
@@ -92,7 +95,9 @@ const UserReviewCard = ({ titulo, contenido, puntuacion, imagen }) => {
             textTransform: "uppercase",
             letterSpacing: "1px",
             fontFamily: "upheaval, system-ui",
+            cursor: "pointer",
           }}
+          onClick={() => navigate(`/game/${gameId}`)}
         >
           {titulo}
         </span>

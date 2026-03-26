@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import StarRating from "./starRating";
 const API_BASE_URL = "/api";
 
@@ -10,7 +11,9 @@ const GameReviewCard = ({
   puntuacion,
   fecha,
   likes: likesInicial = 0,
+  id_usuario,
 }) => {
+  const navigate = useNavigate();
   const [likes, setLikes] = useState(likesInicial);
   const [liked, setLiked] = useState(() => {
     // Comprobar si ya dio like (guardado en localStorage) - usar Set para evitar duplicados
@@ -152,7 +155,9 @@ const GameReviewCard = ({
             borderRadius: "50%",
             objectFit: "cover",
             flexShrink: 0,
+            cursor: "pointer",
           }}
+          onClick={() => navigate(`/user/${id_usuario}`)}
         />
         <div style={{ flex: 1, minWidth: 0 }}>
           <div
@@ -165,7 +170,9 @@ const GameReviewCard = ({
                 color: "#ffffff",
                 margin: 0,
                 fontFamily: "'Upheaval', system-ui",
+                cursor: "pointer",
               }}
+              onClick={() => navigate(`/user/${id_usuario}`)}
             >
               {usuario}
             </h3>

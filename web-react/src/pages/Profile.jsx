@@ -431,6 +431,7 @@ function Perfil() {
                   contenido={review.contenido}
                   puntuacion={review.puntuacion}
                   imagen={review.imagen}
+                  gameId={review.juegoId}
                 />
               </div>
             ))}
