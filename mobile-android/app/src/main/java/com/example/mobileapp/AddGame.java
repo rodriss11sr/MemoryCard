@@ -32,12 +32,12 @@ public class AddGame extends DialogFragment {
         RecyclerView recyclerView = view.findViewById(R.id.itemGameResults);
 
         List<Games> listaGames = new ArrayList<>();
-        listaGames.add(new Games("portal (2007)", "PC / PS3 / Xbox360", R.drawable.portal));
-        listaGames.add(new Games("portal 2 (2011)", "PC / PS3 / Xbox360", R.drawable.portal2));
-        listaGames.add(new Games("Dark Souls 3", "PC / PS4 / XboxOne", R.drawable.ds3));
-        listaGames.add(new Games("The Binding of Isaac", "PC / PS4 / XboxOne / Switch", R.drawable.tboi));
-        listaGames.add(new Games("Monster Hunter World", "PC / PS4 / XboxOne / Switch", R.drawable.mhworld));
-        listaGames.add(new Games("Monster Hunter Wilds", "PC / PS4 / XboxS", R.drawable.mhwilds));
+        listaGames.add(new Games(1, "portal (2007)", "PC / PS3 / Xbox360", R.drawable.portal, "", "", "", ""));
+        listaGames.add(new Games(2, "portal 2 (2011)", "PC / PS3 / Xbox360", R.drawable.portal2, "", "", "", ""));
+        listaGames.add(new Games(3, "Dark Souls 3", "PC / PS4 / XboxOne", R.drawable.ds3, "", "", "", ""));
+        listaGames.add(new Games(4, "The Binding of Isaac", "PC / PS4 / XboxOne / Switch", R.drawable.tboi, "", "", "", ""));
+        listaGames.add(new Games(5, "Monster Hunter World", "PC / PS4 / XboxOne / Switch", R.drawable.mhworld, "", "", "", ""));
+        listaGames.add(new Games(6, "Monster Hunter Wilds", "PC / PS4 / XboxS", R.drawable.mhwilds, "", "", "", ""));
 
         adapter = new GameAdapter(listaGames, game -> {
             dismiss();
