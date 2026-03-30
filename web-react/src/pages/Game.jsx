@@ -584,7 +584,7 @@ function Game() {
                 puntuacion={review.puntuacion}
                 fecha={review.fecha || ""}
                 likes={review.likes || 0}
-                id_usuario={review.id_usuario}
+                id_usuario={review.id_usuario || review.usuarioId}
               />
             ))
           )}

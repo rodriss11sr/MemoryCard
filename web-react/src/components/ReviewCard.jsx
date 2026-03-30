@@ -25,6 +25,7 @@ function ReviewCard({ imagen, titulo, usuario, contenido, puntuacion, avatar }) 
       toggleExpanded();
     }
   };
+  
   const descStyle = {
     color: "#d1d5db",
     fontSize: "0.9rem",
