@@ -1,8 +1,17 @@
 import { useState } from "react";
 import StarRating from "./starRating";
 
-function ReviewCard({ imagen, titulo, usuario, contenido, puntuacion, avatar }) {
-
+function ReviewCard({
+  imagen,
+  titulo,
+  usuario,
+  contenido,
+  puntuacion,
+  avatar,
+  fecha,
+  gameId,
+  id_usuario,
+}) {
   //Estilo de la tarjeta
   const cardStyle = {
     display: "flex",
@@ -25,7 +34,7 @@ function ReviewCard({ imagen, titulo, usuario, contenido, puntuacion, avatar }) 
       toggleExpanded();
     }
   };
-  
+
   const descStyle = {
     color: "#d1d5db",
     fontSize: "0.9rem",
@@ -52,12 +61,20 @@ function ReviewCard({ imagen, titulo, usuario, contenido, puntuacion, avatar }) 
   return (
     <div style={cardStyle}>
       {/* Imagen del juego a la izquierda */}
-      <div style={imageContainerStyle}>
+      <div
+        style={imageContainerStyle}
+        onClick={() => navigate(`/game/${gameId}`)}
+      >
         {imagen ? (
           <img
             src={imagen}
             alt={titulo}
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              cursor: "pointer",
+            }}
           />
         ) : (
           <div
@@ -68,6 +85,7 @@ function ReviewCard({ imagen, titulo, usuario, contenido, puntuacion, avatar }) 
               alignItems: "center",
               justifyContent: "center",
               color: "#555",
+              cursor: "pointer",
             }}
           >
             🎮
@@ -84,6 +102,21 @@ function ReviewCard({ imagen, titulo, usuario, contenido, puntuacion, avatar }) 
           gap: "10px",
         }}
       >
+        {/* Título del juego */}
+        <span
+          style={{
+            color: "#ffffff",
+            fontWeight: "800",
+            fontSize: "1.3rem",
+            textTransform: "uppercase",
+            letterSpacing: "1px",
+            fontFamily: "upheaval, system-ui",
+            cursor: "pointer",
+          }}
+          onClick={() => navigate(`/game/${gameId}`)}
+        >
+          {titulo}
+        </span>
         {/* Header con avatar y usuario */}
         <div
           style={{
@@ -122,20 +155,7 @@ function ReviewCard({ imagen, titulo, usuario, contenido, puntuacion, avatar }) 
             </span>
           </div>
         </div>
-
-        {/* Contenido de la reseña */}
-        <p
-          role="button"
-          tabIndex={0}
-          aria-expanded={expanded}
-          onClick={toggleExpanded}
-          onKeyDown={onKeyDownToggle}
-          style={descStyle}
-        >
-          {contenido}
-        </p>
-
-        {/* Puntuación con estrellas */}
+        {/* Puntuación con estrellas y fecha */}
         <div
           style={{
             display: "flex",
@@ -156,9 +176,29 @@ function ReviewCard({ imagen, titulo, usuario, contenido, puntuacion, avatar }) 
           >
             {puntuacion}
           </span>
+          <span
+            style={{
+              color: "#9ca3af",
+              fontSize: "0.85rem",
+              marginLeft: "10px",
+            }}
+          >
+            {fecha}
+          </span>
         </div>
+        {/* Contenido de la reseña */}
+        <p
+          role="button"
+          tabIndex={0}
+          aria-expanded={expanded}
+          onClick={toggleExpanded}
+          onKeyDown={onKeyDownToggle}
+          style={descStyle}
+        >
+          {contenido}
+        </p>
       </div>
-    </div >
+    </div>
   );
 }
 

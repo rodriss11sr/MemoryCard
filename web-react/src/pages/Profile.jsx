@@ -421,17 +421,17 @@ function Perfil() {
         {activeTab === "reviews" && (
           <div>
             {reviews.map((review) => (
-              <div
-                key={review.id}
-                onClick={() => navigate(`/game/${review.juegoId}`)}
-                style={{ cursor: "pointer" }}
-              >
+              <div key={review.id}>
                 <UserReviewCard
+                  id={review.id}
                   titulo={review.titulo}
                   contenido={review.contenido}
                   puntuacion={review.puntuacion}
                   imagen={review.imagen}
                   gameId={review.juegoId}
+                  fecha={review.fecha}
+                  id_usuario={review.id_usuario}
+                  likes={review.likes}
                 />
               </div>
             ))}
