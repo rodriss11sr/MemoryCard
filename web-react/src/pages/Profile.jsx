@@ -116,6 +116,9 @@ function Perfil() {
     return review ? review.puntuacion : undefined;
   };
 
+  // Filtrar juegos para excluir aquellos en wishlist
+  const filteredJuegos = juegos.filter(juego => !wishlist.some(w => w.id === juego.id));
+
   if (loading) {
     return (
       <div style={{ textAlign: "center", padding: "2rem", color: "#ffffff" }}>
@@ -321,13 +324,13 @@ function Perfil() {
             <div
               className="games-grid"
               style={{
-                display: "flex",
-                flexWrap: "wrap",
+                display: "grid",
+                gridTemplateColumns: "repeat(5, 1fr)",
                 gap: "20px",
-                justifyContent: "left",
+                justifyContent: "center",
               }}
             >
-              {juegos.slice(0, 5).map((juego) => (
+              {filteredJuegos.slice(0, 5).map((juego) => (
                 <div
                   key={juego.id}
                   onClick={() => navigate(`/game/${juego.id}`)}
@@ -345,13 +348,13 @@ function Perfil() {
             <div
               className="games-grid"
               style={{
-                display: "flex",
-                flexWrap: "wrap",
+                display: "grid",
+                gridTemplateColumns: "repeat(5, 1fr)",
                 gap: "20px",
-                justifyContent: "left",
+                justifyContent: "center",
               }}
             >
-              {juegos.slice(0, 5).map((juego) => (
+              {filteredJuegos.slice(0, 5).map((juego) => (
                 <div
                   key={juego.id}
                   onClick={() => navigate(`/game/${juego.id}`)}
@@ -377,7 +380,7 @@ function Perfil() {
               justifyContent: "center",
             }}
           >
-            {juegos.map((juego) => (
+            {filteredJuegos.map((juego) => (
               <div
                 key={juego.id}
                 onClick={() => navigate(`/game/${juego.id}`)}
@@ -419,21 +422,20 @@ function Perfil() {
         )}
 
         {activeTab === "reviews" && (
-          <div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "20px", maxWidth: "800px", margin: "0 auto", padding: "0 20px" }}>
             {reviews.map((review) => (
-              <div key={review.id}>
-                <UserReviewCard
-                  id={review.id}
-                  titulo={review.titulo}
-                  contenido={review.contenido}
-                  puntuacion={review.puntuacion}
-                  imagen={review.imagen}
-                  gameId={review.juegoId}
-                  fecha={review.fecha}
-                  id_usuario={review.id_usuario}
-                  likes={review.likes}
-                />
-              </div>
+              <UserReviewCard
+                key={review.id}
+                id={review.id}
+                titulo={review.titulo}
+                contenido={review.contenido}
+                puntuacion={review.puntuacion}
+                imagen={review.imagen}
+                gameId={review.juegoId}
+                fecha={review.fecha}
+                id_usuario={review.id_usuario}
+                likes={review.likes}
+              />
             ))}
           </div>
         )}

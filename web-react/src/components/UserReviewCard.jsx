@@ -95,7 +95,7 @@ const UserReviewCard = ({
 
   const descStyle = {
     color: "#d1d5db",
-    fontSize: "0.9rem",
+    fontSize: "1.5 rem",
     margin: "5px 0 0 0",
     marginTop: "2px",
     fontWeight: "500",
@@ -128,7 +128,7 @@ const UserReviewCard = ({
   const titleStyle = {
     color: "#ffffff",
     fontWeight: "800",
-    fontSize: "1.3rem",
+    fontSize: "1.5rem",
     textTransform: "uppercase",
     letterSpacing: "1px",
     fontFamily: "upheaval, system-ui",

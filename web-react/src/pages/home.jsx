@@ -136,7 +136,7 @@ function Home() {
                 ))}
             </div>
 
-            <h2 style={{ color: "#ffffff" }}>{"Rese\u00f1as destacadas"}</h2>
+            <h2 style={{ color: "#ffffff" }}>{"Reviews destacadas"}</h2>
             <div className="reviews-grid" style={{ maxWidth: "800px", margin: "0 auto", padding: "0 20px", display: "flex", flexDirection: "column", gap: "20px" }}>
                 {reviews.map((review) => (
                     <ReviewCard
