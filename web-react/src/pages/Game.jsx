@@ -154,7 +154,7 @@ function Game() {
           id_usuario: user.id,
           id_juego: parseInt(id),
           texto: reviewText,
-          nota: reviewRating > 0 ? reviewRating * 2 : null, // Convertir de 0-5 a 0-10
+          nota: reviewRating > 0 ? reviewRating : null, // Puntuación de 0-5
           spoilers: false,
         }),
       });

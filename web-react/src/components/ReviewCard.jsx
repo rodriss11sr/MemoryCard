@@ -235,7 +235,9 @@ function ReviewCard({
               height: "36px",
               borderRadius: "50%",
               border: "2px solid #3e4451",
+              cursor: "pointer",
             }}
+            onClick={() => navigate(`/user/${id_usuario}`)}
           />
           <div
             style={{
@@ -251,7 +253,9 @@ function ReviewCard({
                 fontSize: "0.95rem",
                 fontFamily: "upheaval, system-ui",
                 letterSpacing: "0.5px",
+                cursor: "pointer",
               }}
+              onClick={() => navigate(`/user/${id_usuario}`)}
             >
               {usuario}
             </span>
@@ -290,7 +294,7 @@ function ReviewCard({
             {liked ? "❤️" : "🤍"} {likes}
           </button>
         </div>
-        
+
       </div>
     </div>
   );

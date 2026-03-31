@@ -147,6 +147,11 @@ function Home() {
                         imagen={review.imagen}
                         usuario={review.usuario}
                         avatar={review.avatar}
+                        likes={review.likes}
+                        id={review.id}
+                        id_usuario={review.id_usuario}
+                        gameId={review.juegoId}
+                        fecha={review.fecha}
                     />
                 ))}
             </div>
