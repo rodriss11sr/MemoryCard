@@ -22,7 +22,9 @@ const UserReviewCard = ({
 
   const [likes, setLikes] = useState(likesInicial);
   const [liked, setLiked] = useState(() => {
-    const likedReviews = JSON.parse(localStorage.getItem("likedReviews") || "[]");
+    const likedReviews = JSON.parse(
+      localStorage.getItem("likedReviews") || "[]",
+    );
     return id && likedReviews.some((rid) => rid === id);
   });
 
@@ -47,49 +49,6 @@ const UserReviewCard = ({
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
       toggleExpanded();
-    }
-  };
-
-  const handleToggleLike = async () => {
-    if (!id) return;
-    if (isOwnReview) {
-      window.alert("No puedes dar like a tu propia reseña.");
-      return;
-    }
-
-    const endpoint = liked ? "unlike" : "like";
-
-    try {
-      const res = await fetch(`${API_BASE_URL}/resenas/${id}/${endpoint}`, {
-        method: "PUT",
-      });
-
-      if (!res.ok) {
-        console.error("Error en respuesta de like", res.status);
-        return;
-      }
-
-      const likedReviews = [
-        ...new Set(JSON.parse(localStorage.getItem("likedReviews") || "[]")),
-      ];
-
-      if (liked) {
-        setLikes((prev) => Math.max(prev - 1, 0));
-        setLiked(false);
-        localStorage.setItem(
-          "likedReviews",
-          JSON.stringify(likedReviews.filter((rid) => rid !== id)),
-        );
-      } else {
-        setLikes((prev) => prev + 1);
-        setLiked(true);
-        localStorage.setItem(
-          "likedReviews",
-          JSON.stringify([...likedReviews, id]),
-        );
-      }
-    } catch (error) {
-      console.error("Error al toggle like:", error);
     }
   };
 
@@ -175,6 +134,49 @@ const UserReviewCard = ({
     textAlign: "center",
   };
 
+  const handleToggleLike = async () => {
+    if (!id) return;
+    if (isOwnReview) {
+      window.alert("No puedes dar like a tu propia reseña.");
+      return;
+    }
+
+    const endpoint = liked ? "unlike" : "like";
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/resenas/${id}/${endpoint}`, {
+        method: "PUT",
+      });
+
+      if (!res.ok) {
+        console.error("Error en respuesta de like", res.status);
+        return;
+      }
+
+      const likedReviews = [
+        ...new Set(JSON.parse(localStorage.getItem("likedReviews") || "[]")),
+      ];
+
+      if (liked) {
+        setLikes((prev) => Math.max(prev - 1, 0));
+        setLiked(false);
+        localStorage.setItem(
+          "likedReviews",
+          JSON.stringify(likedReviews.filter((rid) => rid !== id)),
+        );
+      } else {
+        setLikes((prev) => prev + 1);
+        setLiked(true);
+        localStorage.setItem(
+          "likedReviews",
+          JSON.stringify([...likedReviews, id]),
+        );
+      }
+    } catch (error) {
+      console.error("Error al toggle like:", error);
+    }
+  };
+
   return (
     <div style={cardStyle}>
       {/* Imagen del juego a la izquierda */}
@@ -240,6 +242,7 @@ const UserReviewCard = ({
           {contenido}
         </p>
 
+        {/* Botón de like */}
         <div style={likeContainerStyle}>
           <button
             onClick={handleToggleLike}
@@ -249,6 +252,7 @@ const UserReviewCard = ({
             {liked ? "❤️" : "🤍"} {likes}
           </button>
         </div>
+        
       </div>
     </div>
   );
