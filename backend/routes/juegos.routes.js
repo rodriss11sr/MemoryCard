@@ -130,9 +130,13 @@ router.get('/:id/relacionados', async (req, res) => {
     // Si no tiene géneros, devolver juegos aleatorios
     if (generos.length === 0) {
       const [aleatorios] = await pool.query(`
-        SELECT DISTINCT j.id_juego, j.titulo, j.portada
+        SELECT DISTINCT j.id_juego, j.titulo, j.portada,
+               GROUP_CONCAT(DISTINCT p.nombre SEPARATOR ', ') AS plataformas
         FROM juego j
+        LEFT JOIN lanza l ON j.id_juego = l.id_juego
+        LEFT JOIN plataforma p ON l.nombre_plataforma = p.nombre
         WHERE j.id_juego != ?
+        GROUP BY j.id_juego
         ORDER BY RAND()
         LIMIT 12
       `, [id]);
@@ -141,111 +145,132 @@ router.get('/:id/relacionados', async (req, res) => {
         id: r.id_juego,
         nombre: r.titulo,
         imagen: r.portada,
+        plataformas: r.plataformas ? r.plataformas.split(',').map(p => p.trim()) : [],
       })));
     }
 
-    // 2. Búsqueda en capas de relevancia por nombre, desarrolladora, genero y plataforma
+    // 2. Búsqueda en capas de relevancia - de forma más simple y robusta
     const nombresGeneros = generos.map(g => g.nombre_genero);
-    const placeholdersGeneros = nombresGeneros.map(() => '?').join(',');
-    const placeholdersDesarrolladoras = desarrolladoras.map(() => '?').join(',');
+    const nombresDesarrolladoras = desarrolladoras.map(d => d.nombre_desarrolladora);
     const nombresPlataformas = plataformas.map(p => p.nombre_plataforma);
-    const placeholdersPlataformas = nombresPlataformas.length ? nombresPlataformas.map(() => '?').join(',') : 'NULL';
-    
     const tituloActual = juegoActual[0]?.titulo || '';
 
+    // Construir la query de forma más robusta
     let query = `
-      SELECT j.id_juego, j.titulo, j.portada, GROUP_CONCAT(DISTINCT p.nombre SEPARATOR ', ') AS plataformas,
+      SELECT j.id_juego, j.titulo, j.portada, 
+             GROUP_CONCAT(DISTINCT p.nombre SEPARATOR ', ') AS plataformas,
              COUNT(*) AS coincidencias,
-             CASE
-               -- Tier 5: mismo género + misma desarrolladora + misma plataforma + nombre similar (máxima relevancia)
-               WHEN EXISTS (
-                 SELECT 1 FROM desarrolla d
-                 WHERE d.id_juego = j.id_juego
-                   AND d.nombre_desarrolladora IN (${placeholdersDesarrolladoras})
-               )
-               AND EXISTS (
-                 SELECT 1 FROM pertenece pe
-                 WHERE pe.id_juego = j.id_juego
-                   AND pe.nombre_genero IN (${placeholdersGeneros})
-               )
-               AND EXISTS (
-                 SELECT 1 FROM lanza l2
-                 WHERE l2.id_juego = j.id_juego
-                   AND l2.nombre_plataforma IN (${placeholdersPlataformas})
-               )
-               AND j.titulo LIKE ? THEN 5
-               -- Tier 4: mismo género + misma desarrolladora + misma plataforma (máxima relevancia)
-               WHEN EXISTS (
-                 SELECT 1 FROM desarrolla d
-                 WHERE d.id_juego = j.id_juego
-                   AND d.nombre_desarrolladora IN (${placeholdersDesarrolladoras})
-               )
-               AND EXISTS (
-                 SELECT 1 FROM pertenece pe
-                 WHERE pe.id_juego = j.id_juego
-                   AND pe.nombre_genero IN (${placeholdersGeneros})
-               )
-               AND EXISTS (
-                 SELECT 1 FROM lanza l2
-                 WHERE l2.id_juego = j.id_juego
-                   AND l2.nombre_plataforma IN (${placeholdersPlataformas})
-               ) THEN 4
-               -- Tier 3: nombre similar
-               WHEN j.titulo LIKE ? THEN 3
-               -- Tier 2: mismo género + misma desarrolladora
-               WHEN EXISTS (
-                 SELECT 1 FROM desarrolla d
-                 WHERE d.id_juego = j.id_juego
-                   AND d.nombre_desarrolladora IN (${placeholdersDesarrolladoras})
-               )
-               AND EXISTS (
-                 SELECT 1 FROM pertenece pe
-                 WHERE pe.id_juego = j.id_juego
-                   AND pe.nombre_genero IN (${placeholdersGeneros})
-               ) THEN 2
-               -- Tier 1: mismo género
-               WHEN EXISTS (
-                 SELECT 1 FROM pertenece pe
-                 WHERE pe.id_juego = j.id_juego
-                   AND pe.nombre_genero IN (${placeholdersGeneros})
-               ) THEN 1
-               ELSE 0
-             END AS relevancia
+             CASE 1=1`;
+
+    let params = [];
+    let relevanciaCase = '';
+
+    // Tier 1: mismo género
+    relevanciaCase += `
+      WHEN EXISTS (
+        SELECT 1 FROM pertenece pe
+        WHERE pe.id_juego = j.id_juego
+          AND pe.nombre_genero IN (${nombresGeneros.map(() => '?').join(',')})
+      ) THEN 1`;
+    params.push(...nombresGeneros);
+
+    // Tier 2: mismo género + misma desarrolladora
+    if (nombresDesarrolladoras.length > 0) {
+      relevanciaCase += `
+      WHEN EXISTS (
+        SELECT 1 FROM desarrolla d
+        WHERE d.id_juego = j.id_juego
+          AND d.nombre_desarrolladora IN (${nombresDesarrolladoras.map(() => '?').join(',')})
+      )
+      AND EXISTS (
+        SELECT 1 FROM pertenece pe
+        WHERE pe.id_juego = j.id_juego
+          AND pe.nombre_genero IN (${nombresGeneros.map(() => '?').join(',')})
+      ) THEN 2`;
+      params.push(...nombresDesarrolladoras);
+      params.push(...nombresGeneros);
+    }
+
+    // Tier 3: nombre similar
+    relevanciaCase += ` WHEN j.titulo LIKE ? THEN 3`;
+    params.push(`%${tituloActual}%`);
+
+    // Tier 4: mismo género + misma desarrolladora + misma plataforma
+    if (nombresDesarrolladoras.length > 0 && nombresPlataformas.length > 0) {
+      relevanciaCase += `
+      WHEN EXISTS (
+        SELECT 1 FROM desarrolla d
+        WHERE d.id_juego = j.id_juego
+          AND d.nombre_desarrolladora IN (${nombresDesarrolladoras.map(() => '?').join(',')})
+      )
+      AND EXISTS (
+        SELECT 1 FROM pertenece pe
+        WHERE pe.id_juego = j.id_juego
+          AND pe.nombre_genero IN (${nombresGeneros.map(() => '?').join(',')})
+      )
+      AND EXISTS (
+        SELECT 1 FROM lanza l2
+        WHERE l2.id_juego = j.id_juego
+          AND l2.nombre_plataforma IN (${nombresPlataformas.map(() => '?').join(',')})
+      ) THEN 4`;
+      params.push(...nombresDesarrolladoras);
+      params.push(...nombresGeneros);
+      params.push(...nombresPlataformas);
+    }
+
+    relevanciaCase += ` ELSE 0 END AS relevancia`;
+
+    query += relevanciaCase + `
       FROM juego j
       LEFT JOIN lanza l ON j.id_juego = l.id_juego
       LEFT JOIN plataforma p ON l.nombre_plataforma = p.nombre
       WHERE j.id_juego != ?
-        AND (
-          EXISTS (
-            SELECT 1 FROM pertenece pe
-            WHERE pe.id_juego = j.id_juego
-              AND pe.nombre_genero IN (${placeholdersGeneros})
-          )
-          OR j.titulo LIKE ?
+        AND EXISTS (
+          SELECT 1 FROM pertenece pe
+          WHERE pe.id_juego = j.id_juego
+            AND pe.nombre_genero IN (${nombresGeneros.map(() => '?').join(',')})
         )
       GROUP BY j.id_juego
       ORDER BY relevancia DESC, coincidencias DESC, j.titulo ASC
       LIMIT 12
     `;
 
-    const params = [
-      ...desarrolladoras.map(d => d.nombre_desarrolladora),
-      ...nombresGeneros,
-      ...nombresPlataformas,
-      `%${tituloActual}%`,
-      ...desarrolladoras.map(d => d.nombre_desarrolladora),
-      ...nombresGeneros,
-      ...nombresPlataformas,
-      `%${tituloActual}%`,
-      ...desarrolladoras.map(d => d.nombre_desarrolladora),
-      ...nombresGeneros,
-      ...nombresGeneros,
-      id,
-      ...nombresGeneros,
-      `%${tituloActual}%`
-    ];
+    params.push(id);
+    params.push(...nombresGeneros);
 
-    const [relacionados] = await pool.query(query, params);
+    let [relacionados] = await pool.query(query, params);
+
+    // Si no hay suficientes juegos relacionados, rellenar con aleatorios
+    const limit = 12;
+    if (relacionados.length < limit) {
+      const idsRelacionados = relacionados.map(r => r.id_juego);
+      const faltantes = limit - relacionados.length;
+
+      let queryAleatorios = `
+        SELECT j.id_juego, j.titulo, j.portada, 
+               GROUP_CONCAT(DISTINCT p.nombre SEPARATOR ', ') AS plataformas
+        FROM juego j
+        LEFT JOIN lanza l ON j.id_juego = l.id_juego
+        LEFT JOIN plataforma p ON l.nombre_plataforma = p.nombre
+        WHERE j.id_juego != ?`;
+
+      let paramsAleatorios = [id];
+
+      if (idsRelacionados.length > 0) {
+        queryAleatorios += ` AND j.id_juego NOT IN (${idsRelacionados.map(() => '?').join(',')})`;
+        paramsAleatorios.push(...idsRelacionados);
+      }
+
+      queryAleatorios += `
+        GROUP BY j.id_juego
+        ORDER BY RAND()
+        LIMIT ?
+      `;
+      paramsAleatorios.push(faltantes);
+
+      const [aleatorios] = await pool.query(queryAleatorios, paramsAleatorios);
+      relacionados = relacionados.concat(aleatorios);
+    }
 
     res.json(relacionados.map(r => ({
       id: r.id_juego,

@@ -280,7 +280,7 @@ router.post('/:id/juegos', async (req, res) => {
       return res.status(400).json({ ok: false, message: 'ID de juego requerido' });
     }
     
-    if (!['pendiente', 'jugando', 'completado', 'abandonado', 'en_pausa'].includes(estado)) {
+    if (!['pendiente', 'jugando', 'completado', 'favorito', 'en_pausa'].includes(estado)) {
       return res.status(400).json({ ok: false, message: 'Estado inválido' });
     }
     

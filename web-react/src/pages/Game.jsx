@@ -5,7 +5,7 @@ import GameLibraryCard from "../components/GameLibraryCard";
 import GameReviewCard from "../components/GameReviewCard";
 import AddToListModal from "../components/AddToListModal";
 
-const API_BASE_URL = '/api';
+const API_BASE_URL = "/api";
 
 function Game() {
   const { id } = useParams();
@@ -20,6 +20,7 @@ function Game() {
   const [relacionados, setRelacionados] = useState([]);
   const [error, setError] = useState(null);
   const [showListModal, setShowListModal] = useState(false);
+  const [gameState, setGameState] = useState(null); // Estado actual del juego en la biblioteca
 
   const fetchGameData = async () => {
     setLoading(true);
@@ -27,6 +28,7 @@ function Game() {
     setGame(null);
     setReviews([]);
     setRelacionados([]);
+    setGameState(null);
 
     try {
       const [gameRes, reviewsRes] = await Promise.all([
@@ -49,16 +51,39 @@ function Game() {
       if (Array.isArray(reviewsData)) {
         setReviews(reviewsData);
       }
+
+      // Cargar el estado actual del juego en la biblioteca del usuario
+      const user = JSON.parse(localStorage.getItem("user") || "null");
+      if (user && user.id) {
+        try {
+          const userGamesRes = await fetch(`${API_BASE_URL}/usuarios/${user.id}/juegos`);
+          if (userGamesRes.ok) {
+            const userGamesData = await userGamesRes.json();
+            if (Array.isArray(userGamesData)) {
+              const currentGameState = userGamesData.find(g => g.id === parseInt(id));
+              if (currentGameState) {
+                setGameState(currentGameState.estado);
+              }
+            }
+          }
+        } catch (err) {
+          console.error("Error al cargar el estado del juego:", err);
+        }
+      }
     } catch (err) {
       console.error("Error cargando datos del juego:", err);
-      setError(err.message || "Error al cargar el juego. Comprueba tu conexión.");
+      setError(
+        err.message || "Error al cargar el juego. Comprueba tu conexión.",
+      );
     } finally {
       setLoading(false);
     }
 
     // Cargar juegos relacionados aparte para que no bloquee la página
     try {
-      const relacionadosRes = await fetch(`${API_BASE_URL}/juegos/${id}/relacionados`);
+      const relacionadosRes = await fetch(
+        `${API_BASE_URL}/juegos/${id}/relacionados`,
+      );
       if (relacionadosRes.ok) {
         const relacionadosData = await relacionadosRes.json();
         if (Array.isArray(relacionadosData)) {
@@ -96,6 +121,7 @@ function Game() {
 
       const data = await res.json();
       if (data.ok) {
+        setGameState("pendiente"); // Actualizar el estado actual
         setMessage({ type: "success", text: "Añadido a wishlist" });
       } else {
         setMessage({ type: "error", text: data.message || "Error" });
@@ -124,6 +150,7 @@ function Game() {
 
       const data = await res.json();
       if (data.ok) {
+        setGameState(estado); // Actualizar el estado actual
         setMessage({ type: "success", text: `Añadido como "${estado}"` });
       } else {
         setMessage({ type: "error", text: data.message || "Error" });
@@ -165,16 +192,41 @@ function Game() {
         setShowReviewForm(false);
         setReviewText("");
         setReviewRating(0);
+        // Agregar el juego a la biblioteca con estado "jugando"
+        try {
+          const libraryRes = await fetch(`${API_BASE_URL}/usuarios/${user.id}/juegos`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              id_juego: parseInt(id),
+              estado: "jugando",
+            }),
+          });
+          
+          if (libraryRes.ok) {
+            setGameState("jugando"); // Actualizar el estado visual
+          } else {
+            console.error("Error al agregar el juego a la biblioteca:", libraryRes.status);
+          }
+        } catch (error) {
+          console.error("Error al agregar juego a biblioteca:", error);
+        }
+        
         // Esperar un momento para que la base de datos se actualice
-        await new Promise(resolve => setTimeout(resolve, 500));
+        await new Promise((resolve) => setTimeout(resolve, 500));
         // Recargar reseñas
-        const reviewsRes = await fetch(`${API_BASE_URL}/resenas?id_juego=${id}`);
+        const reviewsRes = await fetch(
+          `${API_BASE_URL}/resenas?id_juego=${id}`,
+        );
         const reviewsData = await reviewsRes.json();
         if (Array.isArray(reviewsData)) {
           setReviews(reviewsData);
         } else if (reviewsData.error) {
           console.error("Error al recargar reseñas:", reviewsData.error);
-          setMessage({ type: "error", text: "Error al recargar reseñas: " + reviewsData.error });
+          setMessage({
+            type: "error",
+            text: "Error al recargar reseñas: " + reviewsData.error,
+          });
         } else {
           console.error("Formato inesperado de reseñas:", reviewsData);
         }
@@ -184,12 +236,20 @@ function Game() {
     } catch (error) {
       setMessage({ type: "error", text: "Error al crear reseña" });
     }
-
   };
 
   if (loading) {
     return (
-      <div className="game-page" style={{ textAlign: "center", padding: "2rem", color: "#ffffff", backgroundColor: "#1b1f27", minHeight: "100vh" }}>
+      <div
+        className="game-page"
+        style={{
+          textAlign: "center",
+          padding: "2rem",
+          color: "#ffffff",
+          backgroundColor: "#1b1f27",
+          minHeight: "100vh",
+        }}
+      >
         <p>Cargando juego...</p>
       </div>
     );
@@ -197,23 +257,51 @@ function Game() {
 
   if (error || !game) {
     return (
-      <div className="game-page" style={{ textAlign: "center", padding: "60px 20px", backgroundColor: "#1b1f27", minHeight: "100vh" }}>
-        <div style={{
+      <div
+        className="game-page"
+        style={{
+          textAlign: "center",
+          padding: "60px 20px",
           backgroundColor: "#1b1f27",
-          border: "1px solid #ef4444",
-          borderRadius: "12px",
-          padding: "30px",
-          maxWidth: "500px",
-          margin: "0 auto",
-        }}>
-          <p style={{ color: "#ef4444", fontSize: "1.5rem", margin: "0 0 10px 0" }}>⚠️</p>
-          <p style={{ color: "#ffffff", fontSize: "1rem", margin: "0 0 8px 0" }}>
+          minHeight: "100vh",
+        }}
+      >
+        <div
+          style={{
+            backgroundColor: "#1b1f27",
+            border: "1px solid #ef4444",
+            borderRadius: "12px",
+            padding: "30px",
+            maxWidth: "500px",
+            margin: "0 auto",
+          }}
+        >
+          <p
+            style={{
+              color: "#ef4444",
+              fontSize: "1.5rem",
+              margin: "0 0 10px 0",
+            }}
+          >
+            ⚠️
+          </p>
+          <p
+            style={{ color: "#ffffff", fontSize: "1rem", margin: "0 0 8px 0" }}
+          >
             {error || "No se ha encontrado el juego"}
           </p>
-          <p style={{ color: "#9ca3af", fontSize: "0.85rem", margin: "0 0 20px 0" }}>
+          <p
+            style={{
+              color: "#9ca3af",
+              fontSize: "0.85rem",
+              margin: "0 0 20px 0",
+            }}
+          >
             Puede que el juego no exista o haya un problema con el servidor.
           </p>
-          <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
+          <div
+            style={{ display: "flex", gap: "10px", justifyContent: "center" }}
+          >
             <button
               onClick={fetchGameData}
               style={{
@@ -252,9 +340,19 @@ function Game() {
   }
 
   return (
-    <div className="game-page" style={{ backgroundColor: "#1b1f27", minHeight: "100vh", padding: "20px" }}>
+    <div
+      className="game-page"
+      style={{
+        backgroundColor: "#1b1f27",
+        minHeight: "100vh",
+        padding: "20px",
+      }}
+    >
       {/* Título del juego */}
-      <h1 className="game-title" style={{ textAlign: "center", color: "#ffffff" }}>
+      <h1
+        className="game-title"
+        style={{ textAlign: "center", color: "#ffffff" }}
+      >
         {game.titulo}
       </h1>
 
@@ -274,33 +372,53 @@ function Game() {
             flexWrap: "wrap",
           }}
         >
-          <div className="game-cover"style={{ flex: "0 0 auto" }}>
+          <div className="game-cover" style={{ flex: "0 0 auto" }}>
             <img
-              style={{ 
-                objectFit: "cover", 
+              style={{
+                objectFit: "cover",
                 borderRadius: "12px",
                 width: "300px",
-                height: "450px"
+                height: "450px",
               }}
               src={game.imagen}
               alt={game.titulo}
             />
           </div>
 
-          <div className="game-info"style={{ flex: "1 1 400px", minWidth: "300px" }}>
-            <p className="game-description" style={{ fontSize: "1.2rem", maxWidth: "500px", textAlign: "justify" }}>
+          <div
+            className="game-info"
+            style={{ flex: "1 1 400px", minWidth: "300px" }}
+          >
+            <p
+              className="game-description"
+              style={{
+                fontSize: "1.2rem",
+                maxWidth: "500px",
+                textAlign: "justify",
+              }}
+            >
               {game.descripcion}
             </p>
           </div>
-          <div className="game-details" style={{ fontSize: "1.2rem", maxWidth: "500px", flex: "1 1 400px", minWidth: "300px" }}>
-            <div className="detail-row" >
+          <div
+            className="game-details"
+            style={{
+              fontSize: "1.2rem",
+              maxWidth: "500px",
+              flex: "1 1 400px",
+              minWidth: "300px",
+            }}
+          >
+            <div className="detail-row">
               <span className="label">Fecha de lanzamiento: </span>
               <span className="value" style={{ color: "#29CDF2" }}>
                 {game.fecha}
               </span>
             </div>
             <div className="detail-row">
-              <span className="label" style={{ color: "#9ca3af" }}>Plataformas: </span>
+              <span className="label" style={{ color: "#9ca3af" }}>
+                Plataformas:{" "}
+              </span>
               <span className="value" style={{ color: "#29CDF2" }}>
                 {Array.isArray(game.plataforma)
                   ? game.plataforma.join(", ")
@@ -309,14 +427,18 @@ function Game() {
             </div>
 
             <div className="detail-row">
-              <span className="label" style={{ color: "#9ca3af" }}>Desarrollador: </span>
+              <span className="label" style={{ color: "#9ca3af" }}>
+                Desarrollador:{" "}
+              </span>
               <span className="value" style={{ color: "#29CDF2" }}>
                 {game.desarrollador}
               </span>
             </div>
 
             <div className="detail-row">
-              <span className="label" style={{ color: "#9ca3af" }}>Género: </span>
+              <span className="label" style={{ color: "#9ca3af" }}>
+                Género:{" "}
+              </span>
               <span className="value" style={{ color: "#29CDF2" }}>
                 {game.genero}
               </span>
@@ -326,48 +448,75 @@ function Game() {
       </div>
       {/* Botones de acción */}
       {user && (
-        <div style={{ textAlign: "center", marginBottom: "30px", display: "flex", gap: "10px", justifyContent: "center", flexWrap: "wrap" }}>
+        <div
+          style={{
+            textAlign: "center",
+            marginBottom: "30px",
+            display: "flex",
+            gap: "10px",
+            justifyContent: "center",
+            flexWrap: "wrap",
+          }}
+        >
           <button
             onClick={handleAddToWishlist}
             style={{
               padding: "10px 20px",
-              background: "#2b303b",
-              border: "1px solid #3e4451",
+              background: gameState === "pendiente" ? "#29CDF2" : "#2b303b",
+              border: gameState === "pendiente" ? "1px solid #29CDF2" : "1px solid #3e4451",
               borderRadius: "8px",
-              color: "#ffffff",
+              color: gameState === "pendiente" ? "#000000" : "#ffffff",
               cursor: "pointer",
               fontFamily: "upheaval, system-ui",
+              fontWeight: gameState === "pendiente" ? "bold" : "normal",
             }}
           >
-            Añadir a Wishlist
+            Wishlist {gameState === "pendiente" && "✓"}
+          </button>
+          <button
+            onClick={() => handleAddToLibrary("favorito")}
+            style={{
+              padding: "10px 20px",
+              background: gameState === "favorito" ? "#29CDF2" : "#2b303b",
+              border: gameState === "favorito" ? "1px solid #29CDF2" : "1px solid #3e4451",
+              borderRadius: "8px",
+              color: gameState === "favorito" ? "#000000" : "#ffffff",
+              cursor: "pointer",
+              fontFamily: "upheaval, system-ui",
+              fontWeight: gameState === "favorito" ? "bold" : "normal",
+            }}
+          >
+            Favorito {gameState === "favorito" && "✓"}
           </button>
           <button
             onClick={() => handleAddToLibrary("jugando")}
             style={{
               padding: "10px 20px",
-              background: "#2b303b",
-              border: "1px solid #3e4451",
+              background: gameState === "jugando" ? "#29CDF2" : "#2b303b",
+              border: gameState === "jugando" ? "1px solid #29CDF2" : "1px solid #3e4451",
               borderRadius: "8px",
-              color: "#ffffff",
+              color: gameState === "jugando" ? "#000000" : "#ffffff",
               cursor: "pointer",
               fontFamily: "upheaval, system-ui",
+              fontWeight: gameState === "jugando" ? "bold" : "normal",
             }}
           >
-            Estoy Jugando
+            Jugando {gameState === "jugando" && "✓"}
           </button>
           <button
             onClick={() => handleAddToLibrary("completado")}
             style={{
               padding: "10px 20px",
-              background: "#2b303b",
-              border: "1px solid #3e4451",
+              background: gameState === "completado" ? "#29CDF2" : "#2b303b",
+              border: gameState === "completado" ? "1px solid #29CDF2" : "1px solid #3e4451",
               borderRadius: "8px",
-              color: "#ffffff",
+              color: gameState === "completado" ? "#000000" : "#ffffff",
               cursor: "pointer",
               fontFamily: "upheaval, system-ui",
+              fontWeight: gameState === "completado" ? "bold" : "normal",
             }}
           >
-            Completado
+            Completado {gameState === "completado" && "✓"}
           </button>
           <button
             onClick={() => setShowListModal(true)}
@@ -437,10 +586,18 @@ function Game() {
             border: "1px solid #3e4451",
           }}
         >
-          <h3 style={{ color: "#ffffff", marginBottom: "15px" }}>Escribir Reseña</h3>
+          <h3 style={{ color: "#ffffff", marginBottom: "15px" }}>
+            Escribir Reseña
+          </h3>
           <form onSubmit={handleCreateReview}>
             <div style={{ marginBottom: "15px" }}>
-              <label style={{ color: "#9ca3af", display: "block", marginBottom: "5px" }}>
+              <label
+                style={{
+                  color: "#9ca3af",
+                  display: "block",
+                  marginBottom: "5px",
+                }}
+              >
                 Puntuación (opcional)
               </label>
               <StarRating
@@ -450,7 +607,13 @@ function Game() {
               />
             </div>
             <div style={{ marginBottom: "15px" }}>
-              <label style={{ color: "#9ca3af", display: "block", marginBottom: "5px" }}>
+              <label
+                style={{
+                  color: "#9ca3af",
+                  display: "block",
+                  marginBottom: "5px",
+                }}
+              >
                 Reseña
               </label>
               <textarea
@@ -494,7 +657,9 @@ function Game() {
 
       {/* Sección de juegos relacionados */}
       <section className="related-games-section">
-        <h2 className="section-title" style={{ color: "#ffffff" }}>Juegos Relacionados</h2>
+        <h2 className="section-title" style={{ color: "#ffffff" }}>
+          Juegos Relacionados
+        </h2>
         <div
           className="games-row"
           style={{
@@ -513,13 +678,14 @@ function Game() {
             relacionados.map((juego) => (
               <div
                 key={juego.id}
-                style={{ flex: "0 0 auto", scrollSnapAlign: "start", cursor: "pointer" }}
+                style={{
+                  flex: "0 0 auto",
+                  scrollSnapAlign: "start",
+                  cursor: "pointer",
+                }}
                 onClick={() => navigate(`/game/${juego.id}`)}
               >
-                <GameLibraryCard
-                  nombre={juego.nombre}
-                  portada={juego.imagen}
-                />
+                <GameLibraryCard nombre={juego.nombre} portada={juego.imagen} />
               </div>
             ))
           ) : (
@@ -532,12 +698,23 @@ function Game() {
 
       {/* Sección de reseñas */}
       <section className="reviews-section">
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
-          <h2 className="section-title" style={{ color: "#ffffff", margin: 0 }}>Reseñas</h2>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "20px",
+          }}
+        >
+          <h2 className="section-title" style={{ color: "#ffffff", margin: 0 }}>
+            Reseñas
+          </h2>
           <button
             onClick={async () => {
               try {
-                const reviewsRes = await fetch(`${API_BASE_URL}/resenas?id_juego=${id}`);
+                const reviewsRes = await fetch(
+                  `${API_BASE_URL}/resenas?id_juego=${id}`,
+                );
                 const reviewsData = await reviewsRes.json();
                 if (Array.isArray(reviewsData)) {
                   setReviews(reviewsData);
@@ -570,7 +747,9 @@ function Game() {
           }}
         >
           {reviews.length === 0 ? (
-            <p style={{ color: "#9ca3af", textAlign: "center", padding: "20px" }}>
+            <p
+              style={{ color: "#9ca3af", textAlign: "center", padding: "20px" }}
+            >
               No hay reseñas todavía. ¡Sé el primero en escribir una!
             </p>
           ) : (
@@ -578,7 +757,10 @@ function Game() {
               <GameReviewCard
                 key={review.id}
                 id={review.id}
-                foto={review.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${review.usuario}`}
+                foto={
+                  review.avatar ||
+                  `https://api.dicebear.com/7.x/avataaars/svg?seed=${review.usuario}`
+                }
                 usuario={review.usuario || "Usuario anónimo"}
                 desc={review.contenido || ""}
                 puntuacion={review.puntuacion}

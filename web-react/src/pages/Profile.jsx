@@ -24,6 +24,11 @@ function Perfil() {
   const [listas, setListas] = useState([]);
   const [amigos, setAmigos] = useState([]);
   const [error, setError] = useState(null);
+  const [filtrosEstado, setFiltrosEstado] = useState({
+    favorito: true,
+    jugando: true,
+    completado: true,
+  });
 
   const loadProfileData = async () => {
     setLoading(true);
@@ -116,8 +121,50 @@ function Perfil() {
     return review ? review.puntuacion : undefined;
   };
 
+  // Filtrar y ordenar juegos según estado seleccionado
+  const getFilteredAndSortedJuegos = () => {
+    // Filtrar por estados seleccionados
+    const filtered = filteredJuegos.filter(juego => {
+      if (juego.estado === "favorito" && filtrosEstado.favorito) return true;
+      if (juego.estado === "jugando" && filtrosEstado.jugando) return true;
+      if (juego.estado === "completado" && filtrosEstado.completado) return true;
+      return false;
+    });
+
+    // Ordenar: primero por puntuación (descendente), luego alfabéticamente
+    return filtered.sort((a, b) => {
+      const scoreA = getReviewScore(a.id);
+      const scoreB = getReviewScore(b.id);
+
+      // Si ambos tienen puntuación, ordenar por puntuación (descendente)
+      if (scoreA !== undefined && scoreB !== undefined) {
+        if (scoreB !== scoreA) return scoreB - scoreA;
+      } else if (scoreA !== undefined) {
+        return -1; // A va primero si tiene puntuación y B no
+      } else if (scoreB !== undefined) {
+        return 1; // B va primero si tiene puntuación y A no
+      }
+
+      // Si no hay diferencia de puntuación, ordenar alfabéticamente
+      const titleA = (a.titulo || a.nombre).toLowerCase();
+      const titleB = (b.titulo || b.nombre).toLowerCase();
+      return titleA.localeCompare(titleB);
+    });
+  };
+
+  // Toggle para filtros de estado
+  const toggleFiltro = (estado) => {
+    setFiltrosEstado(prev => ({
+      ...prev,
+      [estado]: !prev[estado]
+    }));
+  };
+
   // Filtrar juegos para excluir aquellos en wishlist
   const filteredJuegos = juegos.filter(juego => !wishlist.some(w => w.id === juego.id));
+
+  // Filtrar juegos que tienen estado "favorito"
+  const favoritos = juegos.filter(juego => juego.estado === "favorito");
 
   if (loading) {
     return (
@@ -330,19 +377,25 @@ function Perfil() {
                 justifyContent: "center",
               }}
             >
-              {filteredJuegos.slice(0, 5).map((juego) => (
-                <div
-                  key={juego.id}
-                  onClick={() => navigate(`/game/${juego.id}`)}
-                  style={{ cursor: "pointer" }}
-                >
-                  <GameLibraryCard
-                    titulo={juego.titulo || juego.nombre}
-                    portada={juego.portada || juego.imagen}
-                    puntuacion={juego.rating}
-                  />
-                </div>
-              ))}
+              {favoritos.length > 0 ? (
+                favoritos.slice(0, 5).map((juego) => (
+                  <div
+                    key={juego.id}
+                    onClick={() => navigate(`/game/${juego.id}`)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <GameLibraryCard
+                      titulo={juego.titulo || juego.nombre}
+                      portada={juego.portada || juego.imagen}
+                      puntuacion={juego.rating}
+                    />
+                  </div>
+                ))
+              ) : (
+                <p style={{ color: "#9ca3af", gridColumn: "1 / -1", textAlign: "center", padding: "20px" }}>
+                  No tienes juegos marcados como favoritos
+                </p>
+              )}
             </div>
             <h2 style={{ color: "#ffffff", marginTop: "30px" }}>Actividad Reciente</h2>
             <div
@@ -372,27 +425,115 @@ function Perfil() {
         )}
 
         {activeTab === "juegos" && (
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "20px",
-              justifyContent: "center",
-            }}
-          >
-            {filteredJuegos.map((juego) => (
-              <div
-                key={juego.id}
-                onClick={() => navigate(`/game/${juego.id}`)}
-                style={{ cursor: "pointer" }}
+          <div>
+            {/* Filtros de estado */}
+            <div
+              style={{
+                display: "flex",
+                gap: "10px",
+                justifyContent: "center",
+                marginBottom: "30px",
+                flexWrap: "wrap",
+              }}
+            >
+              <button
+                onClick={() => toggleFiltro("favorito")}
+                style={{
+                  padding: "8px 16px",
+                  background: filtrosEstado.favorito ? "#29CDF2" : "#2b303b",
+                  border: filtrosEstado.favorito ? "1px solid #29CDF2" : "1px solid #3e4451",
+                  borderRadius: "8px",
+                  color: filtrosEstado.favorito ? "#000000" : "#ffffff",
+                  cursor: "pointer",
+                  fontFamily: "upheaval, system-ui",
+                  fontWeight: filtrosEstado.favorito ? "bold" : "normal",
+                  fontSize: "0.9rem",
+                }}
               >
-                <GameLibraryCard
-                  titulo={juego.titulo || juego.nombre}
-                  portada={juego.portada || juego.imagen}
-                  puntuacion={getReviewScore(juego.id)}
-                />
+                ⭐ Favoritos {filtrosEstado.favorito && "✓"}
+              </button>
+              <button
+                onClick={() => toggleFiltro("jugando")}
+                style={{
+                  padding: "8px 16px",
+                  background: filtrosEstado.jugando ? "#29CDF2" : "#2b303b",
+                  border: filtrosEstado.jugando ? "1px solid #29CDF2" : "1px solid #3e4451",
+                  borderRadius: "8px",
+                  color: filtrosEstado.jugando ? "#000000" : "#ffffff",
+                  cursor: "pointer",
+                  fontFamily: "upheaval, system-ui",
+                  fontWeight: filtrosEstado.jugando ? "bold" : "normal",
+                  fontSize: "0.9rem",
+                }}
+              >
+                🎮 Jugando {filtrosEstado.jugando && "✓"}
+              </button>
+              <button
+                onClick={() => toggleFiltro("completado")}
+                style={{
+                  padding: "8px 16px",
+                  background: filtrosEstado.completado ? "#29CDF2" : "#2b303b",
+                  border: filtrosEstado.completado ? "1px solid #29CDF2" : "1px solid #3e4451",
+                  borderRadius: "8px",
+                  color: filtrosEstado.completado ? "#000000" : "#ffffff",
+                  cursor: "pointer",
+                  fontFamily: "upheaval, system-ui",
+                  fontWeight: filtrosEstado.completado ? "bold" : "normal",
+                  fontSize: "0.9rem",
+                }}
+              >
+                ✅ Completados {filtrosEstado.completado && "✓"}
+              </button>
+            </div>
+
+            {/* Juegos filtrados y ordenados */}
+            {!filtrosEstado.favorito && !filtrosEstado.jugando && !filtrosEstado.completado ? (
+              <div
+                style={{
+                  backgroundColor: "#2b303b",
+                  border: "1px solid #3e4451",
+                  borderRadius: "12px",
+                  padding: "40px",
+                  textAlign: "center",
+                }}
+              >
+                <p style={{ color: "#9ca3af", fontSize: "1.1rem", margin: "0 0 10px 0" }}>
+                  Selecciona al menos un filtro para ver tus juegos
+                </p>
+                <p style={{ color: "#666", fontSize: "0.9rem", margin: "0" }}>
+                  Haz clic en los botones de arriba para filtrar por estado
+                </p>
               </div>
-            ))}
+            ) : (
+              <div
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: "20px",
+                  justifyContent: "center",
+                }}
+              >
+                {getFilteredAndSortedJuegos().length > 0 ? (
+                  getFilteredAndSortedJuegos().map((juego) => (
+                    <div
+                      key={juego.id}
+                      onClick={() => navigate(`/game/${juego.id}`)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <GameLibraryCard
+                        titulo={juego.titulo || juego.nombre}
+                        portada={juego.portada || juego.imagen}
+                        puntuacion={getReviewScore(juego.id)}
+                      />
+                    </div>
+                  ))
+                ) : (
+                  <p style={{ color: "#9ca3af", textAlign: "center", padding: "40px", width: "100%" }}>
+                    No hay juegos en los filtros seleccionados
+                  </p>
+                )}
+              </div>
+            )}
           </div>
         )}
 
