@@ -358,21 +358,19 @@ function Game() {
 
       {/* Sección principal del juego */}
       <div
-        style={{ textAlign: "center", marginBottom: "10px", marginTop: "10px" }}
+        style={{ marginBottom: "10px", marginTop: "10px" }}
       >
         <aside
           style={{
             display: "flex",
             alignItems: "flex-start",
-            justifyContent: "center",
-            gap: "15px",
+            gap: "25px",
             margin: "0 auto",
-            width: "fit-content",
-            maxWidth: "1200px",
-            flexWrap: "wrap",
+            maxWidth: "1100px",
+            padding: "0 20px",
           }}
         >
-          <div className="game-cover" style={{ flex: "0 0 auto" }}>
+          <div className="game-cover" style={{ flexShrink: 0 }}>
             <img
               style={{
                 objectFit: "cover",
@@ -387,62 +385,63 @@ function Game() {
 
           <div
             className="game-info"
-            style={{ flex: "1 1 400px", minWidth: "300px" }}
+            style={{
+              flex: 1,
+              minWidth: 0,
+            }}
           >
             <p
               className="game-description"
               style={{
                 fontSize: "1.2rem",
-                maxWidth: "500px",
                 textAlign: "justify",
+                margin: 0,
               }}
             >
               {game.descripcion}
             </p>
           </div>
+
           <div
             className="game-details"
             style={{
               fontSize: "1.2rem",
-              maxWidth: "500px",
-              flex: "1 1 400px",
-              minWidth: "300px",
+              flex: "0 0 300px",
+              textAlign: "right",
             }}
           >
-            <div className="detail-row">
-              <span className="label">Fecha de lanzamiento: </span>
-              <span className="value" style={{ color: "#29CDF2" }}>
-                {game.fecha}
-              </span>
-            </div>
-            <div className="detail-row">
-              <span className="label" style={{ color: "#9ca3af" }}>
-                Plataformas:{" "}
-              </span>
-              <span className="value" style={{ color: "#29CDF2" }}>
-                {Array.isArray(game.plataforma)
-                  ? game.plataforma.join(", ")
-                  : game.plataforma}
-              </span>
-            </div>
-
-            <div className="detail-row">
-              <span className="label" style={{ color: "#9ca3af" }}>
-                Desarrollador:{" "}
-              </span>
-              <span className="value" style={{ color: "#29CDF2" }}>
-                {game.desarrollador}
-              </span>
-            </div>
-
-            <div className="detail-row">
-              <span className="label" style={{ color: "#9ca3af" }}>
-                Género:{" "}
-              </span>
-              <span className="value" style={{ color: "#29CDF2" }}>
-                {game.genero}
-              </span>
-            </div>
+              <div className="detail-row">
+                <span className="label">Fecha de lanzamiento: </span>
+                <span className="value" style={{ color: "#29CDF2" }}>
+                  {game.fecha}
+                </span>
+              </div>
+              <div className="detail-row">
+                <span className="label" style={{ color: "#9ca3af" }}>
+                  Plataformas:{" "}
+                </span>
+                <span className="value" style={{ color: "#29CDF2" }}>
+                  {Array.isArray(game.plataforma)
+                    ? game.plataforma.join(", ")
+                    : game.plataforma}
+                </span>
+              </div>
+              <div className="detail-row">
+                <span className="label" style={{ color: "#9ca3af" }}>
+                  Desarrollador:{" "}
+                </span>
+                <span className="value" style={{ color: "#29CDF2" }}>
+                  {game.desarrollador}
+                </span>
+              </div>
+              <div className="detail-row">
+                <span className="label" style={{ color: "#9ca3af" }}>
+                  Género:{" "}
+                </span>
+                <span className="value" style={{ color: "#29CDF2" }}>
+                  {game.genero}
+                </span>
+              </div>
           </div>
         </aside>
       </div>
