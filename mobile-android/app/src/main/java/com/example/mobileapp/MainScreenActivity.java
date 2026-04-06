@@ -1,47 +1,154 @@
 package com.example.mobileapp;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RatingBar;
+import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import com.bumptech.glide.Glide;
+import com.example.mobileapp.api.ApiJuegosService;
+import com.example.mobileapp.api.ApiReviewsService;
+import com.example.mobileapp.api.RetrofitClient;
+import com.example.mobileapp.models.responses.GameResponse;
+import com.example.mobileapp.models.responses.ReviewResponse;
 import java.util.ArrayList;
 import java.util.List;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainScreenActivity extends AppCompatActivity {
-    private List<Games> listaJuegos;
+    private LinearLayout gamesContainer;
+    private LinearLayout reviewsContainer;
+    private static final String BASE_URL = "http://10.0.2.2:3000/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Usamos activity_main porque contiene el DrawerLayout y el include de main_screen
         setContentView(R.layout.activity_main);
         new HeaderManager(this);
 
-        listaProvisional();
+        gamesContainer = findViewById(R.id.gamesContainer);
+        reviewsContainer = findViewById(R.id.reviewsContainer);
 
-        setupClickListeners();
+        loadGames();
+        loadPopularReviews();
     }
 
-    private void listaProvisional() {
-        listaJuegos = new ArrayList<>();
-        listaJuegos.add(new Games(1, "Ball X Pit", "PC, PS5, Xbox Series X/S", R.drawable.ballxpit,
-                "bola pito", "2024-05-12", "Indie Dev", "RogueLike"));
-        listaJuegos.add(new Games(2, "Silent Hill F", "PS5, PC", R.drawable.silenthillf,
-                "The latest entry in the Silent Hill series, set in 1960s Japan.", "TBA", "Neobards Entertainment", "Horror"));
-        listaJuegos.add(new Games(3, "Hades 2", "PC", R.drawable.hades2,
-                "The sequel to the award-winning rogue-like dungeon crawler.", "2024", "Supergiant Games", "Rogue-like, Action"));
-        listaJuegos.add(new Games(4, "Like a Dragon: Pirate Yakuza in Hawaii", "PS5, PS4, Xbox, PC", R.drawable.yakuzapirate,
-                "Goro Majima takes to the high seas in this pirate-themed spin-off.", "2025-02-21", "Ryu Ga Gotoku Studio", "Action-Adventure"));
+    private void loadGames() {
+        ApiJuegosService juegosService = RetrofitClient.getGamesService();
+        juegosService.getAllGames().enqueue(new Callback<List<GameResponse>>() {
+            @Override
+            public void onResponse(Call<List<GameResponse>> call, Response<List<GameResponse>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    displayGames(response.body());
+                } else {
+                    Toast.makeText(MainScreenActivity.this, "Error al obtener juegos", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<GameResponse>> call, Throwable t) {
+                Toast.makeText(MainScreenActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
-    private void setupClickListeners() {
-        findViewById(R.id.game_ballxpit).setOnClickListener(v -> openGameInfo(0));
-        findViewById(R.id.game_ballxpit2).setOnClickListener(v -> openGameInfo(0));
-        findViewById(R.id.game_silentHillF).setOnClickListener(v -> openGameInfo(1));
-        findViewById(R.id.game1_hades2).setOnClickListener(v -> openGameInfo(2));
-        findViewById(R.id.game1_yakuzapirate).setOnClickListener(v -> openGameInfo(3));
+    private void displayGames(List<GameResponse> games) {
+        if (gamesContainer == null) return;
+        gamesContainer.removeAllViews();
+        
+        float density = getResources().getDisplayMetrics().density;
+        int width = (int) (111 * density);
+        int height = (int) (162 * density);
+        int marginEnd = (int) (16 * density);
+        int marginTop = (int) (20 * density);
+
+        for (GameResponse game : games) {
+            ImageButton btn = new ImageButton(this);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, height);
+            params.setMargins(0, marginTop, marginEnd, 0);
+            btn.setLayoutParams(params);
+            
+            btn.setBackgroundResource(R.drawable.game_miniature_shape);
+            btn.setClipToOutline(true);
+            btn.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+            String imageUrl = game.getImagen();
+            if (imageUrl != null && !imageUrl.startsWith("http")) {
+                imageUrl = BASE_URL + imageUrl;
+            }
+
+            Glide.with(this)
+                    .load(imageUrl)
+                    .placeholder(R.drawable.ballxpit)
+                    .into(btn);
+
+            btn.setOnClickListener(v -> {
+                GameInfoActivity.open(this, game);
+            });
+
+            gamesContainer.addView(btn);
+        }
     }
 
-    private void openGameInfo(int index) {
-        if (index >= 0 && index < listaJuegos.size()) {
-            GameInfoActivity.open(this, listaJuegos.get(index));
+    private void loadPopularReviews() {
+        ApiReviewsService reviewsService = RetrofitClient.getReviewsService();
+        reviewsService.getPopularReviews().enqueue(new Callback<List<ReviewResponse>>() {
+            @Override
+            public void onResponse(Call<List<ReviewResponse>> call, Response<List<ReviewResponse>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    displayReviews(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ReviewResponse>> call, Throwable t) {
+                Toast.makeText(MainScreenActivity.this, "Error al obtener reviews", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void displayReviews(List<ReviewResponse> reviews) {
+        if (reviewsContainer == null) return;
+        reviewsContainer.removeAllViews();
+        LayoutInflater inflater = LayoutInflater.from(this);
+
+        for (ReviewResponse review : reviews) {
+            View card = inflater.inflate(R.layout.item_review_home, reviewsContainer, false);
+            
+            ImageView gameImg = card.findViewById(R.id.game_image_review);
+            ImageView userImg = card.findViewById(R.id.user_pfp_review);
+            TextView userName = card.findViewById(R.id.user_name_review);
+            TextView timeText = card.findViewById(R.id.review_time);
+            TextView contentText = card.findViewById(R.id.review_content);
+            RatingBar ratingBar = card.findViewById(R.id.ratingBarReview);
+
+            userName.setText(review.getUsuario());
+            timeText.setText(review.getFecha());
+            contentText.setText(review.getContenido());
+            
+            // Ajuste de puntuación (asumiendo que viene 0-10 y el RatingBar es de 5 estrellas)
+            float score = review.getPuntuacion() != null ? review.getPuntuacion().floatValue() / 2 : 0;
+            ratingBar.setRating(score);
+
+            // Cargar imágenes
+            String gameUrl = review.getImagen();
+            if (gameUrl != null && !gameUrl.startsWith("http")) gameUrl = BASE_URL + gameUrl;
+            Glide.with(this).load(gameUrl).placeholder(R.drawable.ballxpit).into(gameImg);
+
+            String userUrl = review.getAvatar();
+            if (userUrl != null && !userUrl.startsWith("http")) userUrl = BASE_URL + userUrl;
+            Glide.with(this).load(userUrl).circleCrop().placeholder(R.drawable.image).into(userImg);
+
+            reviewsContainer.addView(card);
         }
     }
 }
