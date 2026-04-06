@@ -133,117 +133,34 @@
 
 
 
+    <TextView
+        android:id="@+id/emptyGamesText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:fontFamily="@font/m6x11plus"
+        android:text="No tienes juegos en tu biblioteca"
+        android:textColor="#626262"
+        android:textSize="24sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addGameBtn" />
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="550dp"
+        android:layout_height="0dp"
         android:layout_marginTop="70dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addGameBtn">
+        app:layout_constraintTop_toBottomOf="@+id/addGameBtn"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <androidx.gridlayout.widget.GridLayout
+            android:id="@+id/gamesGridContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:columnCount="3"
-            app:layout_constraintTop_toBottomOf="@+id/addGameBtn">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingStart="20dp"
-                android:paddingEnd="0dp">
-
-                <ImageButton
-                    android:id="@+id/game_mhwilds"
-                    android:layout_width="111dp"
-                    android:layout_height="162dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/game_miniature_shape"
-                    android:clipToOutline="true"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/mhwilds" />
-
-                <RatingBar
-                    android:id="@+id/ratingBarReview3"
-                    style="?android:attr/ratingBarStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="4dp"
-                    android:isIndicator="true"
-                    android:numStars="5"
-                    android:progressBackgroundTint="#626262"
-                    android:progressTint="#FFCC00"
-                    android:rating="5"
-                    android:stepSize="0.5" />
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingStart="20dp"
-                android:paddingEnd="0dp">
-
-                <ImageButton
-                    android:id="@+id/game_mhworld"
-                    android:layout_width="111dp"
-                    android:layout_height="162dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/game_miniature_shape"
-                    android:clipToOutline="true"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/mhworld" />
-
-                <RatingBar
-                    android:id="@+id/ratingBarReview5"
-                    style="?android:attr/ratingBarStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="4dp"
-                    android:isIndicator="true"
-                    android:numStars="5"
-                    android:progressBackgroundTint="#626262"
-                    android:progressTint="#FFCC00"
-                    android:rating="5"
-                    android:stepSize="0.5" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:elevation="0dp"
-                android:paddingStart="20dp"
-                android:paddingEnd="0dp">
-
-                <ImageButton
-                    android:id="@+id/game_ror2"
-                    android:layout_width="111dp"
-                    android:layout_height="162dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/game_miniature_shape"
-                    android:clipToOutline="true"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ror2" />
-
-                <RatingBar
-                    android:id="@+id/ratingBarReview"
-                    style="?android:attr/ratingBarStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="4dp"
-                    android:isIndicator="true"
-                    android:numStars="5"
-                    android:progressBackgroundTint="#626262"
-                    android:progressTint="#FFCC00"
-                    android:rating="5"
-                    android:stepSize="0.5"/>
-            </LinearLayout>
-
-
-        </androidx.gridlayout.widget.GridLayout>
+            app:columnCount="3" />
 
     </ScrollView>
 

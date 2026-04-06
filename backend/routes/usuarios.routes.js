@@ -104,6 +104,7 @@ router.get('/:id/juegos', async (req, res) => {
         j.id_juego,
         j.titulo,
         j.portada,
+        j.fecha_lanzamiento,
         g.estado,
         g.horas_jugadas,
         g.fecha_agregado,
@@ -126,6 +127,18 @@ router.get('/:id/juegos', async (req, res) => {
     const juegosFormateados = juegos.map(row => {
       const rating = row.rating ? Math.round(row.rating * 10) / 10 : null;
       
+      let fechaLanzamiento = null;
+      if (row.fecha_lanzamiento) {
+        const date = new Date(row.fecha_lanzamiento);
+        fechaLanzamiento = date.toISOString();
+      }
+      
+      let fechaAgregado = null;
+      if (row.fecha_agregado) {
+        const date = new Date(row.fecha_agregado);
+        fechaAgregado = date.toISOString();
+      }
+      
       return {
         id: row.id_juego,
         nombre: row.titulo,
@@ -133,6 +146,8 @@ router.get('/:id/juegos', async (req, res) => {
         estado: row.estado,
         horas_jugadas: parseFloat(row.horas_jugadas) || 0,
         rating: rating,
+        fecha_lanzamiento: fechaLanzamiento,
+        fecha_agregado: fechaAgregado,
       };
     });
     

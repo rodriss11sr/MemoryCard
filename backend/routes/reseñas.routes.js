@@ -178,8 +178,8 @@ router.post('/', async (req, res) => {
   try {
     const { texto, nota, spoilers, id_usuario, id_juego } = req.body;
     
-    if (!texto || !id_usuario || !id_juego) {
-      return res.status(400).json({ ok: false, message: 'El texto de la reseña es obligatorio' });
+    if (!id_usuario || !id_juego) {
+      return res.status(400).json({ ok: false, message: 'Usuario y juego son obligatorios' });
     }
 
     if (nota !== null && nota !== undefined && (nota < 0 || nota > 10)) {
@@ -196,7 +196,7 @@ router.post('/', async (req, res) => {
       // Actualizar reseña existente
       await pool.query(
         'UPDATE reseña SET texto = ?, nota = ?, spoilers = ? WHERE id_usuario = ? AND id_juego = ?',
-        [texto, nota || null, spoilers || false, id_usuario, id_juego]
+        [texto || '', nota || null, spoilers || false, id_usuario, id_juego]
       );
       
       return res.json({ 
@@ -207,7 +207,7 @@ router.post('/', async (req, res) => {
       // Crear nueva reseña
       const [result] = await pool.query(
         'INSERT INTO reseña (texto, nota, spoilers, id_usuario, id_juego) VALUES (?, ?, ?, ?, ?)',
-        [texto, nota || null, spoilers || false, id_usuario, id_juego]
+        [texto || '', nota || null, spoilers || false, id_usuario, id_juego]
       );
       
       return res.json({ 

@@ -43,7 +43,10 @@ public class AddGame extends DialogFragment {
 
         adapter = new GameAdapter(new ArrayList<>(), game -> {
             dismiss();
-            AddGameFinalActivity nextPopup = AddGameFinalActivity.newInstance(game.getName(), game.getImageResId());
+            AddGameFinalActivity nextPopup = AddGameFinalActivity.newInstance(
+                    game.getId(), game.getName(),
+                    game.getImageUrl() != null ? game.getImageUrl() : "",
+                    game.getImageResId());
             nextPopup.show(getParentFragmentManager(), "AddFinalPopUp");
         });
 

@@ -120,33 +120,57 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@+id/divider8"
         tools:layout_editor_absoluteX="0dp">
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="73dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_weight="1"
-            android:background="@drawable/button_shape"
-            android:fontFamily="@font/m6x11plus"
-            android:text="Buscar lista"
-            android:textSize="24sp"
-            app:backgroundTint="#0466C8" />
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/createListBtn"
-            android:layout_width="73dp"
-            android:layout_height="wrap_content"
+            <Button
+                android:id="@+id/searchListBtn"
+                android:layout_width="73dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_shape"
+                android:fontFamily="@font/m6x11plus"
+                android:text="Buscar lista"
+                android:textSize="24sp"
+                app:backgroundTint="#0466C8" />
+
+            <Button
+                android:id="@+id/createListBtn"
+                android:layout_width="73dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_shape"
+                android:fontFamily="@font/m6x11plus"
+                android:text="+ Crear lista"
+                android:textSize="24sp"
+                app:backgroundTint="#0466C8" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/searchListInput"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
             android:layout_marginHorizontal="20dp"
-            android:layout_weight="1"
+            android:layout_marginTop="8dp"
             android:background="@drawable/button_shape"
+            android:backgroundTint="#2D333E"
             android:fontFamily="@font/m6x11plus"
-            android:text="+ Crear lista"
-            android:textSize="24sp"
-            app:backgroundTint="#0466C8" />
+            android:hint="Escribe el nombre de la lista..."
+            android:textColorHint="#626262"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:paddingHorizontal="16dp"
+            android:inputType="text"
+            android:visibility="gone" />
+
     </LinearLayout>
 
     <TextView
