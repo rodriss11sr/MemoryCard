@@ -1,19 +1,45 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import StarRating from "./starRating.jsx";
 
-const UserReviewCard = ({ titulo, contenido, puntuacion, imagen }) => {
+const API_BASE_URL = "/api";
+
+const UserReviewCard = ({
+  id,
+  titulo,
+  contenido,
+  puntuacion,
+  imagen,
+  fecha,
+  gameId,
+  id_usuario,
+  likes: likesInicial = 0,
+}) => {
+  const navigate = useNavigate();
+
+  const currentUser = JSON.parse(localStorage.getItem("user") || "null");
+  const isOwnReview = currentUser && currentUser.id === id_usuario;
+
+  const [likes, setLikes] = useState(likesInicial);
+  const [liked, setLiked] = useState(() => {
+    const likedReviews = JSON.parse(
+      localStorage.getItem("likedReviews") || "[]",
+    );
+    return id && likedReviews.some((rid) => rid === id);
+  });
 
   //Estilo de la tarjeta
   const cardStyle = {
     display: "flex",
+    alignItems: "flex-start",
+    gap: "1rem",
     backgroundColor: "#2b303b",
-    borderRadius: "12px",
-    overflow: "hidden",
-    marginBottom: "15px",
     border: "1px solid #3e4451",
-    boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
-    height: "120px",
-    alignItems: "center",
+    borderRadius: "12px",
+    padding: "1rem",
+    width: "100%",
+    maxWidth: "700px",
+    cursor: "default",
   };
 
   //Contenido de la reseña
@@ -25,9 +51,10 @@ const UserReviewCard = ({ titulo, contenido, puntuacion, imagen }) => {
       toggleExpanded();
     }
   };
+
   const descStyle = {
     color: "#d1d5db",
-    fontSize: "0.9rem",
+    fontSize: "1.5 rem",
     margin: "5px 0 0 0",
     marginTop: "2px",
     fontWeight: "500",
@@ -40,8 +67,6 @@ const UserReviewCard = ({ titulo, contenido, puntuacion, imagen }) => {
     whiteSpace: expanded ? "normal" : "initial",
   };
 
-
-
   // Estilos para la imagen del juego
   const imageContainerStyle = {
     width: "85px",
@@ -51,21 +76,124 @@ const UserReviewCard = ({ titulo, contenido, puntuacion, imagen }) => {
   };
 
   const contentStyle = {
-    padding: "15px",
+    padding: "0",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center",
-    gap: "5px",
+    justifyContent: "space-between",
+    width: "100%",
+    minWidth: "0",
+  };
+
+  const titleStyle = {
+    color: "#ffffff",
+    fontWeight: "800",
+    fontSize: "1.5rem",
+    textTransform: "uppercase",
+    letterSpacing: "1px",
+    fontFamily: "upheaval, system-ui",
+    cursor: "pointer",
+    lineHeight: "1.2",
+    marginBottom: "0.5rem",
+  };
+
+  const metaStyle = {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.75rem",
+    color: "#9ca3af",
+    fontSize: "0.85rem",
+    marginBottom: "0.6rem",
+  };
+
+  const fechaStyle = {
+    color: "#9ca3af",
+    fontSize: "0.85rem",
+  };
+
+  const likeContainerStyle = {
+    display: "flex",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    marginTop: "8px",
+    width: "100%",
+  };
+
+  const likeButtonStyle = {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.4rem",
+    background: liked ? "rgba(239,68,68,0.12)" : "transparent",
+    border: "1px solid " + (liked ? "#ef4444" : "#3e4451"),
+    color: liked ? "#ef4444" : "#9ca3af",
+    cursor: isOwnReview ? "not-allowed" : "pointer",
+    padding: "0.35rem 0.8rem",
+    borderRadius: "8px",
+    fontSize: "0.85rem",
+    transition: "all 0.2s ease",
+    minWidth: "95px",
+    textAlign: "center",
+  };
+
+  const handleToggleLike = async () => {
+    if (!id) return;
+    if (isOwnReview) {
+      window.alert("No puedes dar like a tu propia reseña.");
+      return;
+    }
+
+    const endpoint = liked ? "unlike" : "like";
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/resenas/${id}/${endpoint}`, {
+        method: "PUT",
+      });
+
+      if (!res.ok) {
+        console.error("Error en respuesta de like", res.status);
+        return;
+      }
+
+      const likedReviews = [
+        ...new Set(JSON.parse(localStorage.getItem("likedReviews") || "[]")),
+      ];
+
+      if (liked) {
+        setLikes((prev) => Math.max(prev - 1, 0));
+        setLiked(false);
+        localStorage.setItem(
+          "likedReviews",
+          JSON.stringify(likedReviews.filter((rid) => rid !== id)),
+        );
+      } else {
+        setLikes((prev) => prev + 1);
+        setLiked(true);
+        localStorage.setItem(
+          "likedReviews",
+          JSON.stringify([...likedReviews, id]),
+        );
+      }
+    } catch (error) {
+      console.error("Error al toggle like:", error);
+    }
   };
 
   return (
     <div style={cardStyle}>
-      <div style={imageContainerStyle}>
+      {/* Imagen del juego a la izquierda */}
+      <div
+        style={imageContainerStyle}
+        onClick={() => navigate(`/game/${gameId}`)}
+      >
         {imagen ? (
           <img
             src={imagen}
             alt={titulo}
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              cursor: "pointer",
+            }}
           />
         ) : (
           <div
@@ -76,6 +204,7 @@ const UserReviewCard = ({ titulo, contenido, puntuacion, imagen }) => {
               alignItems: "center",
               justifyContent: "center",
               color: "#555",
+              cursor: "pointer",
             }}
           >
             🎮
@@ -83,20 +212,25 @@ const UserReviewCard = ({ titulo, contenido, puntuacion, imagen }) => {
         )}
       </div>
 
+      {/* Contenido a la derecha */}
       <div style={contentStyle}>
-        <span
-          style={{
-            color: "#ffffff",
-            fontWeight: "800",
-            fontSize: "1.3rem",
-            textTransform: "uppercase",
-            letterSpacing: "1px",
-            fontFamily: "upheaval, system-ui",
-          }}
-        >
+        {/* Título del juego */}
+        <span style={titleStyle} onClick={() => navigate(`/game/${gameId}`)}>
           {titulo}
         </span>
 
+        {/* Puntuación con estrellas y fecha */}
+        <div style={metaStyle}>
+          {puntuacion !== null && puntuacion !== undefined && (
+            <>
+              <StarRating nota={puntuacion} size="1.2rem" />
+              <span>{puntuacion}</span>
+            </>
+          )}
+          <span style={fechaStyle}>{fecha || "Fecha no disponible"}</span>
+        </div>
+
+        {/* Contenido de la reseña */}
         <p
           role="button"
           tabIndex={0}
@@ -107,28 +241,19 @@ const UserReviewCard = ({ titulo, contenido, puntuacion, imagen }) => {
         >
           {contenido}
         </p>
-      </div>
 
-      <div
-        style={{
-          display: "flex",
-          gap: "4px",
-          alignItems: "center",
-          marginTop: "5px",
-        }}
-      >
-        <StarRating nota={puntuacion} size="1.2rem" />
-        <span
-          style={{
-            color: "#9ca3af",
-            fontSize: "0.85rem",
-            marginLeft: "5px",
-          }}
-        >
-          {puntuacion}
-        </span>
+        {/* Botón de like */}
+        <div style={likeContainerStyle}>
+          <button
+            onClick={handleToggleLike}
+            disabled={isOwnReview}
+            style={likeButtonStyle}
+          >
+            {liked ? "❤️" : "🤍"} {likes}
+          </button>
+        </div>
+        
       </div>
-
     </div>
   );
 };

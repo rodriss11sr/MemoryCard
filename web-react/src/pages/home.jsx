@@ -136,8 +136,8 @@ function Home() {
                 ))}
             </div>
 
-            <h2 style={{ color: "#ffffff" }}>{"Rese\u00f1as destacadas"}</h2>
-            <div className="reviews-grid" style={{ maxWidth: "800px", margin: "0 auto", padding: "0 20px" }}>
+            <h2 style={{ color: "#ffffff" }}>{"Reviews destacadas"}</h2>
+            <div className="reviews-grid" style={{ maxWidth: "800px", margin: "0 auto", padding: "0 20px", display: "flex", flexDirection: "column", gap: "20px" }}>
                 {reviews.map((review) => (
                     <ReviewCard
                         key={review.id}
@@ -147,6 +147,11 @@ function Home() {
                         imagen={review.imagen}
                         usuario={review.usuario}
                         avatar={review.avatar}
+                        likes={review.likes}
+                        id={review.id}
+                        id_usuario={review.id_usuario}
+                        gameId={review.juegoId}
+                        fecha={review.fecha}
                     />
                 ))}
             </div>

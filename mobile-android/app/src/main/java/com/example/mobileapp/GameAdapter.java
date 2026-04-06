@@ -16,17 +16,41 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.ViewHolder> im
 
     private List<Games> listaOriginal;
     private List<Games> listaFiltrada;
+    private OnGameClickListener listener;
+
+    public interface OnGameClickListener {
+        void onGameClick(Games game);
+    }
 
     public GameAdapter(List<Games> listaGames) {
+        this(listaGames, null);
+    }
+    public GameAdapter(List<Games> listaGames, OnGameClickListener listener) {
         this.listaOriginal = listaGames;
-        // Limitamos a 10 resultados inicialmente
+        this.listener = listener;
         this.listaFiltrada = new ArrayList<>();
+        // Inicializamos con los primeros 10 o todos si hay menos
         int limit = Math.min(listaGames.size(), 10);
         for (int i = 0; i < limit; i++) {
             listaFiltrada.add(listaGames.get(i));
         }
     }
 
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Games game = listaFiltrada.get(position);
+        holder.title.setText(game.getName());
+        holder.platforms.setText(game.getPlatforms());
+        holder.cover.setImageResource(game.getImageResId());
+
+        holder.itemView.setOnClickListener(view -> {
+            if (listener != null) {
+                listener.onGameClick(game);
+            } else {
+                GameInfoActivity.open(view.getContext(), game);
+            }
+        });
+    }
     @Override
     public Filter getFilter() {
         return new Filter() {
@@ -66,13 +90,6 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.ViewHolder> im
         return new ViewHolder(v);
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Games game = listaFiltrada.get(position);
-        holder.title.setText(game.getName());
-        holder.platforms.setText(game.getPlatforms());
-        holder.cover.setImageResource(game.getImageResId());
-    }
 
     @Override
     public int getItemCount() { return listaFiltrada.size(); }
@@ -89,4 +106,8 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.ViewHolder> im
             cover = v.findViewById(R.id.itemGameCover);
         }
     }
+
+
+
+
 }

@@ -62,6 +62,26 @@ const StarRating = ({ nota, size = '1rem', editable = false, onRatingChange }) =
   const displayRating = editable ? (hoveredRating || nota || 0) : nota;
   const stars = [];
 
+  const normalizeRating = (value) => Math.round((value || 0) * 10) / 10;
+  const isEqualRating = (a, b) => Math.abs(normalizeRating(a) - normalizeRating(b)) < 0.01;
+
+  const handleStarClick = (index) => {
+    if (!editable || !onRatingChange) return;
+
+    const current = normalizeRating(nota || 0);
+    let next;
+
+    if (isEqualRating(current, index)) {
+      next = index - 0.5;
+    } else if (isEqualRating(current, index - 0.5)) {
+      next = Math.max(0, index - 1);
+    } else {
+      next = index;
+    }
+
+    onRatingChange(next);
+  };
+
   const getIcon = (index) => {
     if (displayRating >= index) return <FullStar size={size} />;
     if (displayRating >= index - 0.5) return <HalfStar size={size} />;
@@ -72,7 +92,7 @@ const StarRating = ({ nota, size = '1rem', editable = false, onRatingChange }) =
     stars.push(
       <span
         key={i}
-        onClick={() => editable && onRatingChange && onRatingChange(i)}
+        onClick={() => handleStarClick(i)}
         onMouseEnter={() => editable && setHoveredRating(i)}
         onMouseLeave={() => editable && setHoveredRating(0)}
         style={{

@@ -57,7 +57,10 @@
         <activity android:name=".GamesListedActivity"
             android:exported="false"
             />
-"
+        <activity android:name=".GameInfoActivity"
+            android:exported="false"
+            />
+
 
     </application>
 

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import StarRating from "./starRating";
 const API_BASE_URL = "/api";
 
@@ -10,7 +11,12 @@ const GameReviewCard = ({
   puntuacion,
   fecha,
   likes: likesInicial = 0,
+  id_usuario,
 }) => {
+  const navigate = useNavigate();
+
+  const currentUser = JSON.parse(localStorage.getItem("user") || "null");
+  const isOwnReview = currentUser && currentUser.id === id_usuario;
   const [likes, setLikes] = useState(likesInicial);
   const [liked, setLiked] = useState(() => {
     // Comprobar si ya dio like (guardado en localStorage) - usar Set para evitar duplicados
@@ -24,14 +30,84 @@ const GameReviewCard = ({
   //Estilo de la tarjeta
   const cardStyle = {
     display: "flex",
-    alignItems: "center",
-    gap: "1.5rem",
+    alignItems: "flex-start",
+    gap: "1rem",
     backgroundColor: "#2b303b",
     border: "1px solid #3e4451",
     borderRadius: "12px",
-    padding: "1.5rem",
+    padding: "1rem",
     width: "100%",
-    maxWidth: "600px",
+    maxWidth: "700px",
+    cursor: "default",
+  };
+
+  // Estilos para la imagen del usuario
+  const imageContainerStyle = {
+    width: "85px",
+    height: "85px",
+    flexShrink: 0,
+    backgroundColor: "#1a1a1a",
+    borderRadius: "50%",
+    overflow: "hidden",
+  };
+
+  const contentStyle = {
+    padding: "0",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    width: "100%",
+    minWidth: "0",
+  };
+
+  const titleStyle = {
+    color: "#ffffff",
+    fontWeight: "800",
+    fontSize: "1.5rem",
+    textTransform: "uppercase",
+    letterSpacing: "1px",
+    fontFamily: "upheaval, system-ui",
+    cursor: "pointer",
+    lineHeight: "1.2",
+    marginBottom: "0.5rem",
+  };
+
+  const metaStyle = {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.75rem",
+    color: "#9ca3af",
+    fontSize: "0.85rem",
+    marginBottom: "0.6rem",
+  };
+
+  const fechaStyle = {
+    color: "#9ca3af",
+    fontSize: "0.85rem",
+  };
+
+  const likeContainerStyle = {
+    display: "flex",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    marginTop: "8px",
+    width: "100%",
+  };
+
+  const likeButtonStyle = {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.4rem",
+    background: liked ? "rgba(239,68,68,0.12)" : "transparent",
+    border: "1px solid " + (liked ? "#ef4444" : "#3e4451"),
+    color: liked ? "#ef4444" : "#9ca3af",
+    cursor: isOwnReview ? "not-allowed" : "pointer",
+    padding: "0.35rem 0.8rem",
+    borderRadius: "8px",
+    fontSize: "0.85rem",
+    transition: "all 0.2s ease",
+    minWidth: "95px",
+    textAlign: "center",
   };
 
   //Contenido de la reseña
@@ -46,7 +122,7 @@ const GameReviewCard = ({
 
   const descStyle = {
     color: "#d1d5db",
-    fontSize: "0.9rem",
+    fontSize: "1.5 rem",
     margin: "5px 0 0 0",
     marginTop: "2px",
     fontWeight: "500",
@@ -81,11 +157,8 @@ const GameReviewCard = ({
       }
 
       const dateStyle = {
-        fontSize: "0.85rem",
         color: "#9ca3af",
-        flexShrink: 0,
-        minWidth: "100px",
-        textAlign: "right",
+        fontSize: "0.85rem",
       };
 
       const wrapperStyle = {
@@ -124,126 +197,64 @@ const GameReviewCard = ({
   };
 
   return (
-    <div
-      style={{
-        backgroundColor: "#2b303b",
-        border: "1px solid #3e4451",
-        borderRadius: "12px",
-        padding: "1.5rem",
-        width: "100%",
-        maxWidth: "600px",
-      }}
-    >
-      {/* Cabecera: avatar + usuario + estrellas + fecha */}
+    <div style={cardStyle}>
+      {/* Imagen del usuario a la izquierda */}
       <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "1rem",
-          marginBottom: "0.75rem",
-        }}
+        style={imageContainerStyle}
+        onClick={() => navigate(`/user/${id_usuario}`)}
       >
         <img
           src={foto}
           alt={usuario}
           style={{
-            width: "50px",
-            height: "50px",
-            borderRadius: "50%",
+            width: "100%",
+            height: "100%",
             objectFit: "cover",
-            flexShrink: 0,
+            cursor: "pointer",
+            borderRadius: "50%",
           }}
         />
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div
-            style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
-          >
-            <h3
-              style={{
-                fontSize: "1rem",
-                fontWeight: 700,
-                color: "#ffffff",
-                margin: 0,
-                fontFamily: "'Upheaval', system-ui",
-              }}
-            >
-              {usuario}
-            </h3>
-            {puntuacion !== null && puntuacion !== undefined && (
-              <StarRating nota={puntuacion} />
-            )}
-          </div>
-          <p
-            style={{
-              margin: "2px 0 0 0",
-              color: "#6b7280",
-              fontSize: "0.78rem",
-            }}
-          >
-            {fecha}
-          </p>
-        </div>
       </div>
-      {/* Contenido de la reseña */}
-      <p
-        role="button"
-        tabIndex={0}
-        aria-expanded={expanded}
-        onClick={toggleExpanded}
-        onKeyDown={onKeyDownToggle}
-        style={descStyle}
-      >
-        {desc}
-      </p>
 
-      {/* Footer: like */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "12px",
-          borderTop: "1px solid #3e4451",
-          paddingTop: "0.75rem",
-        }}
-      >
-        <button
-          onClick={handleToggleLike}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "6px",
-            background: liked ? "rgba(239,68,68,0.1)" : "transparent",
-            border: "none",
-            color: liked ? "#ef4444" : "#9ca3af",
-            cursor: "pointer",
-            padding: "5px 10px",
-            borderRadius: "6px",
-            transition: "all 0.2s ease",
-            fontSize: "0.88rem",
-            transform: animating ? "scale(1.2)" : "scale(1)",
-          }}
-          onMouseEnter={(e) => {
-            if (!liked) {
-              e.currentTarget.style.color = "#ef4444";
-              e.currentTarget.style.backgroundColor = "rgba(239,68,68,0.1)";
-            }
-          }}
-          onMouseLeave={(e) => {
-            if (!liked) {
-              e.currentTarget.style.color = "#9ca3af";
-              e.currentTarget.style.backgroundColor = "transparent";
-            }
-          }}
-        >
-          {liked ? "❤️" : "🤍"} {likes}
-        </button>
-        <span style={{ color: "#4b5563", fontSize: "0.78rem" }}>
-          {liked
-            ? "¡Te gustó esta reseña!"
-            : likes > 0
-              ? `A ${likes} persona${likes !== 1 ? "s" : ""} les gustó`
-              : "Sé el primero en darle like"}
+      {/* Contenido a la derecha */}
+      <div style={contentStyle}>
+        {/* Nombre del usuario */}
+        <span style={titleStyle} onClick={() => navigate(`/user/${id_usuario}`)}>
+          {usuario}
         </span>
+
+        {/* Puntuación con estrellas y fecha */}
+        <div style={metaStyle}>
+          {puntuacion !== null && puntuacion !== undefined && (
+            <>
+              <StarRating nota={puntuacion} size="1.2rem" />
+              <span>{puntuacion}</span>
+            </>
+          )}
+          <span style={fechaStyle}>{fecha || "Fecha no disponible"}</span>
+        </div>
+
+        {/* Contenido de la reseña */}
+        <p
+          role="button"
+          tabIndex={0}
+          aria-expanded={expanded}
+          onClick={toggleExpanded}
+          onKeyDown={onKeyDownToggle}
+          style={descStyle}
+        >
+          {desc}
+        </p>
+
+        <div style={likeContainerStyle}>
+          <button
+            onClick={handleToggleLike}
+            disabled={isOwnReview}
+            style={likeButtonStyle}
+          >
+            {liked ? "❤️" : "🤍"} {likes}
+          </button>
+        </div>
       </div>
     </div>
   );

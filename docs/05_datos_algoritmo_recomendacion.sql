@@ -418,3 +418,195 @@ INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_eafc26, 'PC');
 INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_eafc26, 'PlayStation 5');
 INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_eafc26, 'Xbox Series X|S');
 
+-- ============================================
+-- SEGUNDA COLECCION DE JUEGOS (Simuladores de baloncesto)
+-- ============================================
+
+-- Insertar desarrolladoras si no existen
+INSERT IGNORE INTO desarrolladora (nombre) VALUES ('Visual Concepts');
+
+-- NBA 2K24
+INSERT INTO juego (titulo, fecha_lanzamiento, descripcion, portada) VALUES (
+    'NBA 2K24',
+    '2023-09-08',
+    'NBA 2K24 brings to the pitch the game-changing new Player Impact Engine, a physics engine built to deliver real-world physicality in every interaction on the pitch. Revolutionary gameplay innovations.',
+    'https://images.igdb.com/igdb/image/upload/t_cover_big/co8m0s.webp'
+);
+-- Obtener el ID del juego insertado
+SET @id_nba2k24 = LAST_INSERT_ID();
+-- Relacionar con géneros
+INSERT INTO pertenece (id_juego, nombre_genero) VALUES (@id_nba2k24, 'Simulator');
+INSERT INTO pertenece (id_juego, nombre_genero) VALUES (@id_nba2k24, 'Sport');
+-- Relacionar con desarrolladora
+INSERT INTO desarrolla (id_juego, nombre_desarrolladora) VALUES (@id_nba2k24, 'Visual Concepts');
+-- Relacionar con plataformas
+INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_nba2k24, 'PC');
+INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_nba2k24, 'PlayStation 4');
+INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_nba2k24, 'PlayStation 5');
+INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_nba2k24, 'Xbox One');
+INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_nba2k24, 'Xbox Series X|S');
+
+-- NBA 2K26
+INSERT INTO juego (titulo, fecha_lanzamiento, descripcion, portada) VALUES (
+    'NBA 2K26',
+    '2025-09-05',
+    'Bragging rights are on the line in MyCAREER, MyTEAM, MyNBA, The W, and Play Now. Showcase your bag of moves with hyper realism, Powered by ProPLAY, and challenge your friends, or rivals, in NBA 2K26’s...',
+    'https://images.igdb.com/igdb/image/upload/t_cover_big/coa3pk.webp'
+);
+-- Obtener el ID del juego insertado
+SET @id_nba2k26 = LAST_INSERT_ID();
+-- Relacionar con géneros
+INSERT INTO pertenece (id_juego, nombre_genero) VALUES (@id_nba2k26, 'Simulator');
+INSERT INTO pertenece (id_juego, nombre_genero) VALUES (@id_nba2k26, 'Sport');
+-- Relacionar con desarrolladora
+INSERT INTO desarrolla (id_juego, nombre_desarrolladora) VALUES (@id_nba2k26, 'Visual Concepts');
+-- Relacionar con plataformas
+INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_nba2k26, 'PC');
+INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_nba2k26, 'PlayStation 4');
+INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_nba2k26, 'PlayStation 5');
+INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_nba2k26, 'Xbox One');
+INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_nba2k26, 'Xbox Series X|S');
+
+-- NBA 2K2
+INSERT INTO juego (titulo, fecha_lanzamiento, descripcion, portada) VALUES (
+    'NBA 2K2',
+    '2001-10-23',
+    'NBA 2K2 is a basketball video game. It is the third installment in the NBA 2K series of video games and it was developed by Visual Concepts and published by Sega Sports. It was released on October 24,...',
+    'https://images.igdb.com/igdb/image/upload/t_cover_big/co2gn5.webp'
+);
+-- Obtener el ID del juego insertado
+SET @id_nba2k2 = LAST_INSERT_ID();
+-- Relacionar con géneros
+INSERT INTO pertenece (id_juego, nombre_genero) VALUES (@id_nba2k2, 'Simulator');
+INSERT INTO pertenece (id_juego, nombre_genero) VALUES (@id_nba2k2, 'Sport');
+-- Relacionar con desarrolladora
+INSERT INTO desarrolla (id_juego, nombre_desarrolladora) VALUES (@id_nba2k2, 'Visual Concepts');
+-- Relacionar con plataformas
+INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_nba2k2, 'PlayStation 2');
+INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_nba2k2, 'Xbox');
+INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_nba2k2, 'GameCube');
+
+-- ESPN NBA Basketball
+INSERT INTO juego (titulo, fecha_lanzamiento, descripcion, portada) VALUES (
+    'ESPN NBA Basketball',
+    '2003-10-21',
+    'Experience the thrill of playing in a real ESPN NBA game, complete with detailed visuals, eye-catching callouts along with studio and color commentary featuring Kevin Frazier and Tom Tolbert.',
+    'https://images.igdb.com/igdb/image/upload/t_cover_big/dvplnbpslzgqvdi0crkm.webp'
+);
+-- Obtener el ID del juego insertado
+SET @id_espn_nba = LAST_INSERT_ID();
+-- Relacionar con géneros
+INSERT INTO pertenece (id_juego, nombre_genero) VALUES (@id_espn_nba, 'Sport');
+-- Relacionar con desarrolladora
+INSERT INTO desarrolla (id_juego, nombre_desarrolladora) VALUES (@id_espn_nba, 'Visual Concepts');
+-- Relacionar con plataformas
+INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_espn_nba, 'PlayStation 2');
+INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_espn_nba, 'Xbox');
+
+-- NBA 2K9
+INSERT INTO juego (titulo, fecha_lanzamiento, descripcion, portada) VALUES (
+    'NBA 2K9',
+    '2008-10-07',
+    'Improved facial and skin textures, better uniforms, improved eye movement and more realistic crowd reactions bring the game alive like never before. Analyst Clark Kellogg and sideline reporter Cheryl ...',
+    'https://images.igdb.com/igdb/image/upload/t_cover_big/co2gn9.webp'
+);
+-- Obtener el ID del juego insertado
+SET @id_nba2k9 = LAST_INSERT_ID();
+-- Relacionar con géneros
+INSERT INTO pertenece (id_juego, nombre_genero) VALUES (@id_nba2k9, 'Simulator');
+INSERT INTO pertenece (id_juego, nombre_genero) VALUES (@id_nba2k9, 'Sport');
+-- Relacionar con desarrolladora
+INSERT INTO desarrolla (id_juego, nombre_desarrolladora) VALUES (@id_nba2k9, 'Visual Concepts');
+-- Relacionar con plataformas
+INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_nba2k9, 'PC');
+INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_nba2k9, 'PlayStation 3');
+INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_nba2k9, 'Xbox 360');
+
+-- NBA 2K11
+INSERT INTO juego (titulo, fecha_lanzamiento, descripcion, portada) VALUES (
+    'NBA 2K11',
+    '2010-10-05',
+    'NBA 2K11 is a basketball video game developed by Visual Concepts and 2K Sports and published by 2K Sports. It was released on October 5, 2010 on the Xbox 360, PlayStation 2, PlayStation 3, PSP, Window...',
+    'https://images.igdb.com/igdb/image/upload/t_cover_big/co2gih.webp'
+);
+-- Obtener el ID del juego insertado
+SET @id_nba2k11 = LAST_INSERT_ID();
+-- Relacionar con géneros
+INSERT INTO pertenece (id_juego, nombre_genero) VALUES (@id_nba2k11, 'Sport');
+-- Relacionar con desarrolladora
+INSERT INTO desarrolla (id_juego, nombre_desarrolladora) VALUES (@id_nba2k11, 'Visual Concepts');
+-- Relacionar con plataformas
+INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_nba2k11, 'PC');
+INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_nba2k11, 'PlayStation 2');
+INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_nba2k11, 'PlayStation 3');
+INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_nba2k11, 'Xbox 360');
+
+-- NBA Live 09
+INSERT INTO juego (titulo, fecha_lanzamiento, descripcion, portada) VALUES (
+    'NBA Live 09',
+    '2008-10-07',
+    'NBA Live 09, sometimes called NBA Live 2009, is the 2008 installment in the NBA Live series, developed and published by Electronic Arts. The original release date was October 7, 2008. The game feature...',
+    'https://images.igdb.com/igdb/image/upload/t_cover_big/co39s9.webp'
+);
+-- Obtener el ID del juego insertado
+SET @id_nba_live_09 = LAST_INSERT_ID();
+-- Relacionar con géneros
+INSERT INTO pertenece (id_juego, nombre_genero) VALUES (@id_nba_live_09, 'Sport');
+-- Relacionar con desarrolladora
+INSERT INTO desarrolla (id_juego, nombre_desarrolladora) VALUES (@id_nba_live_09, 'EA Canada');
+-- Relacionar con plataformas
+INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_nba_live_09, 'PlayStation 3');
+INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_nba_live_09, 'Xbox 360');
+
+-- NBA Live 10
+INSERT INTO juego (titulo, fecha_lanzamiento, descripcion, portada) VALUES (
+    'NBA Live 10',
+    '2009-10-06',
+    'NBA Live 10 is the 2009 installment in the NBA Live series, developed by EA Canada and published by Electronic Arts. Dwight Howard of the Orlando Magic is the cover athlete. It was released in 2009 fo...',
+    'https://images.igdb.com/igdb/image/upload/t_cover_big/co39pj.webp'
+);
+-- Obtener el ID del juego insertado
+SET @id_nba_live_10 = LAST_INSERT_ID();
+-- Relacionar con géneros
+INSERT INTO pertenece (id_juego, nombre_genero) VALUES (@id_nba_live_10, 'Simulator');
+INSERT INTO pertenece (id_juego, nombre_genero) VALUES (@id_nba_live_10, 'Sport');
+-- Relacionar con desarrolladora
+INSERT INTO desarrolla (id_juego, nombre_desarrolladora) VALUES (@id_nba_live_10, 'EA Canada');
+-- Relacionar con plataformas
+INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_nba_live_10, 'PlayStation 3');
+INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_nba_live_10, 'Xbox 360');
+
+-- NBA Jam
+INSERT INTO juego (titulo, fecha_lanzamiento, descripcion, portada) VALUES (
+    'NBA Jam',
+    '2010-11-17',
+    'Return to the roots of arcade NBA basketball in the 2010 installment of NBA Jam. Developed by EA Canada for seventh-generation game consoles, this rebirth brings back the gameplay, aesthetics, and gra...',
+    'https://images.igdb.com/igdb/image/upload/t_cover_big/co2gif.webp'
+);
+-- Obtener el ID del juego insertado
+SET @id_nba_jam = LAST_INSERT_ID();
+-- Relacionar con géneros
+INSERT INTO pertenece (id_juego, nombre_genero) VALUES (@id_nba_jam, 'Sport');
+-- Relacionar con desarrolladora
+INSERT INTO desarrolla (id_juego, nombre_desarrolladora) VALUES (@id_nba_jam, 'EA Canada');
+-- Relacionar con plataformas
+INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_nba_jam, 'PlayStation 3');
+INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_nba_jam, 'Xbox 360');
+
+-- NBA Street V3
+INSERT INTO juego (titulo, fecha_lanzamiento, descripcion, portada) VALUES (
+    'NBA Street V3',
+    '2005-02-08',
+    'NBA Street V3 is a basketball video game developed by EA Canada and published by EA Sports BIG. It was released in 2005 for PlayStation 2 and Xbox.',
+    'https://images.igdb.com/igdb/image/upload/t_cover_big/co3ddi.webp'
+);
+-- Obtener el ID del juego insertado
+SET @id_nba_street_v3 = LAST_INSERT_ID();
+-- Relacionar con géneros
+INSERT INTO pertenece (id_juego, nombre_genero) VALUES (@id_nba_street_v3, 'Sport');
+-- Relacionar con desarrolladora
+INSERT INTO desarrolla (id_juego, nombre_desarrolladora) VALUES (@id_nba_street_v3, 'EA Canada');
+-- Relacionar con plataformas
+INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_nba_street_v3, 'PlayStation 2');
+INSERT INTO lanza (id_juego, nombre_plataforma) VALUES (@id_nba_street_v3, 'Xbox');
+

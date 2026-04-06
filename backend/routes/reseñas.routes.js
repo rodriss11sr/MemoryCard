@@ -29,6 +29,7 @@ router.get('/', async (req, res) => {
             r.nota,
             r.fecha_publicacion,
             r.likes,
+            u.id_usuario AS id_usuario,
             u.nombre AS nombre_usuario,
             u.avatar AS avatar_usuario,
             j.titulo AS titulo_juego,
@@ -48,6 +49,7 @@ router.get('/', async (req, res) => {
             r.nota,
             r.fecha_publicacion,
             r.likes,
+            u.id_usuario AS id_usuario,
             u.nombre AS nombre_usuario,
             u.avatar AS avatar_usuario,
             j.titulo AS titulo_juego,
@@ -71,6 +73,7 @@ router.get('/', async (req, res) => {
       return {
         id: row.id_reseña,
         juegoId: row.id_juego,
+        id_usuario: row.id_usuario || null,
         usuario: row.nombre_usuario || null,
         avatar: row.avatar_usuario || null,
         titulo: row.titulo_juego || null,
@@ -121,6 +124,7 @@ router.get('/populares', async (req, res) => {
       return {
         id: row.id_reseña,
         juegoId: row.id_juego,
+        id_usuario: row.id_usuario,
         usuario: row.nombre_usuario || null,
         usuarioId: row.id_usuario,
         avatar: row.avatar_usuario || null,
