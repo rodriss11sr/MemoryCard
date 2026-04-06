@@ -149,174 +149,33 @@
             app:backgroundTint="#0466C8" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/emptyListsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="No tienes listas creadas"
+        android:textColor="#A8A8A8"
+        android:textSize="20sp"
+        android:fontFamily="@font/m6x11plus"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="676dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
-        tools:layout_editor_absoluteX="0dp">
+        app:layout_constraintBottom_toBottomOf="parent">
+
         <GridLayout
+            android:id="@+id/listsContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:columnCount="2"
-            android:paddingHorizontal="10dp"
-            >
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_gravity="center"
-                android:background="@drawable/button_shape"
-                android:backgroundTint="#2D333E"
-                android:layout_margin="8dp"
-                >
-
-                <Button
-                    android:id="@+id/rogueLike"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="#00FFFFFF"
-                    android:layout_gravity="center"
-                    android:fontFamily="@font/upheavtt"
-                    android:text="Roguelike"
-                    android:textSize="24sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/upheavtt"
-                    android:text="by Gordon Freeman"
-                    android:layout_gravity="center"
-                    android:textColor="#A8A8A8"
-                    android:textSize="14sp"/>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_gravity="center">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/image_container1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="8dp"
-                        app:layout_constraintStart_toStartOf="parent">
-
-                        <com.google.android.material.imageview.ShapeableImageView
-                            android:id="@+id/image_back1"
-                            android:layout_width="100dp"
-                            android:layout_height="162dp"
-                            android:layout_marginStart="-80dp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/ballxpit"
-                            app:shapeAppearanceOverlay="@style/rounded_corners"
-                            app:layout_constraintStart_toEndOf="@+id/image_middle1"
-                            app:layout_constraintBottom_toBottomOf="@+id/image_middle1" />
-
-                        <com.google.android.material.imageview.ShapeableImageView
-                            android:id="@+id/image_middle1"
-                            android:layout_width="100dp"
-                            android:layout_height="162dp"
-                            android:layout_marginStart="-80dp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/ror2"
-                            app:shapeAppearanceOverlay="@style/rounded_corners"
-                            app:layout_constraintStart_toEndOf="@+id/image_front1"
-                            app:layout_constraintBottom_toBottomOf="@+id/image_front1" />
-
-                        <com.google.android.material.imageview.ShapeableImageView
-                            android:id="@+id/image_front1"
-                            android:layout_width="111dp"
-                            android:layout_height="162dp"
-                            android:layout_marginStart="-80dp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/tboi"
-                            app:shapeAppearanceOverlay="@style/rounded_corners"
-                            app:layout_constraintEnd_toEndOf="@id/image_middle1"
-                            app:layout_constraintTop_toTopOf="@id/image_middle1"/>
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </LinearLayout>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_gravity="center"
-                android:background="@drawable/button_shape"
-                android:backgroundTint="#2D333E"
-                android:layout_margin="8dp">
-
-                <Button
-                    android:id="@+id/peakGames"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="#00FFFFFF"
-                    android:layout_gravity="center"
-                    android:fontFamily="@font/upheavtt"
-                    android:text="Peak games"
-                    android:textSize="24sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/upheavtt"
-                    android:text="by Gordon Freeman"
-                    android:layout_gravity="center"
-                    android:textColor="#A8A8A8"
-                    android:textSize="14sp"/>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_gravity="center">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/image_container"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="8dp"
-                        app:layout_constraintStart_toStartOf="parent">
-
-                        <com.google.android.material.imageview.ShapeableImageView
-                            android:id="@+id/image_back"
-                            android:layout_width="100dp"
-                            android:layout_height="162dp"
-                            android:layout_marginStart="-80dp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/yakuzapirate"
-                            app:shapeAppearanceOverlay="@style/rounded_corners"
-                            app:layout_constraintStart_toEndOf="@+id/image_middle"
-                            app:layout_constraintBottom_toBottomOf="@+id/image_middle" />
-
-                        <com.google.android.material.imageview.ShapeableImageView
-                            android:id="@+id/image_middle"
-                            android:layout_width="100dp"
-                            android:layout_height="162dp"
-                            android:layout_marginStart="-80dp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/mhwilds"
-                            app:shapeAppearanceOverlay="@style/rounded_corners"
-                            app:layout_constraintStart_toEndOf="@+id/image_front"
-                            app:layout_constraintBottom_toBottomOf="@+id/image_front" />
-
-                        <com.google.android.material.imageview.ShapeableImageView
-                            android:id="@+id/image_front"
-                            android:layout_width="111dp"
-                            android:layout_height="162dp"
-                            android:layout_marginStart="-80dp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/mhworld"
-                            app:shapeAppearanceOverlay="@style/rounded_corners"
-                            app:layout_constraintEnd_toEndOf="@id/image_middle"
-                            app:layout_constraintTop_toTopOf="@id/image_middle"/>
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </GridLayout>
+            android:paddingHorizontal="10dp" />
 
     </ScrollView>
 

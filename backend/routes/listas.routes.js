@@ -158,6 +158,51 @@ router.post('/:id/juegos', async (req, res) => {
   }
 });
 
+// DELETE /api/listas/:id - Eliminar una lista completa
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    await pool.query('DELETE FROM contiene WHERE id_lista = ?', [id]);
+    const [result] = await pool.query('DELETE FROM lista WHERE id_lista = ?', [id]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ ok: false, message: 'Lista no encontrada' });
+    }
+
+    res.json({ ok: true, message: 'Lista eliminada correctamente' });
+  } catch (error) {
+    console.error('Error al eliminar lista:', error);
+    res.status(500).json({ ok: false, message: 'Error al eliminar la lista', detalle: error.message });
+  }
+});
+
+// PUT /api/listas/:id - Actualizar nombre/descripción de una lista
+router.put('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { nombre, descripcion } = req.body;
+
+    if (!nombre) {
+      return res.status(400).json({ ok: false, message: 'El nombre es obligatorio' });
+    }
+
+    const [result] = await pool.query(
+      'UPDATE lista SET nombre = ?, descripcion = ? WHERE id_lista = ?',
+      [nombre, descripcion || null, id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ ok: false, message: 'Lista no encontrada' });
+    }
+
+    res.json({ ok: true, message: 'Lista actualizada correctamente' });
+  } catch (error) {
+    console.error('Error al actualizar lista:', error);
+    res.status(500).json({ ok: false, message: 'Error al actualizar la lista', detalle: error.message });
+  }
+});
+
 // DELETE /api/listas/:id/juegos/:id_juego - Eliminar un juego de una lista
 router.delete('/:id/juegos/:id_juego', async (req, res) => {
   try {

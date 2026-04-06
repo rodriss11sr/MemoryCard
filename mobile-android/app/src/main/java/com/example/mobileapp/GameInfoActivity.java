@@ -32,7 +32,11 @@ public class GameInfoActivity extends AppCompatActivity {
         intent.putExtra(ID, game.getId());
         intent.putExtra(TITLE, game.getName());
         intent.putExtra(PLATFORMS, game.getPlatforms());
-        intent.putExtra(IMAGE_RES, game.getImageResId());
+        if (game.getImageUrl() != null && !game.getImageUrl().isEmpty()) {
+            intent.putExtra(IMAGE, game.getImageUrl());
+        } else {
+            intent.putExtra(IMAGE_RES, game.getImageResId());
+        }
         intent.putExtra(DESC, game.getDescription());
         intent.putExtra(DATE, game.getReleaseDate());
         intent.putExtra(DEV, game.getDeveloper());
@@ -91,14 +95,14 @@ public class GameInfoActivity extends AppCompatActivity {
             if (gamePlatforms != null) gamePlatforms.setText(platforms);
 
             if (gameCover != null) {
-                if (imageRes != -1) {
-                    gameCover.setImageResource(imageRes);
-                } else if (imageUrl != null) {
+                if (imageUrl != null && !imageUrl.isEmpty()) {
                     String fullUrl = imageUrl.startsWith("http") ? imageUrl : BASE_URL + imageUrl;
                     Glide.with(this)
                             .load(fullUrl)
-                            .placeholder(R.drawable.ballxpit) // Fallback or placeholder
+                            .placeholder(R.drawable.ballxpit)
                             .into(gameCover);
+                } else if (imageRes > 0) {
+                    gameCover.setImageResource(imageRes);
                 }
             }
 

@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +42,14 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.ViewHolder> im
         Games game = listaFiltrada.get(position);
         holder.title.setText(game.getName());
         holder.platforms.setText(game.getPlatforms());
-        holder.cover.setImageResource(game.getImageResId());
+
+        if (game.getImageUrl() != null && !game.getImageUrl().isEmpty()) {
+            ImageUtils.loadImage(holder.itemView.getContext(), game.getImageUrl(), holder.cover);
+        } else if (game.getImageResId() > 0) {
+            holder.cover.setImageResource(game.getImageResId());
+        } else {
+            holder.cover.setImageResource(R.drawable.ballxpit);
+        }
 
         holder.itemView.setOnClickListener(view -> {
             if (listener != null) {
@@ -90,6 +98,12 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.ViewHolder> im
         return new ViewHolder(v);
     }
 
+
+    public void updateList(List<Games> newList) {
+        this.listaOriginal = newList;
+        this.listaFiltrada = new ArrayList<>(newList);
+        notifyDataSetChanged();
+    }
 
     @Override
     public int getItemCount() { return listaFiltrada.size(); }

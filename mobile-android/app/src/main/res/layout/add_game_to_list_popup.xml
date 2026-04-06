@@ -20,14 +20,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="AÑADIR JUEGO"
+            android:text="AÑADIR JUEGO A LA LISTA"
             android:textColor="@color/white"
-            android:textSize="24sp"
+            android:textSize="22sp"
             android:fontFamily="@font/upheavtt"
             android:layout_marginBottom="16dp" />
 
         <EditText
-            android:id="@+id/itemNameSearch"
+            android:id="@+id/etSearchGameForList"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@drawable/button_shape"
@@ -38,10 +38,17 @@
             android:fontFamily="@font/upheavtt"
             android:layout_marginBottom="12dp" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/itemGameResults"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="300dp" />
+            android:layout_height="300dp">
+
+            <LinearLayout
+                android:id="@+id/searchResultsForList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+        </ScrollView>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

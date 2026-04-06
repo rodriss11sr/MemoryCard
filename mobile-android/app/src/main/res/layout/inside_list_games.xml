@@ -4,41 +4,97 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#1B1F27"
-    android:fitsSystemWindows="true"
-    android:visibility="visible">
+    android:fitsSystemWindows="true">
 
     <TextView
         android:id="@+id/listName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="20dp"
-        android:layout_marginStart="82dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="83dp"
         android:fontFamily="@font/upheavtt"
-        android:text="Peak Games"
+        android:text="Lista"
         android:textColor="@color/white"
-        android:textSize="45sp"
+        android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-    </TextView>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="126dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="126dp"
+        android:layout_marginTop="4dp"
         android:fontFamily="@font/m6x11plus"
-        android:text="by Gordon Freeman"
         android:textColor="@color/white"
-        android:textSize="24sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listName">
-    </TextView>
+        app:layout_constraintTop_toBottomOf="@+id/listName" />
+
+    <TextView
+        android:id="@+id/listDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:paddingHorizontal="20dp"
+        android:fontFamily="@font/m6x11plus"
+        android:textColor="#A8A8A8"
+        android:textSize="16sp"
+        android:textAlignment="center"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/username" />
+
+    <LinearLayout
+        android:id="@+id/actionButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listDescription">
+
+        <Button
+            android:id="@+id/btnAddGame"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="10dp"
+            android:background="@drawable/button_shape"
+            android:fontFamily="@font/m6x11plus"
+            android:text="+ Juego"
+            android:textSize="18sp"
+            app:backgroundTint="#0466C8" />
+
+        <Button
+            android:id="@+id/btnEditList"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="10dp"
+            android:background="@drawable/button_shape"
+            android:fontFamily="@font/m6x11plus"
+            android:text="Editar"
+            android:textSize="18sp"
+            app:backgroundTint="#33415C" />
+
+        <Button
+            android:id="@+id/btnDeleteList"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="10dp"
+            android:background="@drawable/button_shape"
+            android:fontFamily="@font/m6x11plus"
+            android:text="Borrar"
+            android:textSize="18sp"
+            app:backgroundTint="#CC3333" />
+
+    </LinearLayout>
 
     <View
         android:id="@+id/divider7"
@@ -50,151 +106,37 @@
         android:background="#818387"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username" />
+        app:layout_constraintTop_toBottomOf="@+id/actionButtons" />
 
-    <ScrollView
+    <TextView
+        android:id="@+id/emptyGamesText"
         android:layout_width="wrap_content"
-        android:layout_height="775dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="Esta lista está vacía"
+        android:textColor="#A8A8A8"
+        android:textSize="20sp"
+        android:fontFamily="@font/m6x11plus"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider7">
+        app:layout_constraintTop_toBottomOf="@+id/divider7" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider7"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <androidx.gridlayout.widget.GridLayout
+            android:id="@+id/gamesGridContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingEnd="18dp"
-            app:columnCount="3"
-            app:layout_constraintTop_toBottomOf="@+id/divider7">
+            app:columnCount="3" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingStart="20dp"
-                android:paddingEnd="0dp">
-
-                <ImageButton
-                    android:id="@+id/game_mhwilds"
-                    android:layout_width="111dp"
-                    android:layout_height="162dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/game_miniature_shape"
-                    android:clipToOutline="true"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/mhwilds" />
-
-                <RatingBar
-                    android:id="@+id/ratingBarReview3"
-                    style="?android:attr/ratingBarStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="4dp"
-                    android:isIndicator="true"
-                    android:numStars="5"
-                    android:progressBackgroundTint="#626262"
-                    android:progressTint="#FFCC00"
-                    android:rating="5"
-                    android:stepSize="0.5" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingStart="20dp"
-                android:paddingEnd="0dp">
-
-                <ImageButton
-                    android:id="@+id/game_mhworld"
-                    android:layout_width="111dp"
-                    android:layout_height="162dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/game_miniature_shape"
-                    android:clipToOutline="true"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/mhworld" />
-
-                <RatingBar
-                    android:id="@+id/ratingBarReview5"
-                    style="?android:attr/ratingBarStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="4dp"
-                    android:isIndicator="true"
-                    android:numStars="5"
-                    android:progressBackgroundTint="#626262"
-                    android:progressTint="#FFCC00"
-                    android:rating="5"
-                    android:stepSize="0.5" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:elevation="0dp"
-                android:orientation="vertical"
-                android:paddingStart="20dp"
-                android:paddingEnd="0dp">
-
-                <ImageButton
-                    android:id="@+id/game_ror2"
-                    android:layout_width="111dp"
-                    android:layout_height="162dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/game_miniature_shape"
-                    android:clipToOutline="true"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ror2" />
-
-                <RatingBar
-                    android:id="@+id/ratingBarReview"
-                    style="?android:attr/ratingBarStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="4dp"
-                    android:isIndicator="true"
-                    android:numStars="5"
-                    android:progressBackgroundTint="#626262"
-                    android:progressTint="#FFCC00"
-                    android:rating="5"
-                    android:stepSize="0.5" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:elevation="0dp"
-                android:orientation="vertical"
-                android:paddingStart="20dp"
-                android:paddingEnd="0dp">
-
-                <ImageButton
-                    android:id="@+id/game_yakuzapirate"
-                    android:layout_width="111dp"
-                    android:layout_height="162dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/game_miniature_shape"
-                    android:clipToOutline="true"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/yakuzapirate" />
-
-                <RatingBar
-                    android:id="@+id/ratingBarReview"
-                    style="?android:attr/ratingBarStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="4dp"
-                    android:isIndicator="true"
-                    android:numStars="5"
-                    android:progressBackgroundTint="#626262"
-                    android:progressTint="#FFCC00"
-                    android:rating="5"
-                    android:stepSize="0.5" />
-            </LinearLayout>
-        </androidx.gridlayout.widget.GridLayout>
     </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

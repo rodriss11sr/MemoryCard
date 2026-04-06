@@ -11,6 +11,7 @@ import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface ApiListasService {
@@ -30,6 +31,14 @@ public interface ApiListasService {
     // POST /api/listas/:id/juegos - Agregar un juego a una lista
     @POST("/api/listas/{id}/juegos")
     Call<AuthResponse> addGameToList(@Path("id") int listId, @Body Map<String, Object> gameData);
+
+    // DELETE /api/listas/:id - Eliminar una lista
+    @DELETE("/api/listas/{id}")
+    Call<AuthResponse> deleteList(@Path("id") int listId);
+
+    // PUT /api/listas/:id - Actualizar una lista
+    @PUT("/api/listas/{id}")
+    Call<AuthResponse> updateList(@Path("id") int listId, @Body Map<String, Object> data);
 
     // DELETE /api/listas/:id/juegos/:id_juego - Eliminar un juego de una lista
     @DELETE("/api/listas/{id}/juegos/{id_juego}")
