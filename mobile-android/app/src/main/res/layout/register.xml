@@ -67,11 +67,11 @@
                 android:layout_height="50dp"
                 android:background="@drawable/form_shape"
                 android:ems="10"
-                android:fontFamily="@font/upheavtt"
+                android:fontFamily="@font/m6x11plus"
+                android:hint="Nombre"
                 android:inputType="text"
                 android:letterSpacing="0.05"
                 android:paddingStart="20dp"
-                android:text="email@domain.com"
                 android:textAlignment="textStart"
                 android:textColor="#828282" />
 
@@ -94,11 +94,11 @@
                 android:layout_height="50dp"
                 android:background="@drawable/form_shape"
                 android:ems="10"
-                android:fontFamily="@font/upheavtt"
+                android:fontFamily="@font/m6x11plus"
+                android:hint="tucorreo@dominio.com"
                 android:inputType="textEmailAddress"
                 android:letterSpacing="0.05"
                 android:paddingStart="20dp"
-                android:text="email@domain.com"
                 android:textAlignment="textStart"
                 android:textColor="#828282" />
 
@@ -122,11 +122,11 @@
                 android:background="@drawable/form_shape"
                 android:ems="10"
                 android:fontFamily="@font/upheavtt"
+                android:hint="******"
                 android:inputType="textPassword"
                 android:letterSpacing="0.2"
                 android:paddingStart="20dp"
-                android:text="aaaaaa"
-                android:textColor="#818181" />
+                android:textColor="#828282" />
 
             <TextView
                 android:id="@+id/textView13"
@@ -148,11 +148,11 @@
                 android:background="@drawable/form_shape"
                 android:ems="10"
                 android:fontFamily="@font/upheavtt"
+                android:hint="******"
                 android:inputType="textPassword"
                 android:letterSpacing="0.2"
                 android:paddingStart="20dp"
-                android:text="aaaaaa"
-                android:textColor="#818181" />
+                android:textColor="#828282" />
 
             <Button
                 android:id="@+id/createAccountBtn"

@@ -42,6 +42,8 @@ dependencies {
     implementation (libs.glide)
     implementation(libs.gridlayout)
     implementation(libs.cardview)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
