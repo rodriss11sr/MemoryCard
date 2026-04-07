@@ -163,6 +163,13 @@ public class GameInfoActivity extends AppCompatActivity {
 
         for (ReviewResponse review : reviews) {
             View card = inflater.inflate(R.layout.item_review_home, reviewsContainer, false);
+            
+            // Ocultar la imagen del juego ya que estamos en la página del juego
+            View gameImg = card.findViewById(R.id.game_image_review);
+            if (gameImg != null) {
+                gameImg.setVisibility(View.GONE);
+            }
+
             // Ajustar márgenes para que se vea bien en la lista vertical
             LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) card.getLayoutParams();
             lp.setMargins(0, 0, 0, (int)(12 * getResources().getDisplayMetrics().density));
