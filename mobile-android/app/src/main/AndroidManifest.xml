@@ -56,6 +56,9 @@
         <activity android:name=".FriendsProfileActivity"
             android:exported="false"
             />
+        <activity android:name=".UserProfileActivity"
+            android:exported="false"
+            />
         <activity android:name=".GamesListedActivity"
             android:exported="false"
             />

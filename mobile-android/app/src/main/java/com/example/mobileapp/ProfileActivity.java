@@ -34,7 +34,6 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         new HeaderManager(this);
 
-        // Inicializar vistas
         usernameText = findViewById(R.id.username);
         joinDateText = findViewById(R.id.textView19);
         profileImage = findViewById(R.id.pfp_icon);
@@ -44,47 +43,40 @@ public class ProfileActivity extends AppCompatActivity {
         listProfile = findViewById(R.id.listProfileBtn);
         friendsProfile = findViewById(R.id.friendsProfileBtn);
 
-        // Cargar datos desde el servidor
         loadUserProfile();
 
-        // Listeners de navegación
         listProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ProfileActivity.this, ListsProfileActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(ProfileActivity.this, ListsProfileActivity.class));
             }
         });
 
         wishlistProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ProfileActivity.this, WishlistProfileActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(ProfileActivity.this, WishlistProfileActivity.class));
             }
         });
 
         gamesProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ProfileActivity.this, GamesProfileActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(ProfileActivity.this, GamesProfileActivity.class));
             }
         });
 
         reviewsProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ProfileActivity.this, ReviewProfileActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(ProfileActivity.this, ReviewProfileActivity.class));
             }
         });
 
         friendsProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ProfileActivity.this, FriendsProfileActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(ProfileActivity.this, FriendsProfileActivity.class));
             }
         });
     }
@@ -130,17 +122,15 @@ public class ProfileActivity extends AppCompatActivity {
         usernameText.setText(user.getNombre().toUpperCase());
         joinDateText.setText(user.getFechaCreacion() != null ? user.getFechaCreacion() : "N/A");
 
-        // Cargar imagen de perfil con Glide
         String avatarUrl = user.getAvatar();
         if (avatarUrl != null && !avatarUrl.isEmpty()) {
             if (!avatarUrl.startsWith("http")) {
-                // AJUSTA AQUÍ: Añade la carpeta donde el backend guarda las fotos
                 avatarUrl = "http://10.0.2.2:3000/" + avatarUrl;
             }
 
             Glide.with(this)
                     .load(avatarUrl)
-                    .diskCacheStrategy(com.bumptech.glide.load.engine.DiskCacheStrategy.NONE) // Evita caché para pruebas
+                    .diskCacheStrategy(com.bumptech.glide.load.engine.DiskCacheStrategy.NONE)
                     .skipMemoryCache(true)
                     .placeholder(R.drawable.image)
                     .error(R.drawable.image)
@@ -148,9 +138,8 @@ public class ProfileActivity extends AppCompatActivity {
                     .into(profileImage);
         }
 
-        // Actualizar textos de los botones con las estadísticas
         gamesProfile.setText("JUEGOS (" + stats.getJuegos() + ")");
-        wishlistProfile.setText("WISHLIST"); // La API no parece devolver wishlist por separado en este endpoint
+        wishlistProfile.setText("WISHLIST");
         reviewsProfile.setText("REVIEWS (" + stats.getResenas() + ")");
         listProfile.setText("LISTAS (" + stats.getListas() + ")");
         friendsProfile.setText("AMIGOS (" + stats.getSeguidores() + ")");
