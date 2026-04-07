@@ -254,7 +254,7 @@ public class FriendsProfileActivity extends AppCompatActivity {
         if (id == sessionId) {
             startActivity(new Intent(this, ProfileActivity.class));
         } else {
-            UserProfileActivity.start(this, id, nombre);
+            ProfileActivity.openForUser(this, id, nombre);
         }
     }
 
