@@ -1,5 +1,6 @@
 package com.example.mobileapp.models.responses;
 
+import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class GameResponse {
@@ -7,9 +8,15 @@ public class GameResponse {
     private String titulo;
     private String imagen;
     private String fecha;
+    
+    @SerializedName(value = "plataforma", alternate = {"plataformas"})
     private List<String> plataforma;
+    
     private String desarrollador;
+    
+    @SerializedName(value = "genero", alternate = {"generos"})
     private String genero;
+
     private String descripcion;
     private Float rating;
 

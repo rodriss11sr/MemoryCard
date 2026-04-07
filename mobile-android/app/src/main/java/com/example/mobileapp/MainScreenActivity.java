@@ -80,6 +80,7 @@ public class MainScreenActivity extends AppCompatActivity {
             btn.setBackgroundResource(R.drawable.game_miniature_shape);
             btn.setClipToOutline(true);
             btn.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            btn.setPadding(0, 0, 0, 0);
 
             String imageUrl = game.getImagen();
             if (imageUrl != null && !imageUrl.startsWith("http")) {
@@ -88,6 +89,7 @@ public class MainScreenActivity extends AppCompatActivity {
 
             Glide.with(this)
                     .load(imageUrl)
+                    .centerCrop()
                     .placeholder(R.drawable.ballxpit)
                     .into(btn);
 
@@ -147,6 +149,24 @@ public class MainScreenActivity extends AppCompatActivity {
             String userUrl = review.getAvatar();
             if (userUrl != null && !userUrl.startsWith("http")) userUrl = BASE_URL + userUrl;
             Glide.with(this).load(userUrl).circleCrop().placeholder(R.drawable.image).into(userImg);
+
+            // Redirección al detalle del juego al pulsar la imagen
+            gameImg.setOnClickListener(v -> {
+                int gameId = review.getJuegoId();
+                RetrofitClient.getGamesService().getGameById(gameId).enqueue(new Callback<GameResponse>() {
+                    @Override
+                    public void onResponse(Call<GameResponse> call, Response<GameResponse> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            GameInfoActivity.open(MainScreenActivity.this, response.body());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<GameResponse> call, Throwable t) {
+                        Toast.makeText(MainScreenActivity.this, "Error al cargar información del juego", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            });
 
             reviewsContainer.addView(card);
         }
