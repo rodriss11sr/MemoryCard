@@ -146,9 +146,18 @@ public class MainScreenActivity extends AppCompatActivity {
             if (gameUrl != null && !gameUrl.startsWith("http")) gameUrl = BASE_URL + gameUrl;
             Glide.with(this).load(gameUrl).placeholder(R.drawable.ballxpit).into(gameImg);
 
-            String userUrl = review.getAvatar();
-            if (userUrl != null && !userUrl.startsWith("http")) userUrl = BASE_URL + userUrl;
-            Glide.with(this).load(userUrl).circleCrop().placeholder(R.drawable.image).into(userImg);
+            ImageUtils.loadUserAvatar(this, review.getAvatar(), review.getUsuario(), userImg);
+
+            // Redirección al perfil del usuario
+            View.OnClickListener openUserProfile = v -> {
+                if (review.getIdUsuario() != null) {
+                    UserProfileActivity.start(this, review.getIdUsuario(), review.getUsuario());
+                } else {
+                    Toast.makeText(this, "Perfil no disponible", Toast.LENGTH_SHORT).show();
+                }
+            };
+            userImg.setOnClickListener(openUserProfile);
+            userName.setOnClickListener(openUserProfile);
 
             // Redirección al detalle del juego al pulsar la imagen
             gameImg.setOnClickListener(v -> {

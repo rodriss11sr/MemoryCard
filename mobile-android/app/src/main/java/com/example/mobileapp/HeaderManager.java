@@ -6,12 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
-
+import android.content.SharedPreferences;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -26,6 +25,17 @@ public class HeaderManager {
         if (headerView != null) {
             setupButtons();
             setupNavigationMenu();
+            loadUserData();
+        }
+    }
+
+    private void loadUserData() {
+        ShapeableImageView profileBtn = headerView.findViewById(R.id.profileBtn);
+        if (profileBtn != null) {
+            SharedPreferences prefs = activity.getSharedPreferences("user_session", Activity.MODE_PRIVATE);
+            String avatar = prefs.getString("user_avatar", null);
+            String nombre = prefs.getString("user_nombre", "User");
+            ImageUtils.loadUserAvatar(activity, avatar, nombre, profileBtn);
         }
     }
 

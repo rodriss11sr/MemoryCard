@@ -119,24 +119,11 @@ public class ProfileActivity extends AppCompatActivity {
         ProfileResponse.User user = profile.getUser();
         ProfileResponse.Stats stats = profile.getStats();
 
-        usernameText.setText(user.getNombre().toUpperCase());
+        String nombre = user.getNombre() != null ? user.getNombre() : "";
+        usernameText.setText(nombre.toUpperCase());
         joinDateText.setText(user.getFechaCreacion() != null ? user.getFechaCreacion() : "N/A");
 
-        String avatarUrl = user.getAvatar();
-        if (avatarUrl != null && !avatarUrl.isEmpty()) {
-            if (!avatarUrl.startsWith("http")) {
-                avatarUrl = "http://10.0.2.2:3000/" + avatarUrl;
-            }
-
-            Glide.with(this)
-                    .load(avatarUrl)
-                    .diskCacheStrategy(com.bumptech.glide.load.engine.DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
-                    .placeholder(R.drawable.image)
-                    .error(R.drawable.image)
-                    .circleCrop()
-                    .into(profileImage);
-        }
+        ImageUtils.loadUserAvatar(this, user.getAvatar(), nombre, profileImage);
 
         gamesProfile.setText("JUEGOS (" + stats.getJuegos() + ")");
         wishlistProfile.setText("WISHLIST");

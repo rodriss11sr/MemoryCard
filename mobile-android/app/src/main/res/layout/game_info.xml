@@ -201,44 +201,11 @@
             app:layout_constraintTop_toBottomOf="@id/tvRelatedTitle">
 
             <LinearLayout
+                android:id="@+id/relatedGamesContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="85dp"
-                    android:layout_height="120dp"
-                    android:layout_marginEnd="10dp"
-                    android:background="@drawable/game_miniature_shape"
-                    android:clipToOutline="true"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/yakuzalikeadragon" />
-
-                <ImageView
-                    android:layout_width="85dp"
-                    android:layout_height="120dp"
-                    android:layout_marginEnd="10dp"
-                    android:background="@drawable/game_miniature_shape"
-                    android:clipToOutline="true"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/yakuza0" />
-
-                <ImageView
-                    android:layout_width="85dp"
-                    android:layout_height="120dp"
-                    android:layout_marginEnd="10dp"
-                    android:background="@drawable/game_miniature_shape"
-                    android:clipToOutline="true"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/yakuza4remastered" />
-
-                <ImageView
-                    android:layout_width="85dp"
-                    android:layout_height="120dp"
-                    android:background="@drawable/game_miniature_shape"
-                    android:clipToOutline="true"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/yakuzakiwami2" />
+                <!-- Se llenará dinámicamente -->
             </LinearLayout>
         </HorizontalScrollView>
 
@@ -256,162 +223,20 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="310dp"
             android:fontFamily="@font/upheavtt"
             android:text="RESEÑAS"
             android:textColor="@color/white"
             android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/divider3" />
 
         <LinearLayout
-            android:id="@+id/cardReview1"
+            android:id="@+id/reviewsContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/review_card_shape"
             android:orientation="vertical"
-            android:paddingHorizontal="10dp"
-            android:paddingVertical="5dp"
             app:layout_constraintTop_toBottomOf="@id/reviewText">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@drawable/pfp_shape"
-                    android:clipToOutline="true"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/frog" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/upheavtt"
-                        android:text="RELAJAO RELAJAO"
-                        android:textColor="@color/white"
-                        android:textSize="24sp" />
-
-                    <RatingBar
-                        android:id="@+id/ratingBarReview1"
-                        style="?android:attr/ratingBarStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:isIndicator="true"
-                        android:numStars="5"
-                        android:progressBackgroundTint="#626262"
-                        android:progressTint="#FFCC00"
-                        android:rating="4.5"
-                        android:stepSize="0.5" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/m6x11plus"
-                android:text="Incredible piece of media. On a real note I adored this game so much I got the platinum trophy for it, the story was admittedly just fine but it was perfectly serviceable and carries you through the experience well, you never lose interest."
-                android:textColor="#9C9C9C"
-                android:textSize="18sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:gravity="end"
-                android:fontFamily="@font/m6x11plus"
-                android:text="Ene 02, 2026"
-                android:textColor="#9C9C9C"
-                android:textSize="20sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/review_card_shape"
-            android:orientation="vertical"
-            android:paddingHorizontal="10dp"
-            android:paddingVertical="5dp"
-            app:layout_constraintTop_toBottomOf="@id/cardReview1">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@drawable/pfp_shape"
-                    android:clipToOutline="true"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/kiryu" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/upheavtt"
-                        android:text="KAZUMA KIRYU"
-                        android:textColor="@color/white"
-                        android:textSize="24sp" />
-
-                    <RatingBar
-                        android:id="@+id/ratingBarReview2"
-                        style="?android:attr/ratingBarStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:isIndicator="true"
-                        android:numStars="5"
-                        android:progressBackgroundTint="#626262"
-                        android:progressTint="#FFCC00"
-                        android:rating="5"
-                        android:stepSize="0.5" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/m6x11plus"
-                android:text="Baka mitai"
-                android:textColor="#9C9C9C"
-                android:textSize="18sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:gravity="end"
-                android:fontFamily="@font/m6x11plus"
-                android:text="Nov 23, 2025"
-                android:textColor="#9C9C9C"
-                android:textSize="20sp" />
+            <!-- Se llenará dinámicamente -->
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,62 +5,45 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.bumptech.glide.Glide;
 import com.example.mobileapp.models.responses.GameResponse;
-
 import java.util.List;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RatingBar;
+import android.widget.Toast;
+import com.example.mobileapp.api.RetrofitClient;
+import com.example.mobileapp.models.responses.ReviewResponse;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class GameInfoActivity extends AppCompatActivity {
 
     private static final String ID = "game_id";
-    private static final String TITLE = "game_title";
-    private static final String PLATFORMS = "game_platforms";
-    private static final String IMAGE = "game_image";
-    private static final String DESC = "game_desc";
-    private static final String DATE = "game_date";
-    private static final String DEV = "game_dev";
-    private static final String GENRES = "game_genres";
-    private static final String IMAGE_RES = "game_image_res";
-
     private static final String BASE_URL = "http://10.0.2.2:3000/";
 
-    public static void open(Context context, Games game){
+    private LinearLayout relatedGamesContainer;
+    private LinearLayout reviewsContainer;
+    private int currentGameId;
+
+    private TextView titleTv, descriptionTv, releaseDateTv, platformsTv, developerTv, genreTv;
+    private ImageView coverIv;
+
+    public static void open(Context context, int gameId) {
         Intent intent = new Intent(context, GameInfoActivity.class);
-        intent.putExtra(ID, game.getId());
-        intent.putExtra(TITLE, game.getName());
-        intent.putExtra(PLATFORMS, game.getPlatforms());
-        if (game.getImageUrl() != null && !game.getImageUrl().isEmpty()) {
-            intent.putExtra(IMAGE, game.getImageUrl());
-        } else {
-            intent.putExtra(IMAGE_RES, game.getImageResId());
-        }
-        intent.putExtra(DESC, game.getDescription());
-        intent.putExtra(DATE, game.getReleaseDate());
-        intent.putExtra(DEV, game.getDeveloper());
-        intent.putExtra(GENRES, game.getGenres());
+        intent.putExtra(ID, gameId);
         context.startActivity(intent);
     }
 
-    public static void open(Context context, GameResponse game){
-        Intent intent = new Intent(context, GameInfoActivity.class);
-        intent.putExtra(ID, game.getId());
-        intent.putExtra(TITLE, game.getTitulo());
-        
-        String platforms = "";
-        if (game.getPlataforma() != null) {
-            platforms = String.join(", ", game.getPlataforma());
-        }
-        intent.putExtra(PLATFORMS, platforms);
-        
-        intent.putExtra(IMAGE, game.getImagen());
-        intent.putExtra(DESC, game.getDescripcion());
-        intent.putExtra(DATE, game.getFecha());
-        intent.putExtra(DEV, game.getDesarrollador());
-        intent.putExtra(GENRES, game.getGenero());
-        context.startActivity(intent);
+    public static void open(Context context, Games game) {
+        open(context, game.getId());
+    }
+
+    public static void open(Context context, GameResponse game) {
+        open(context, game.getId());
     }
 
     @Override
@@ -69,47 +52,144 @@ public class GameInfoActivity extends AppCompatActivity {
         setContentView(R.layout.game_info_activity);
         new HeaderManager(this);
 
-
-        TextView gameTitle = findViewById(R.id.GameTitleInfo);
-        TextView gamePlatforms = findViewById(R.id.GamePlatformsInfo);
-        ImageView gameCover = findViewById(R.id.GameCoverInfo);
-        TextView gameDescription = findViewById(R.id.gameDescription);
-        TextView gameReleaseDate = findViewById(R.id.gameReleaseDate);
-        TextView gameDeveloper = findViewById(R.id.gameDeveloper);
-        TextView gameGenre = findViewById(R.id.gameGenre);
-
+        relatedGamesContainer = findViewById(R.id.relatedGamesContainer);
+        reviewsContainer = findViewById(R.id.reviewsContainer);
+        
+        titleTv = findViewById(R.id.GameTitleInfo);
+        coverIv = findViewById(R.id.GameCoverInfo);
+        descriptionTv = findViewById(R.id.gameDescription);
+        releaseDateTv = findViewById(R.id.gameReleaseDate);
+        platformsTv = findViewById(R.id.GamePlatformsInfo);
+        developerTv = findViewById(R.id.gameDeveloper);
+        genreTv = findViewById(R.id.gameGenre);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            String title = extras.getString(TITLE);
-            String platforms = extras.getString(PLATFORMS);
-            String imageUrl = extras.getString(IMAGE);
-            int imageRes = extras.getInt(IMAGE_RES, -1);
-            String desc = extras.getString(DESC);
-            String date = extras.getString(DATE);
-            String dev = extras.getString(DEV);
-            String genres = extras.getString(GENRES);
+            currentGameId = extras.getInt(ID);
+            
+            loadGameDetails(currentGameId);
+            loadRelatedGames(currentGameId);
+            loadReviews(currentGameId);
+        }
+    }
 
-
-            if (gameTitle != null) gameTitle.setText(title);
-            if (gamePlatforms != null) gamePlatforms.setText(platforms);
-
-            if (gameCover != null) {
-                if (imageUrl != null && !imageUrl.isEmpty()) {
-                    String fullUrl = imageUrl.startsWith("http") ? imageUrl : BASE_URL + imageUrl;
-                    Glide.with(this)
-                            .load(fullUrl)
-                            .placeholder(R.drawable.ballxpit)
-                            .into(gameCover);
-                } else if (imageRes > 0) {
-                    gameCover.setImageResource(imageRes);
+    private void loadGameDetails(int id) {
+        RetrofitClient.getGamesService().getGameById(id).enqueue(new Callback<GameResponse>() {
+            @Override
+            public void onResponse(Call<GameResponse> call, Response<GameResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    displayGameDetails(response.body());
+                } else {
+                    Toast.makeText(GameInfoActivity.this, "Error al cargar detalles del juego", Toast.LENGTH_SHORT).show();
                 }
             }
 
-            if (gameDescription != null) gameDescription.setText(desc);
-            if (gameReleaseDate != null) gameReleaseDate.setText(date);
-            if(gameDeveloper != null) gameDeveloper.setText(dev);
-            if(gameGenre != null) gameGenre.setText(genres);
+            @Override
+            public void onFailure(Call<GameResponse> call, Throwable t) {
+                Toast.makeText(GameInfoActivity.this, "Error de red", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void displayGameDetails(GameResponse game) {
+        titleTv.setText(game.getTitulo());
+        descriptionTv.setText(game.getDescripcion());
+        releaseDateTv.setText(game.getFecha());
+        developerTv.setText(game.getDesarrollador());
+        genreTv.setText(game.getGenero());
+
+        if (game.getPlataforma() != null) {
+            platformsTv.setText(String.join(" / ", game.getPlataforma()));
+        }
+
+        String url = game.getImagen();
+        if (url != null && !url.startsWith("http")) url = BASE_URL + url;
+        Glide.with(this).load(url).placeholder(R.drawable.ballxpit).into(coverIv);
+    }
+
+    private void loadRelatedGames(int id) {
+        RetrofitClient.getGamesService().getRelatedGames(id).enqueue(new Callback<List<GameResponse>>() {
+            @Override
+            public void onResponse(Call<List<GameResponse>> call, Response<List<GameResponse>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    displayRelatedGames(response.body());
+                }
+            }
+            @Override
+            public void onFailure(Call<List<GameResponse>> call, Throwable t) {}
+        });
+    }
+
+    private void displayRelatedGames(List<GameResponse> games) {
+        if (relatedGamesContainer == null) return;
+        relatedGamesContainer.removeAllViews();
+        float density = getResources().getDisplayMetrics().density;
+
+        for (GameResponse game : games) {
+            ImageView iv = new ImageView(this);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams((int)(85*density), (int)(120*density));
+            lp.setMargins(0, 0, (int)(10*density), 0);
+            iv.setLayoutParams(lp);
+            iv.setBackgroundResource(R.drawable.game_miniature_shape);
+            iv.setClipToOutline(true);
+            iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+            String url = game.getImagen();
+            if (url != null && !url.startsWith("http")) url = BASE_URL + url;
+            Glide.with(this).load(url).centerCrop().placeholder(R.drawable.ballxpit).into(iv);
+
+            iv.setOnClickListener(v -> GameInfoActivity.open(this, game));
+            relatedGamesContainer.addView(iv);
+        }
+    }
+
+    private void loadReviews(int id) {
+        RetrofitClient.getReviewsService().getReviews(id).enqueue(new Callback<List<ReviewResponse>>() {
+            @Override
+            public void onResponse(Call<List<ReviewResponse>> call, Response<List<ReviewResponse>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    displayReviews(response.body());
+                }
+            }
+            @Override
+            public void onFailure(Call<List<ReviewResponse>> call, Throwable t) {}
+        });
+    }
+
+    private void displayReviews(List<ReviewResponse> reviews) {
+        if (reviewsContainer == null) return;
+        reviewsContainer.removeAllViews();
+        LayoutInflater inflater = LayoutInflater.from(this);
+
+        for (ReviewResponse review : reviews) {
+            View card = inflater.inflate(R.layout.item_review_home, reviewsContainer, false);
+            // Ajustar márgenes para que se vea bien en la lista vertical
+            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) card.getLayoutParams();
+            lp.setMargins(0, 0, 0, (int)(12 * getResources().getDisplayMetrics().density));
+            card.setLayoutParams(lp);
+
+            // Vinculación de datos de la reseña (usuario, contenido, rating, etc.)
+            TextView user = card.findViewById(R.id.user_name_review);
+            TextView content = card.findViewById(R.id.review_content);
+            RatingBar rb = card.findViewById(R.id.ratingBarReview);
+            ImageView avatar = card.findViewById(R.id.user_pfp_review);
+
+            user.setText(review.getUsuario());
+            content.setText(review.getContenido());
+            float score = review.getPuntuacion() != null ? review.getPuntuacion() / 2 : 0;
+            rb.setRating(score);
+
+            ImageUtils.loadUserAvatar(this, review.getAvatar(), review.getUsuario(), avatar);
+
+            View.OnClickListener toProfile = v -> {
+                if (review.getIdUsuario() != null) {
+                    UserProfileActivity.start(this, review.getIdUsuario(), review.getUsuario());
+                }
+            };
+            user.setOnClickListener(toProfile);
+            avatar.setOnClickListener(toProfile);
+
+            reviewsContainer.addView(card);
         }
     }
 }
