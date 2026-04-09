@@ -116,7 +116,7 @@ public class ReviewProfileActivity extends AppCompatActivity {
             }
 
             if (review.getPuntuacion() != null) {
-                ratingBar.setRating(review.getPuntuacion() / 2f);
+                ratingBar.setRating(review.getPuntuacion());
             } else {
                 ratingBar.setRating(0);
             }

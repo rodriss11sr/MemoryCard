@@ -155,7 +155,7 @@ public class InsideListGamesActivity extends AppCompatActivity {
             ImageUtils.loadImage(this, juego.getImagen(), gameImg);
 
             if (juego.getRating() != null) {
-                ratingBar.setRating(juego.getRating() / 2f);
+                ratingBar.setRating(juego.getRating() != null ? juego.getRating() : 0f);
             } else {
                 ratingBar.setRating(0);
             }

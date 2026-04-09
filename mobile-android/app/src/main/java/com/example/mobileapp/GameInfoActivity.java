@@ -16,7 +16,13 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.Toast;
 import com.example.mobileapp.api.RetrofitClient;
+import android.graphics.Color;
+import com.example.mobileapp.models.responses.UserGameResponse;
+import android.widget.Button;
+import com.example.mobileapp.models.responses.AuthResponse;
 import com.example.mobileapp.models.responses.ReviewResponse;
+import java.util.HashMap;
+import java.util.Map;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,9 +35,12 @@ public class GameInfoActivity extends AppCompatActivity {
     private LinearLayout relatedGamesContainer;
     private LinearLayout reviewsContainer;
     private int currentGameId;
+    private String currentStatus = null;
 
     private TextView titleTv, descriptionTv, releaseDateTv, platformsTv, developerTv, genreTv;
     private ImageView coverIv;
+    private Button btnLibrary, btnFavorite, btnWishlist, btnReview;
+    private GameResponse currentGame;
 
     public static void open(Context context, int gameId) {
         Intent intent = new Intent(context, GameInfoActivity.class);
@@ -64,6 +73,13 @@ public class GameInfoActivity extends AppCompatActivity {
         developerTv = findViewById(R.id.gameDeveloper);
         genreTv = findViewById(R.id.gameGenre);
 
+        btnLibrary = findViewById(R.id.btnAddToLibrary);
+        btnFavorite = findViewById(R.id.btnAddToFavorites);
+        btnWishlist = findViewById(R.id.btnAddToWishlist);
+        btnReview = findViewById(R.id.btnMakeReview);
+
+        setupActionButtons();
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             currentGameId = extras.getInt(ID);
@@ -71,6 +87,45 @@ public class GameInfoActivity extends AppCompatActivity {
             loadGameDetails(currentGameId);
             loadRelatedGames(currentGameId);
             loadReviews(currentGameId);
+            checkUserLibrary();
+        }
+    }
+
+    private void checkUserLibrary() {
+        SharedPreferences prefs = getSharedPreferences("user_session", MODE_PRIVATE);
+        int userId = prefs.getInt("user_id", -1);
+        if (userId == -1) return;
+
+        RetrofitClient.getUsersService().getUserGames(userId, null).enqueue(new Callback<List<UserGameResponse>>() {
+            @Override
+            public void onResponse(Call<List<UserGameResponse>> call, Response<List<UserGameResponse>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    for (UserGameResponse ug : response.body()) {
+                        if (ug.getId() == currentGameId) {
+                            currentStatus = ug.getEstado();
+                            updateButtonStates();
+                            break;
+                        }
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<List<UserGameResponse>> call, Throwable t) {}
+        });
+    }
+
+    private void updateButtonStates() {
+        // Reset backgrounds (consider using a constant color or checking initial style)
+        btnLibrary.setBackgroundResource(R.drawable.button_shape);
+        btnFavorite.setBackgroundResource(R.drawable.button_shape);
+        btnWishlist.setBackgroundResource(R.drawable.button_shape);
+
+        if ("jugando".equals(currentStatus)) {
+            btnLibrary.setBackgroundColor(Color.GRAY);
+        } else if ("favorito".equals(currentStatus)) {
+            btnFavorite.setBackgroundColor(Color.GRAY);
+        } else if ("pendiente".equals(currentStatus)) {
+            btnWishlist.setBackgroundColor(Color.GRAY);
         }
     }
 
@@ -93,6 +148,7 @@ public class GameInfoActivity extends AppCompatActivity {
     }
 
     private void displayGameDetails(GameResponse game) {
+        this.currentGame = game;
         titleTv.setText(game.getTitulo());
         descriptionTv.setText(game.getDescripcion());
         releaseDateTv.setText(game.getFecha());
@@ -184,7 +240,7 @@ public class GameInfoActivity extends AppCompatActivity {
 
             user.setText(review.getUsuario());
             content.setText(review.getContenido());
-            float score = review.getPuntuacion() != null ? review.getPuntuacion() / 2 : 0;
+            float score = review.getPuntuacion() != null ? (float) review.getPuntuacion() : 0;
             rb.setRating(score);
 
             ImageUtils.loadUserAvatar(this, review.getAvatar(), review.getUsuario(), avatar);
@@ -205,5 +261,81 @@ public class GameInfoActivity extends AppCompatActivity {
 
             reviewsContainer.addView(card);
         }
+    }
+
+    private void setupActionButtons() {
+        btnLibrary.setOnClickListener(v -> addGameToStatus("jugando"));
+        btnFavorite.setOnClickListener(v -> addGameToStatus("favorito"));
+        btnWishlist.setOnClickListener(v -> addGameToStatus("pendiente"));
+
+        btnReview.setOnClickListener(v -> {
+            if (currentGame != null) {
+                // Primero lo añadimos como "jugando" si no está en biblioteca
+                if (currentStatus == null) {
+                    addGameToStatus("jugando");
+                }
+
+                // Abrimos el popup de reseña
+                AddGameFinalActivity dialog = AddGameFinalActivity.newInstance(
+                        currentGameId,
+                        currentGame.getTitulo(),
+                        currentGame.getImagen(),
+                        0
+                );
+                dialog.show(getSupportFragmentManager(), "AddGameFinalActivity");
+            }
+        });
+    }
+
+    private void addGameToStatus(String status) {
+        SharedPreferences prefs = getSharedPreferences("user_session", MODE_PRIVATE);
+        int userId = prefs.getInt("user_id", -1);
+
+        if (userId == -1) {
+            Toast.makeText(this, "Inicia sesión para guardar juegos", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (status.equals(currentStatus)) {
+            // Eliminar si ya tiene ese estado
+            RetrofitClient.getUsersService().removeGameFromLibrary(userId, currentGameId).enqueue(new Callback<AuthResponse>() {
+                @Override
+                public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
+                    if (response.isSuccessful()) {
+                        currentStatus = null;
+                        updateButtonStates();
+                        Toast.makeText(GameInfoActivity.this, "Eliminado de la biblioteca", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<AuthResponse> call, Throwable t) {
+                    Toast.makeText(GameInfoActivity.this, "Error de red", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("id_juego", currentGameId);
+        body.put("estado", status);
+
+        RetrofitClient.getUsersService().addGameToLibrary(userId, body).enqueue(new Callback<AuthResponse>() {
+            @Override
+            public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
+                if (response.isSuccessful()) {
+                    currentStatus = status;
+                    updateButtonStates();
+                    Toast.makeText(GameInfoActivity.this, "Juego actualizado: " + status, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(GameInfoActivity.this, "Error al actualizar estado", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AuthResponse> call, Throwable t) {
+                Toast.makeText(GameInfoActivity.this, "Error de red", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

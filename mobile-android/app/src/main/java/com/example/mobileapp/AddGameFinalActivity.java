@@ -95,7 +95,7 @@ public class AddGameFinalActivity extends DialogFragment {
 
         Map<String, Object> body = new HashMap<>();
         body.put("id_juego", gameId);
-        body.put("estado", "completado");
+        body.put("estado", "jugando");
 
         RetrofitClient.getUsersService().addGameToLibrary(userId, body).enqueue(new Callback<AuthResponse>() {
             @Override
@@ -123,7 +123,7 @@ public class AddGameFinalActivity extends DialogFragment {
         Map<String, Object> body = new HashMap<>();
         body.put("id_usuario", userId);
         body.put("id_juego", gameId);
-        body.put("nota", rating * 2);
+        body.put("nota", rating);
         body.put("texto", reviewText);
 
         RetrofitClient.getReviewsService().createOrUpdateReview(body).enqueue(new Callback<AuthResponse>() {

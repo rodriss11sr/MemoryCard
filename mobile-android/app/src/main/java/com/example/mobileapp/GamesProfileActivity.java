@@ -211,7 +211,7 @@ public class GamesProfileActivity extends AppCompatActivity {
             ImageUtils.loadImage(this, game.getImagen(), gameImg);
 
             if (game.getRating() != null) {
-                ratingBar.setRating(game.getRating() / 2f);
+                ratingBar.setRating(game.getRating());
             } else {
                 ratingBar.setRating(0);
             }

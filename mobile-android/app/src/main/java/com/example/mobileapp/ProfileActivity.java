@@ -314,7 +314,7 @@ public class ProfileActivity extends AppCompatActivity {
                 img.setOnClickListener(v -> openGameDetail(g.getId()));
                 if (ratings != null && i < ratings.length && ratings[i] != null) {
                     ratings[i].setVisibility(View.VISIBLE);
-                    ratings[i].setRating((g.getRating() != null ? g.getRating() : 0f) / 2f);
+                    ratings[i].setRating(g.getRating() != null ? g.getRating() : 0f);
                 }
             } else {
                 img.setVisibility(View.INVISIBLE);

@@ -138,14 +138,12 @@ public class MainScreenActivity extends AppCompatActivity {
             timeText.setText(review.getFecha());
             contentText.setText(review.getContenido());
             
-            // Ajuste de puntuación (asumiendo que viene 0-10 y el RatingBar es de 5 estrellas)
-            float score = review.getPuntuacion() != null ? review.getPuntuacion().floatValue() / 2 : 0;
+            // Ajuste de puntuación (0-5 del RatingBar)
+            float score = review.getPuntuacion() != null ? review.getPuntuacion().floatValue() : 0;
             ratingBar.setRating(score);
 
             // Cargar imágenes
-            String gameUrl = review.getImagen();
-            if (gameUrl != null && !gameUrl.startsWith("http")) gameUrl = BASE_URL + gameUrl;
-            Glide.with(this).load(gameUrl).placeholder(R.drawable.ballxpit).into(gameImg);
+            ImageUtils.loadImage(this, review.getImagen(), gameImg);
 
             ImageUtils.loadUserAvatar(this, review.getAvatar(), review.getUsuario(), userImg);
 
