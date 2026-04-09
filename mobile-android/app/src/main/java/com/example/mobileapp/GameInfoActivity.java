@@ -115,17 +115,17 @@ public class GameInfoActivity extends AppCompatActivity {
     }
 
     private void updateButtonStates() {
-        // Reset backgrounds (consider using a constant color or checking initial style)
-        btnLibrary.setBackgroundResource(R.drawable.button_shape);
-        btnFavorite.setBackgroundResource(R.drawable.button_shape);
-        btnWishlist.setBackgroundResource(R.drawable.button_shape);
+        // Reset backgrounds to default using backgroundTint
+        btnLibrary.setBackgroundTintList(null);
+        btnFavorite.setBackgroundTintList(null);
+        btnWishlist.setBackgroundTintList(null);
 
         if ("jugando".equals(currentStatus)) {
-            btnLibrary.setBackgroundColor(Color.GRAY);
+            btnLibrary.setBackgroundTintList(android.content.res.ColorStateList.valueOf(Color.GRAY));
         } else if ("favorito".equals(currentStatus)) {
-            btnFavorite.setBackgroundColor(Color.GRAY);
+            btnFavorite.setBackgroundTintList(android.content.res.ColorStateList.valueOf(Color.GRAY));
         } else if ("pendiente".equals(currentStatus)) {
-            btnWishlist.setBackgroundColor(Color.GRAY);
+            btnWishlist.setBackgroundTintList(android.content.res.ColorStateList.valueOf(Color.GRAY));
         }
     }
 
