@@ -2,6 +2,7 @@ package com.example.mobileapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -190,7 +191,13 @@ public class GameInfoActivity extends AppCompatActivity {
 
             View.OnClickListener toProfile = v -> {
                 if (review.getIdUsuario() != null) {
-                    UserProfileActivity.start(this, review.getIdUsuario(), review.getUsuario());
+                    SharedPreferences p = getSharedPreferences("user_session", MODE_PRIVATE);
+                    int sessionId = p.getInt("user_id", -1);
+                    if (review.getIdUsuario() == sessionId) {
+                        startActivity(new Intent(this, ProfileActivity.class));
+                    } else {
+                        ProfileActivity.openForUser(this, review.getIdUsuario(), review.getUsuario());
+                    }
                 }
             };
             user.setOnClickListener(toProfile);

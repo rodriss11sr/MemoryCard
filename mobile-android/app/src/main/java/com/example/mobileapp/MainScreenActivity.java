@@ -1,6 +1,7 @@
 package com.example.mobileapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -151,7 +152,13 @@ public class MainScreenActivity extends AppCompatActivity {
             // Redirección al perfil del usuario
             View.OnClickListener openUserProfile = v -> {
                 if (review.getIdUsuario() != null) {
-                    UserProfileActivity.start(this, review.getIdUsuario(), review.getUsuario());
+                    SharedPreferences p = getSharedPreferences("user_session", MODE_PRIVATE);
+                    int sessionId = p.getInt("user_id", -1);
+                    if (review.getIdUsuario() == sessionId) {
+                        startActivity(new Intent(this, ProfileActivity.class));
+                    } else {
+                        ProfileActivity.openForUser(this, review.getIdUsuario(), review.getUsuario());
+                    }
                 } else {
                     Toast.makeText(this, "Perfil no disponible", Toast.LENGTH_SHORT).show();
                 }

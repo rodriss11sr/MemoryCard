@@ -164,13 +164,13 @@ public class ProfileActivity extends AppCompatActivity {
 
         ImageUtils.loadUserAvatar(this, user.getAvatar(), nombre, profileImage);
 
-        gamesProfile.setText("JUEGOS (" + stats.getJuegos() + ")");
+        gamesProfile.setText("JUEGOS");
         wishlistProfile.setText("WISHLIST");
-        reviewsProfile.setText("REVIEWS (" + stats.getResenas() + ")");
-        listProfile.setText("LISTAS (" + stats.getListas() + ")");
+        reviewsProfile.setText("REVIEWS");
+        listProfile.setText("LISTAS");
         followersCount = stats.getSeguidores();
         if (ownProfile) {
-            friendsProfile.setText("AMIGOS (" + followersCount + ")");
+            friendsProfile.setText("AMIGOS");
         } else {
             updateFollowButtonText();
         }
