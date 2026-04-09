@@ -4,3 +4,7 @@ DB_PASSWORD=
 DB_NAME=memory_card
 DB_PORT=3306
 PORT=3000
+
+TWITCH_CLIENT_ID=ug57gzq2d72okry9mcbstuxbrws2vk
+TWITCH_CLIENT_SECRET=mtye6r1ru6jmw7r74ln6bb2lzheh55
+TWITCH_ACCESS_TOKEN=0wvwqdtb9irbrcsqkpheebdaib7hdh
