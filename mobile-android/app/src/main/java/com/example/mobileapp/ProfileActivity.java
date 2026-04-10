@@ -288,11 +288,20 @@ public class ProfileActivity extends AppCompatActivity {
                 findViewById(R.id.ratingBarReview4)
         };
 
-        List<UserGameResponse> byRating = new ArrayList<>(profileGames);
-        Collections.sort(byRating, (a, b) -> Float.compare(
-                b.getRating() != null ? b.getRating() : 0f,
-                a.getRating() != null ? a.getRating() : 0f));
+        // Filtrar juegos favoritos y ordenar por fecha de agregado (descendente)
+        List<UserGameResponse> favorites = new ArrayList<>();
+        for (UserGameResponse g : profileGames) {
+            if ("favorito".equalsIgnoreCase(g.getEstado())) {
+                favorites.add(g);
+            }
+        }
+        Collections.sort(favorites, (a, b) -> {
+            String fa = a.getFechaAgregado() != null ? a.getFechaAgregado() : "";
+            String fb = b.getFechaAgregado() != null ? b.getFechaAgregado() : "";
+            return fb.compareTo(fa);
+        });
 
+        // Actividad reciente: ordenar todos por fecha de agregado (descendente)
         List<UserGameResponse> byRecent = new ArrayList<>(profileGames);
         Collections.sort(byRecent, (a, b) -> {
             String fa = a.getFechaAgregado() != null ? a.getFechaAgregado() : "";
@@ -300,7 +309,7 @@ public class ProfileActivity extends AppCompatActivity {
             return fb.compareTo(fa);
         });
 
-        bindGameImageRow(favoriteButtons, byRating, null);
+        bindGameImageRow(favoriteButtons, favorites, null);
         bindGameImageRow(recentButtons, byRecent, recentRatings);
     }
 
