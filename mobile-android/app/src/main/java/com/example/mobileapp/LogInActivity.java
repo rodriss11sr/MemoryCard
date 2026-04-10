@@ -27,6 +27,14 @@ public class LogInActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        SessionManager session = new SessionManager(this);
+        if (session.isLoggedIn()) {
+            startActivity(new Intent(LogInActivity.this, MainScreenActivity.class));
+            finish();
+            return;
+        }
+
         setContentView(R.layout.log_in);
 
         // Inicializar campos de texto
@@ -96,15 +104,13 @@ public class LogInActivity extends AppCompatActivity {
                     if (loginResponse.isOk()) {
                         LoginResponse.User user = loginResponse.getUser();
 
-                        // Guardar datos del usuario en SharedPreferences
-                        SharedPreferences prefs = getSharedPreferences("user_session", MODE_PRIVATE);
-                        SharedPreferences.Editor editor = prefs.edit();
-                        editor.putInt("user_id", user.getId());
-                        editor.putString("user_nombre", user.getNombre());
-                        editor.putString("user_correo", user.getCorreo());
-                        editor.putString("user_avatar", user.getAvatar() != null ? user.getAvatar() : "");
-                        editor.putBoolean("is_logged_in", true);
-                        editor.apply();
+                        // Guardar sesión usando SessionManager
+                        SessionManager session = new SessionManager(LogInActivity.this);
+                        session.createSession(
+                                user.getId(),
+                                user.getNombre(),
+                                user.getAvatar() != null ? user.getAvatar() : ""
+                        );
 
                         // Mostrar mensaje de bienvenida
                         Toast.makeText(LogInActivity.this, "¡Bienvenido " + user.getNombre() + "!", Toast.LENGTH_SHORT).show();

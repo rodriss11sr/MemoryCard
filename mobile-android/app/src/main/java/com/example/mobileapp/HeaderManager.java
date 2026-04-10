@@ -101,9 +101,12 @@ public class HeaderManager {
                         activity.startActivity(new Intent(activity, FriendsProfileActivity.class));
                     }
                 }else if (itemId == R.id.nav_logout){
-                    if(!(activity instanceof LogInActivity)) {
-                        activity.startActivity(new Intent(activity, LogInActivity.class));
-                    }
+                    SessionManager session = new SessionManager(activity);
+                    session.logout();
+                    Intent intent = new Intent(activity, LogInActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    activity.startActivity(intent);
+                    activity.finish();
                 }
 
                 if (drawer != null) {

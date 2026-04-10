@@ -19,6 +19,14 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        SessionManager session = new SessionManager(this);
+        if (session.isLoggedIn()) {
+            startActivity(new Intent(HomeActivity.this, MainScreenActivity.class));
+            finish();
+            return;
+        }
+
         EdgeToEdge.enable(this);
         setContentView(R.layout.home);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.homeScreen), (v, insets) -> {
