@@ -30,6 +30,11 @@ function Perfil() {
     completado: true,
   });
 
+  const [showAvatarModal, setShowAvatarModal] = useState(false);
+  const [newAvatarUrl, setNewAvatarUrl] = useState("");
+  const [avatarError, setAvatarError] = useState("");
+  const [isSavingAvatar, setIsSavingAvatar] = useState(false);
+
   const loadProfileData = async () => {
     setLoading(true);
     setError(null);
@@ -166,6 +171,57 @@ function Perfil() {
   // Filtrar juegos que tienen estado "favorito"
   const favoritos = juegos.filter(juego => juego.estado === "favorito");
 
+  // Manejar el click en el avatar para mostrar el modal
+  const handleAvatarClick = () => {
+    const userStr = localStorage.getItem("user");
+    const currentUser = userStr ? JSON.parse(userStr) : null;
+    const isOwn = !id || (currentUser && user && currentUser.id === user.id);
+    
+    if (isOwn) {
+      setNewAvatarUrl(user.avatar || "");
+      setAvatarError("");
+      setShowAvatarModal(true);
+    }
+  };
+
+  // Guardar el nuevo avatar
+  const handleSaveAvatar = async () => {
+    if (!newAvatarUrl.trim()) {
+      setAvatarError("La URL no puede estar vacía");
+      return;
+    }
+    
+    setIsSavingAvatar(true);
+    setAvatarError("");
+    
+    try {
+      const res = await fetch(`${API_BASE_URL}/usuarios/${user.id}/avatar`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ avatar: newAvatarUrl }),
+      });
+      
+      const data = await res.json();
+      
+      if (data.ok) {
+        const userStr = localStorage.getItem("user");
+        if (userStr) {
+          const userData = JSON.parse(userStr);
+          userData.avatar = newAvatarUrl;
+          localStorage.setItem("user", JSON.stringify(userData));
+        }
+        setUser({ ...user, avatar: newAvatarUrl });
+        setShowAvatarModal(false);
+      } else {
+        setAvatarError(data.message || "Error al actualizar avatar");
+      }
+    } catch (err) {
+      setAvatarError("Error de conexión con el servidor");
+    } finally {
+      setIsSavingAvatar(false);
+    }
+  };
+
   if (loading) {
     return (
       <div style={{ textAlign: "center", padding: "2rem", color: "#ffffff" }}>
@@ -254,6 +310,7 @@ function Perfil() {
           }}
         >
           <div
+            onClick={handleAvatarClick}
             style={{
               width: "100px",
               height: "100px",
@@ -262,13 +319,34 @@ function Perfil() {
               margin: "0 auto 15px auto",
               border: "4px solid #2b303b",
               overflow: "hidden",
+              cursor: isOwnProfile ? "pointer" : "default",
+              position: "relative",
             }}
+            title={isOwnProfile ? "Cambiar foto de perfil" : ""}
           >
             <img
               src={avatarUrl}
               alt="avatar"
-              style={{ width: "100%", height: "100%" }}
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
             />
+            {isOwnProfile && (
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  backgroundColor: "rgba(0,0,0,0.6)",
+                  color: "white",
+                  fontSize: "0.7rem",
+                  padding: "4px 0",
+                  textAlign: "center",
+                  fontFamily: "m6x11plus",
+                }}
+              >
+                EDITAR
+              </div>
+            )}
           </div>
           <div>
             <h2 style={{ margin: "0 0 5px 0", fontSize: "1.8rem", color: "white" }}>
@@ -691,6 +769,120 @@ function Perfil() {
             }}
             autor={user.nombre}
           />
+        </div>
+      )}
+
+      {/* Modal para cambiar Avatar */}
+      {showAvatarModal && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: "rgba(0, 0, 0, 0.7)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000,
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: "#2b303b",
+              border: "1px solid #3e4451",
+              borderRadius: "12px",
+              padding: "30px",
+              width: "90%",
+              maxWidth: "400px",
+            }}
+          >
+            <h3 style={{ color: "#ffffff", marginTop: 0, marginBottom: "20px", textAlign: "center", fontFamily: "upheaval, system-ui" }}>
+              Cambiar foto de perfil
+            </h3>
+            
+            <div style={{ display: "flex", justifyContent: "center", marginBottom: "20px" }}>
+              <img 
+                src={newAvatarUrl || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.nombre}`} 
+                alt="Vista previa" 
+                style={{ 
+                  width: "120px", 
+                  height: "120px", 
+                  borderRadius: "50%", 
+                  objectFit: "cover",
+                  border: "4px solid #29CDF2"
+                }} 
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.nombre}`;
+                }}
+              />
+            </div>
+            
+            <div style={{ marginBottom: "20px" }}>
+              <label style={{ color: "#9ca3af", display: "block", marginBottom: "8px", fontSize: "0.9rem" }}>
+                URL de la imagen
+              </label>
+              <input
+                type="text"
+                value={newAvatarUrl}
+                onChange={(e) => setNewAvatarUrl(e.target.value)}
+                placeholder="https://ejemplo.com/mifoto.jpg"
+                style={{
+                  width: "100%",
+                  padding: "10px 12px",
+                  borderRadius: "8px",
+                  border: "1px solid #4b5563",
+                  backgroundColor: "#1f2937",
+                  color: "#ffffff",
+                  boxSizing: "border-box",
+                  fontFamily: "m6x11plus, system-ui"
+                }}
+              />
+            </div>
+            
+            {avatarError && (
+              <p style={{ color: "#ef4444", fontSize: "0.85rem", marginBottom: "15px", textAlign: "center", fontFamily: "m6x11plus, system-ui" }}>
+                {avatarError}
+              </p>
+            )}
+            
+            <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end" }}>
+              <button
+                onClick={() => setShowAvatarModal(false)}
+                style={{
+                  padding: "10px 16px",
+                  background: "transparent",
+                  border: "1px solid #4b5563",
+                  borderRadius: "8px",
+                  color: "#d1d5db",
+                  cursor: "pointer",
+                  fontFamily: "upheaval, system-ui",
+                }}
+                disabled={isSavingAvatar}
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={handleSaveAvatar}
+                style={{
+                  padding: "10px 16px",
+                  background: "#29CDF2",
+                  border: "none",
+                  borderRadius: "8px",
+                  color: "#000",
+                  cursor: "pointer",
+                  fontFamily: "upheaval, system-ui",
+                  fontWeight: "bold",
+                  opacity: isSavingAvatar ? 0.7 : 1
+                }}
+                disabled={isSavingAvatar}
+              >
+                {isSavingAvatar ? "Guardando..." : "Guardar"}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

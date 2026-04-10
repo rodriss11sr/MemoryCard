@@ -389,6 +389,28 @@ router.delete('/:id/seguir/:idSeguido', async (req, res) => {
   }
 });
 
+// PUT /api/usuarios/:id/avatar - Actualizar avatar del usuario
+router.put('/:id/avatar', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { avatar } = req.body;
+    
+    if (!avatar) {
+      return res.status(400).json({ ok: false, message: 'URL de avatar requerida' });
+    }
+    
+    await pool.query(
+      'UPDATE usuario SET avatar = ? WHERE id_usuario = ?',
+      [avatar, id]
+    );
+    
+    res.json({ ok: true, message: 'Avatar actualizado correctamente' });
+  } catch (error) {
+    console.error('Error al actualizar avatar:', error);
+    res.status(500).json({ ok: false, message: 'Error al actualizar el avatar', detalle: error.message });
+  }
+});
+
 // POST /api/usuarios - Crear un nuevo usuario (por si se usa directamente)
 router.post('/', async (req, res) => {
   try {
