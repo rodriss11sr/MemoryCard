@@ -13,6 +13,11 @@ import androidx.fragment.app.FragmentManager;
 import android.content.SharedPreferences;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.navigation.NavigationView;
+import com.example.mobileapp.api.RetrofitClient;
+import com.example.mobileapp.models.responses.UserResponse;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HeaderManager {
 
@@ -31,11 +36,30 @@ public class HeaderManager {
 
     private void loadUserData() {
         ShapeableImageView profileBtn = headerView.findViewById(R.id.profileBtn);
-        if (profileBtn != null) {
-            SharedPreferences prefs = activity.getSharedPreferences("user_session", Activity.MODE_PRIVATE);
-            String avatar = prefs.getString("user_avatar", null);
-            String nombre = prefs.getString("user_nombre", "User");
-            ImageUtils.loadUserAvatar(activity, avatar, nombre, profileBtn);
+        if (profileBtn == null) return;
+
+        SessionManager sessionManager = new SessionManager(activity);
+        int userId = sessionManager.getUserId();
+
+        if (userId != -1) {
+            // Cargar datos locales primero
+            ImageUtils.loadUserAvatar(activity, sessionManager.getUserAvatar(), sessionManager.getUserNombre(), profileBtn);
+
+            // Actualizar desde el servidor
+            RetrofitClient.getUsersService().getUserById(userId).enqueue(new Callback<UserResponse>() {
+                @Override
+                public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        UserResponse user = response.body();
+                        sessionManager.updateUserData(user.getNombre(), user.getAvatar());
+                        // Recargar imagen si ha cambiado
+                        ImageUtils.loadUserAvatar(activity, user.getAvatar(), user.getNombre(), profileBtn);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<UserResponse> call, Throwable t) {}
+            });
         }
     }
 

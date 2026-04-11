@@ -25,6 +25,12 @@ public class SessionManager {
         editor.apply();
     }
 
+    public void updateUserData(String userName, String userAvatar) {
+        editor.putString(KEY_USER_NOMBRE, userName);
+        editor.putString(KEY_USER_AVATAR, userAvatar);
+        editor.apply();
+    }
+
     public boolean isLoggedIn() {
         return sharedPreferences.getBoolean(KEY_IS_LOGGED_IN, false);
     }
