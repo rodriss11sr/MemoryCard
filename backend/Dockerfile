@@ -1,43 +1,28 @@
-FROM node:18-alpine
-
-WORKDIR /usr/src/app
-
-ENV NODE_ENV=production
-ENV PORT=8080
-
-# Install dependencies (only production deps)
-COPY package*.json ./
-RUN npm install --production
-
-# Copy app source
-COPY . .
-
-EXPOSE 8080
-
-CMD ["node", "server.js"]
-# Build stage
-FROM node:20-alpine AS builder
+# Multi-stage build for optimized production image
+FROM node:18-alpine AS builder
 
 WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm ci
+RUN npm ci --only=production
 
 # Runtime stage
-FROM node:20-alpine
+FROM node:18-alpine
 
 WORKDIR /app
 
+# Create non-root user for security
+RUN addgroup -g 1001 -S nodejs && adduser -S nodejs -u 1001
+
 # Copy dependencies from builder
-COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder --chown=nodejs:nodejs /app/node_modules ./node_modules
 
 # Copy application code
-COPY . .
+COPY --chown=nodejs:nodejs . .
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:' + (process.env.PORT || 3000) + '/api/health', (r) => {if (r.statusCode !== 200) throw new Error(r.statusCode)})"
+# Switch to non-root user
+USER nodejs
 
 EXPOSE 3000
 
