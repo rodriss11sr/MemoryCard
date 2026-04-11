@@ -1,9 +1,4 @@
 -- ============================================
--- ESQUEMA DE BASE DE DATOS - PRUEBAS IGDB
--- VERSIÓN aislando solo el catálogo de juegos
--- ============================================
-
--- ============================================
 -- TABLAS PRINCIPALES
 -- ============================================
 
@@ -110,7 +105,7 @@ CREATE TABLE IF NOT EXISTS desarrolla (
 CREATE TABLE IF NOT EXISTS guarda (
     id_usuario INT NOT NULL,
     id_juego INT NOT NULL,
-    estado ENUM('pendiente', 'jugando', 'completado', 'abandonado', 'en_pausa') DEFAULT 'pendiente',
+    estado ENUM('pendiente', 'jugando', 'completado', 'en_pausa', 'favorito') DEFAULT 'pendiente',
     horas_jugadas DECIMAL(6,2) DEFAULT 0.00,
     fecha_agregado DATETIME DEFAULT CURRENT_TIMESTAMP,
     fecha_actualizado DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
