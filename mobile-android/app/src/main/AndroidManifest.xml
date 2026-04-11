@@ -65,6 +65,9 @@
         <activity android:name=".GameInfoActivity"
             android:exported="false"
             />
+        <activity android:name=".ReviewsListActivity"
+            android:exported="false"
+            />
 
 
     </application>

@@ -113,8 +113,8 @@ public class HeaderManager {
                         activity.startActivity(new Intent(activity, MainScreenActivity.class));
                     }
                 } else if (itemId == R.id.nav_reviews){
-                    if(!(activity instanceof ReviewProfileActivity)){
-                        activity.startActivity(new Intent(activity, ReviewProfileActivity.class));
+                    if(!(activity instanceof ReviewsListActivity)){
+                        activity.startActivity(new Intent(activity, ReviewsListActivity.class));
                     }
                 } else if (itemId == R.id.nav_wishlist){
                     if(!(activity instanceof WishlistProfileActivity)){
