@@ -39,24 +39,24 @@ public class MainScreenActivity extends AppCompatActivity {
         gamesContainer = findViewById(R.id.gamesContainer);
         reviewsContainer = findViewById(R.id.reviewsContainer);
 
-        loadGames();
-        loadPopularReviews();
+        loadHome();
     }
 
-    private void loadGames() {
-        ApiJuegosService juegosService = RetrofitClient.getGamesService();
-        juegosService.getAllGames().enqueue(new Callback<List<GameResponse>>() {
+    private void loadHome() {
+        RetrofitClient.getHomeService().getHome().enqueue(new retrofit2.Callback<com.example.mobileapp.models.responses.HomeResponse>() {
             @Override
-            public void onResponse(Call<List<GameResponse>> call, Response<List<GameResponse>> response) {
+            public void onResponse(retrofit2.Call<com.example.mobileapp.models.responses.HomeResponse> call, retrofit2.Response<com.example.mobileapp.models.responses.HomeResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    displayGames(response.body());
+                    com.example.mobileapp.models.responses.HomeResponse data = response.body();
+                    if (data.getJuegos() != null) displayGames(data.getJuegos());
+                    if (data.getReviews() != null) displayReviews(data.getReviews());
                 } else {
-                    Toast.makeText(MainScreenActivity.this, "Error al obtener juegos", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainScreenActivity.this, "Error al obtener datos de inicio", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<List<GameResponse>> call, Throwable t) {
+            public void onFailure(retrofit2.Call<com.example.mobileapp.models.responses.HomeResponse> call, Throwable t) {
                 Toast.makeText(MainScreenActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -102,22 +102,6 @@ public class MainScreenActivity extends AppCompatActivity {
         }
     }
 
-    private void loadPopularReviews() {
-        ApiReviewsService reviewsService = RetrofitClient.getReviewsService();
-        reviewsService.getPopularReviews().enqueue(new Callback<List<ReviewResponse>>() {
-            @Override
-            public void onResponse(Call<List<ReviewResponse>> call, Response<List<ReviewResponse>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    displayReviews(response.body());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<ReviewResponse>> call, Throwable t) {
-                Toast.makeText(MainScreenActivity.this, "Error al obtener reviews", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 
     private void displayReviews(List<ReviewResponse> reviews) {
         if (reviewsContainer == null) return;

@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { testConnection } from './config/database.js';
 import juegosRoutes from './routes/juegos.routes.js';
+import homeRoutes from './routes/home.routes.js';
 import usuariosRoutes from './routes/usuarios.routes.js';
 import listasRoutes from './routes/listas.routes.js';
 import reseñasRoutes from './routes/reseñas.routes.js';
@@ -21,6 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Rutas
 app.use('/api/juegos', juegosRoutes);
+app.use('/api/home', homeRoutes);
 app.use('/api/usuarios', usuariosRoutes);
 app.use('/api/listas', listasRoutes);
 app.use('/api/resenas', reseñasRoutes);

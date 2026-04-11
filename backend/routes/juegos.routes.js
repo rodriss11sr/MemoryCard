@@ -6,13 +6,53 @@ const router = express.Router();
 // GET /api/juegos - Obtener todos los juegos (formato compatible con PHP)
 router.get('/', async (req, res) => {
   try {
+    // Soporte de paginación: ?page=&limit=
+    const { page, limit } = req.query;
+    const pageNum = page ? Math.max(parseInt(page, 10), 1) : null;
+    const limitNum = limit ? Math.max(parseInt(limit, 10), 1) : null;
+
     // Intentar usar la vista primero
     let juegos;
+    let total = null;
+    const usePagination = pageNum !== null || limitNum !== null;
+
     try {
-      [juegos] = await pool.query('SELECT * FROM vista_juegos_completos ORDER BY titulo ASC');
+      if (usePagination) {
+        const perPage = limitNum || 90;
+        const offset = ((pageNum || 1) - 1) * perPage;
+        [juegos] = await pool.query('SELECT * FROM vista_juegos_completos ORDER BY titulo ASC LIMIT ?, ?', [offset, perPage]);
+        const [countRes] = await pool.query('SELECT COUNT(*) AS total FROM juego');
+        total = countRes[0].total;
+      } else {
+        [juegos] = await pool.query('SELECT * FROM vista_juegos_completos ORDER BY titulo ASC');
+      }
     } catch (error) {
       // Si la vista no existe, usar consulta directa
-      [juegos] = await pool.query(`
+      if (usePagination) {
+        const perPage = limitNum || 90;
+        const offset = ((pageNum || 1) - 1) * perPage;
+        [juegos] = await pool.query(`
+        SELECT 
+          j.*,
+          GROUP_CONCAT(DISTINCT p.nombre SEPARATOR ', ') AS plataformas,
+          GROUP_CONCAT(DISTINCT g.nombre SEPARATOR ', ') AS generos,
+          GROUP_CONCAT(DISTINCT d.nombre SEPARATOR ', ') AS desarrolladoras,
+          (SELECT AVG(nota) FROM reseña WHERE id_juego = j.id_juego) AS nota_promedio
+        FROM juego j
+        LEFT JOIN lanza l ON j.id_juego = l.id_juego
+        LEFT JOIN plataforma p ON l.nombre_plataforma = p.nombre
+        LEFT JOIN pertenece pe ON j.id_juego = pe.id_juego
+        LEFT JOIN genero g ON pe.nombre_genero = g.nombre
+        LEFT JOIN desarrolla de ON j.id_juego = de.id_juego
+        LEFT JOIN desarrolladora d ON de.nombre_desarrolladora = d.nombre
+        GROUP BY j.id_juego
+        ORDER BY j.titulo ASC
+        LIMIT ?, ?
+      `, [offset, perPage]);
+        const [countRes] = await pool.query('SELECT COUNT(*) AS total FROM juego');
+        total = countRes[0].total;
+      } else {
+        [juegos] = await pool.query(`
         SELECT 
           j.*,
           GROUP_CONCAT(DISTINCT p.nombre SEPARATOR ', ') AS plataformas,
@@ -29,6 +69,7 @@ router.get('/', async (req, res) => {
         GROUP BY j.id_juego
         ORDER BY j.titulo ASC
       `);
+      }
     }
 
     // Formatear para que coincida con el formato PHP
@@ -58,6 +99,13 @@ router.get('/', async (req, res) => {
         rating: rating,
       };
     });
+
+    if (usePagination) {
+      const perPage = limitNum || 90;
+      const currentPage = pageNum || 1;
+      const totalPages = total !== null ? Math.max(1, Math.ceil(total / perPage)) : null;
+      return res.json({ juegos: juegosFormateados, total, page: currentPage, totalPages });
+    }
 
     res.json(juegosFormateados);
   } catch (error) {

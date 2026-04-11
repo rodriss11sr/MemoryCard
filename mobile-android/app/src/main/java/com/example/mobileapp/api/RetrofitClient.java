@@ -38,6 +38,10 @@ public class RetrofitClient {
         return getClient().create(ApiReviewsService.class);
     }
 
+    public static ApiHomeService getHomeService() {
+        return getClient().create(ApiHomeService.class);
+    }
+
     public static ApiUsuariosService getUsersService() {
         return getClient().create(ApiUsuariosService.class);
     }

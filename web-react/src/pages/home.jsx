@@ -16,24 +16,12 @@ function Home() {
         setLoading(true);
         setError(null);
         try {
-            const [juegosRes, reviewsRes] = await Promise.all([
-                fetch(`${API_BASE_URL}/juegos`),
-                fetch(`${API_BASE_URL}/resenas`),
-            ]);
+            const res = await fetch(`${API_BASE_URL}/home`);
+            if (!res.ok) throw new Error('Error al conectar con el servidor');
+            const data = await res.json();
 
-            if (!juegosRes.ok || !reviewsRes.ok) {
-                throw new Error("Error al conectar con el servidor");
-            }
-
-            const juegosData = await juegosRes.json();
-            const reviewsData = await reviewsRes.json();
-
-            if (Array.isArray(juegosData)) {
-                setJuegos(juegosData);
-            }
-            if (Array.isArray(reviewsData)) {
-                setReviews(reviewsData.slice(0, 5));
-            }
+            if (Array.isArray(data.juegos)) setJuegos(data.juegos);
+            if (Array.isArray(data.reviews)) setReviews(data.reviews);
         } catch (err) {
             console.error("Error cargando datos de inicio:", err);
             setError("No se pudieron cargar los datos. Comprueba que el servidor esté encendido.");

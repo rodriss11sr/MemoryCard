@@ -6,6 +6,7 @@ const API_BASE_URL = '/api';
 
 function Reviews() {
   const navigate = useNavigate();
+  const currentUser = JSON.parse(localStorage.getItem("user") || "null");
   const [resenas, setResenas] = useState([]);
   const [tab, setTab] = useState("populares");
   const [loading, setLoading] = useState(true);
@@ -258,15 +259,29 @@ function Reviews() {
                         borderRadius: "50%",
                         objectFit: "cover",
                         border: "2px solid #29CDF2",
+                        cursor: review.id_usuario ? 'pointer' : 'default',
+                      }}
+                      onClick={() => {
+                        if (!review.id_usuario) return;
+                        if (currentUser && currentUser.id === review.id_usuario) navigate('/profile');
+                        else navigate(`/user/${review.id_usuario}`);
                       }}
                     />
                     <div>
-                      <p style={{
-                        margin: 0,
-                        color: "#ffffff",
-                        fontFamily: "upheaval, system-ui",
-                        fontSize: "0.95rem",
-                      }}>
+                      <p
+                        style={{
+                          margin: 0,
+                          color: "#ffffff",
+                          fontFamily: "upheaval, system-ui",
+                          fontSize: "0.95rem",
+                          cursor: review.id_usuario ? 'pointer' : 'default',
+                        }}
+                        onClick={() => {
+                          if (!review.id_usuario) return;
+                          if (currentUser && currentUser.id === review.id_usuario) navigate('/profile');
+                          else navigate(`/user/${review.id_usuario}`);
+                        }}
+                      >
                         {review.usuario || "Usuario anónimo"}
                       </p>
                       <p style={{
