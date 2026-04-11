@@ -212,6 +212,7 @@ function Perfil() {
         }
         setUser({ ...user, avatar: newAvatarUrl });
         setShowAvatarModal(false);
+        window.location.reload();
       } else {
         setAvatarError(data.message || "Error al actualizar avatar");
       }
