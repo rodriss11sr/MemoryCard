@@ -1,3 +1,5 @@
+/* 
+
 const VITE_API_URL = import.meta.env.VITE_API_URL || '';
 
 export const API_BASE_URL = VITE_API_URL ? `${VITE_API_URL}/api` : '/api';
@@ -33,4 +35,7 @@ export function preferHighResImage(url) {
   }
 }
 
-export default API_BASE_URL;
+export default API_BASE_URL;*/
+
+// Para simplificar, asumimos que el backend siempre se sirve desde localhost:3000 en desarrollo
+export const API_BASE_URL = "http://localhost:3000/api";

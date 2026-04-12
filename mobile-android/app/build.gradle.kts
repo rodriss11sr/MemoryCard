@@ -14,7 +14,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "API_BASE_URL", "\"https://memorycard-k51e.onrender.com/\"")
+        //buildConfigField("String", "API_BASE_URL", "\"https://memorycard-k51e.onrender.com/\"")
+        buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2:3000/\"")
     }
 
     buildFeatures {
