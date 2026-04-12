@@ -4,8 +4,7 @@ import StarRating from "../components/StarRating";
 import GameLibraryCard from "../components/GameLibraryCard";
 import GameReviewCard from "../components/GameReviewCard";
 import AddToListModal from "../components/AddToListModal";
-
-const API_BASE_URL = "/api";
+import { API_BASE_URL } from "../config/api";
 
 function Game() {
   const { id } = useParams();
@@ -29,6 +28,7 @@ function Game() {
     setReviews([]);
     setRelacionados([]);
     setGameState(null);
+    setMessage(null);
 
     try {
       const [gameRes, reviewsRes] = await Promise.all([

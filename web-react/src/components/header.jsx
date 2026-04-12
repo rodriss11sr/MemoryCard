@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-
-const API_BASE_URL = "/api";
+import { API_BASE_URL, resolveAssetUrl } from "../config/api";
 
 function Header() {
   const navigate = useNavigate();
@@ -56,7 +55,7 @@ function Header() {
   // Obtener avatar del usuario logueado
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const avatarUrl =
-    user.avatar ||
+    resolveAssetUrl(user.avatar) ||
     `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.nombre || "User"}`;
 
   return (

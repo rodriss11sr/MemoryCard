@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import GameLibraryCard from "../components/GameLibraryCard.jsx";
 import ReviewCard from "../components/ReviewCard.jsx";
-
-const API_BASE_URL = '/api';
+import { API_BASE_URL } from "../config/api";
 
 function Home() {
     const [juegos, setJuegos] = useState([]);

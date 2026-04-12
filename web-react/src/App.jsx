@@ -1,5 +1,7 @@
 
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { useEffect } from 'react';
+import { API_BASE_URL } from './config/api';
 import AppLayout from "./components/AppLayout.jsx";
 import LogIn from "./pages/LogIn.jsx";
 import SignIn from "./pages/SignIn.jsx";
@@ -23,6 +25,13 @@ function RequireAuth({ children }) {
 }
 
 function App() {
+  useEffect(() => {
+    const url = `${API_BASE_URL}/health`;
+    const ping = () => fetch(url, { method: 'GET', cache: 'no-cache' }).catch(() => {});
+    ping();
+    const id = setInterval(ping, 15000);
+    return () => clearInterval(id);
+  }, []);
   return (
     <Router>
       <Routes>

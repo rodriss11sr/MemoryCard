@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import StarRating from "./starRating.jsx";
-
-const API_BASE_URL = "/api";
+import { API_BASE_URL, resolveAssetUrl } from "../config/api";
 
 const UserReviewCard = ({
   id,

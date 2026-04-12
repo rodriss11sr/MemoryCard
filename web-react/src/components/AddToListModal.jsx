@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-
-const API_BASE_URL = '/api';
+import { API_BASE_URL } from "../config/api";
 
 function AddToListModal({ onClose, idJuego, nombreJuego }) {
   const [listas, setListas] = useState([]);

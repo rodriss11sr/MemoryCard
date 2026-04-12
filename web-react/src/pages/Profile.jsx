@@ -5,8 +5,8 @@ import UserReviewCard from "../components/UserReviewCard.jsx";
 import GameLibraryCard from "../components/GameLibraryCard.jsx";
 import ProfileListCard from "../components/ProfileListCard.jsx";
 import ListCreator from "../components/ListCreator.jsx";
+import { API_BASE_URL } from "../config/api";
 
-const API_BASE_URL = '/api';
 
 function Perfil() {
   const navigate = useNavigate();

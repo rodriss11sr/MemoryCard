@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import StarRating from "./starRating.jsx";
-
-const API_BASE_URL = "/api";
+import { API_BASE_URL, resolveAssetUrl } from "../config/api";
 
 function ReviewCard({
   id,
@@ -227,18 +226,19 @@ function ReviewCard({
             gap: "12px",
           }}
         >
-          <img
-            src={avatar}
-            alt={usuario}
-            style={{
-              width: "36px",
-              height: "36px",
-              borderRadius: "50%",
-              border: "2px solid #3e4451",
-              cursor: "pointer",
-            }}
-            onClick={() => navigate(`/user/${id_usuario}`)}
-          />
+            <img
+              src={resolveAssetUrl(avatar) || `https://api.dicebear.com/7.x/avataaars/svg?seed=${usuario}`}
+              alt={usuario}
+              style={{
+                width: "36px",
+                height: "36px",
+                borderRadius: "50%",
+                border: "2px solid #3e4451",
+                cursor: "pointer",
+                objectFit: 'cover'
+              }}
+              onClick={() => navigate(`/user/${id_usuario}`)}
+            />
           <div
             style={{
               display: "flex",

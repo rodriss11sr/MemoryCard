@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import StarRating from "../components/StarRating";
-
-const API_BASE_URL = '/api';
+import { API_BASE_URL } from "../config/api";
 
 function Reviews() {
   const navigate = useNavigate();

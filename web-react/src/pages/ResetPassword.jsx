@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
-const API_BASE_URL = '/api';
+import { API_BASE_URL } from "../config/api";
 
 function ResetPassword() {
   const navigate = useNavigate();

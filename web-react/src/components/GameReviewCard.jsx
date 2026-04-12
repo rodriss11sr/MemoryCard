@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import StarRating from "./starRating";
-const API_BASE_URL = "/api";
+import { API_BASE_URL, resolveAssetUrl } from "../config/api";
 
 const GameReviewCard = ({
   id,
@@ -204,7 +204,7 @@ const GameReviewCard = ({
         onClick={() => navigate(`/user/${id_usuario}`)}
       >
         <img
-          src={foto}
+          src={resolveAssetUrl(foto) || `https://api.dicebear.com/7.x/avataaars/svg?seed=${usuario}`}
           alt={usuario}
           style={{
             width: "100%",
