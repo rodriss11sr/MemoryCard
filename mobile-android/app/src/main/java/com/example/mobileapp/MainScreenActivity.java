@@ -27,7 +27,10 @@ import retrofit2.Response;
 public class MainScreenActivity extends AppCompatActivity {
     private LinearLayout gamesContainer;
     private LinearLayout reviewsContainer;
-    private static final String BASE_URL = "http://10.0.2.2:3000/";
+
+    private String getBaseUrl() {
+        return (BuildConfig.API_BASE_URL != null && !BuildConfig.API_BASE_URL.isEmpty()) ? BuildConfig.API_BASE_URL : "http://10.0.2.2:3000/";
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +88,7 @@ public class MainScreenActivity extends AppCompatActivity {
 
             String imageUrl = game.getImagen();
             if (imageUrl != null && !imageUrl.startsWith("http")) {
-                imageUrl = BASE_URL + imageUrl;
+                imageUrl = getBaseUrl() + imageUrl;
             }
 
             Glide.with(this)

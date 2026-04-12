@@ -28,7 +28,10 @@ public class GamesListedActivity extends AppCompatActivity {
 
     private LinearLayout gamesListContainer;
     private List<GameResponse> fullGamesList = new ArrayList<>();
-    private static final String BASE_URL = "http://10.0.2.2:3000/";
+
+    private String getBaseUrl() {
+        return (BuildConfig.API_BASE_URL != null && !BuildConfig.API_BASE_URL.isEmpty()) ? BuildConfig.API_BASE_URL : "http://10.0.2.2:3000/";
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +110,7 @@ public class GamesListedActivity extends AppCompatActivity {
             }
 
             String imageUrl = game.getImagen();
-            if (imageUrl != null && !imageUrl.startsWith("http")) imageUrl = BASE_URL + imageUrl;
+            if (imageUrl != null && !imageUrl.startsWith("http")) imageUrl = getBaseUrl() + imageUrl;
             
             gameImg.setPadding(0, 0, 0, 0);
             gameImg.setScaleType(ImageView.ScaleType.CENTER_CROP);

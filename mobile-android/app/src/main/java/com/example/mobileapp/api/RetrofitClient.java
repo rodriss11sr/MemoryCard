@@ -2,15 +2,16 @@ package com.example.mobileapp.api;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import com.example.mobileapp.BuildConfig;
 
 public class RetrofitClient {
     private static Retrofit retrofit = null;
-    private static final String BASE_URL = "http://10.0.2.2:3000/";
 
     public static Retrofit getClient() {
         if (retrofit == null) {
+            String base = (BuildConfig.API_BASE_URL != null && !BuildConfig.API_BASE_URL.isEmpty()) ? BuildConfig.API_BASE_URL : "http://10.0.2.2:3000/";
             retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
+                    .baseUrl(base)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }

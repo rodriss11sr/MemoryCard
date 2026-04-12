@@ -30,7 +30,10 @@ import retrofit2.Response;
 public class GameInfoActivity extends AppCompatActivity {
 
     private static final String ID = "game_id";
-    private static final String BASE_URL = "http://10.0.2.2:3000/";
+
+    private String getBaseUrl() {
+        return (BuildConfig.API_BASE_URL != null && !BuildConfig.API_BASE_URL.isEmpty()) ? BuildConfig.API_BASE_URL : "http://10.0.2.2:3000/";
+    }
 
     private LinearLayout relatedGamesContainer;
     private LinearLayout reviewsContainer;
@@ -160,7 +163,7 @@ public class GameInfoActivity extends AppCompatActivity {
         }
 
         String url = game.getImagen();
-        if (url != null && !url.startsWith("http")) url = BASE_URL + url;
+        if (url != null && !url.startsWith("http")) url = getBaseUrl() + url;
         Glide.with(this).load(url).placeholder(R.drawable.ballxpit).into(coverIv);
     }
 
@@ -192,7 +195,7 @@ public class GameInfoActivity extends AppCompatActivity {
             iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
             String url = game.getImagen();
-            if (url != null && !url.startsWith("http")) url = BASE_URL + url;
+            if (url != null && !url.startsWith("http")) url = getBaseUrl() + url;
             Glide.with(this).load(url).centerCrop().placeholder(R.drawable.ballxpit).into(iv);
 
             iv.setOnClickListener(v -> GameInfoActivity.open(this, game));

@@ -12,7 +12,10 @@ import java.nio.charset.StandardCharsets;
 
 public class ImageUtils {
 
-    private static final String BASE_URL = "http://10.0.2.2:3000/";
+    
+    private static String getBaseUrl() {
+        return (BuildConfig.API_BASE_URL != null && !BuildConfig.API_BASE_URL.isEmpty()) ? BuildConfig.API_BASE_URL : "http://10.0.2.2:3000/";
+    }
     private static final String USER_AGENT = "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36";
 
     /** Igual que la web: avatar de BD o DiceBear por nombre si falla o no hay URL. */
@@ -48,7 +51,7 @@ public class ImageUtils {
         url = url.trim();
         if (url.startsWith("//")) return "https:" + url;
         if (url.startsWith("http")) return url;
-        return BASE_URL + url;
+        return getBaseUrl() + url;
     }
 
     public static void loadImage(Context context, String url, ImageView target) {
