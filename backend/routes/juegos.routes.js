@@ -203,47 +203,44 @@ router.get('/:id/relacionados', async (req, res) => {
     const nombresPlataformas = plataformas.map(p => p.nombre_plataforma);
     const tituloActual = juegoActual[0]?.titulo || '';
 
-    // Construir query que calcule una puntuación de relevancia por pesos
-    // Usamos subconsultas EXISTS/COUNT para evitar que una condición más genérica
-    // anule una más específica (evita el problema del CASE con primer match).
-    let params = [];
-    const generoPlaceholders = nombresGeneros.map(() => '?').join(',') || "''";
+    // Construir una query más simple y determinista usando JOINs con condiciones IN
+    // y contando coincidencias por género, desarrolladora y plataforma.
+    // La puntuación se calcula como suma ponderada de esos contadores.
+    const generoPlaceholders = nombresGeneros.map(() => '?').join(',');
     const devPlaceholders = nombresDesarrolladoras.map(() => '?').join(',') || "''";
     const platPlaceholders = nombresPlataformas.map(() => '?').join(',') || "''";
 
-    let query = `
+    const query = `
       SELECT j.id_juego, j.titulo, j.portada,
              GROUP_CONCAT(DISTINCT p.nombre SEPARATOR ', ') AS plataformas,
-             (
-               (CASE WHEN EXISTS (SELECT 1 FROM pertenece pe WHERE pe.id_juego = j.id_juego AND pe.nombre_genero IN (${generoPlaceholders})) THEN 1 ELSE 0 END) * 100
-               + (CASE WHEN EXISTS (SELECT 1 FROM desarrolla d WHERE d.id_juego = j.id_juego AND d.nombre_desarrolladora IN (${devPlaceholders})) THEN 1 ELSE 0 END) * 50
-               + (CASE WHEN EXISTS (SELECT 1 FROM lanza l2 WHERE l2.id_juego = j.id_juego AND l2.nombre_plataforma IN (${platPlaceholders})) THEN 1 ELSE 0 END) * 30
-               + (CASE WHEN j.titulo LIKE ? THEN 1 ELSE 0 END) * 10
-             ) AS relevancia,
-             (SELECT COUNT(*) FROM pertenece pe2 WHERE pe2.id_juego = j.id_juego AND pe2.nombre_genero IN (${generoPlaceholders})) AS coincidencias
+             COUNT(DISTINCT pe.nombre_genero) AS coincidencias,
+             COUNT(DISTINCT de.nombre_desarrolladora) AS dev_matches,
+             COUNT(DISTINCT l2.nombre_plataforma) AS plat_matches,
+             (COUNT(DISTINCT pe.nombre_genero) * 100
+               + COUNT(DISTINCT de.nombre_desarrolladora) * 50
+               + COUNT(DISTINCT l2.nombre_plataforma) * 30
+               + (j.titulo LIKE ?) * 10
+             ) AS relevancia
       FROM juego j
+      LEFT JOIN pertenece pe ON j.id_juego = pe.id_juego AND pe.nombre_genero IN (${generoPlaceholders})
+      LEFT JOIN desarrolla de ON j.id_juego = de.id_juego AND de.nombre_desarrolladora IN (${devPlaceholders})
+      LEFT JOIN lanza l2 ON j.id_juego = l2.id_juego AND l2.nombre_plataforma IN (${platPlaceholders})
       LEFT JOIN lanza l ON j.id_juego = l.id_juego
       LEFT JOIN plataforma p ON l.nombre_plataforma = p.nombre
       WHERE j.id_juego != ?
-        AND EXISTS (
-          SELECT 1 FROM pertenece pe
-          WHERE pe.id_juego = j.id_juego
-            AND pe.nombre_genero IN (${generoPlaceholders})
-        )
+        AND pe.nombre_genero IS NOT NULL
       GROUP BY j.id_juego
       ORDER BY relevancia DESC, coincidencias DESC, j.titulo ASC
       LIMIT 12
     `;
 
-    // Rellenar params: para cada placeholder group, añadimos los arrays correspondientes
-    // El orden debe coincidir con el uso en la query
+    const params = [];
     params.push(...nombresGeneros);
-    params.push(...nombresDesarrolladoras);
-    params.push(...nombresPlataformas);
+    // desarrolladoras placeholders may be empty string; if empty, push nothing
+    if (nombresDesarrolladoras.length > 0) params.push(...nombresDesarrolladoras);
+    if (nombresPlataformas.length > 0) params.push(...nombresPlataformas);
     params.push(`%${tituloActual}%`);
     params.push(id);
-    // coincidencias subquery placeholders
-    params.push(...nombresGeneros);
 
     let [relacionados] = await pool.query(query, params);
 

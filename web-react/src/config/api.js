@@ -12,4 +12,25 @@ export function resolveAssetUrl(path) {
   return path;
 }
 
+// Intentar devolver una versión de mayor resolución de una imagen
+export function preferHighResImage(url) {
+  if (!url || typeof url !== 'string') return url;
+  try {
+    let u = url;
+    // Quitar parámetros de tamaño comunes en querystring
+    u = u.replace(/([?&](size|w|h)=)(small|thumb|\d{1,4})/gi, '$1original');
+    // Reemplazar segmentos comunes de thumbs/small
+    u = u.replace(/\/thumbs\//i, '/');
+    u = u.replace(/\/thumbnails\//i, '/');
+    u = u.replace(/\/small\//i, '/');
+    // Eliminar sufijos -thumb, _thumb, -small, _small
+    u = u.replace(/[-_](thumb|small)\b/gi, '');
+    // Eliminar patrones -200x300 antes de la extensión
+    u = u.replace(/[-_]\d{2,4}x\d{2,4}(?=\.)/g, '');
+    return u;
+  } catch (e) {
+    return url;
+  }
+}
+
 export default API_BASE_URL;

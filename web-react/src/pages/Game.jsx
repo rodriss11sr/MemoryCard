@@ -4,7 +4,7 @@ import StarRating from "../components/StarRating";
 import GameLibraryCard from "../components/GameLibraryCard";
 import GameReviewCard from "../components/GameReviewCard";
 import AddToListModal from "../components/AddToListModal";
-import { API_BASE_URL } from "../config/api";
+import { API_BASE_URL, resolveAssetUrl, preferHighResImage } from "../config/api";
 
 function Game() {
   const { id } = useParams();
@@ -377,8 +377,9 @@ function Game() {
                 borderRadius: "12px",
                 width: "300px",
                 height: "450px",
+                imageRendering: 'auto'
               }}
-              src={game.imagen}
+              src={preferHighResImage(resolveAssetUrl(game.imagen))}
               alt={game.titulo}
             />
           </div>

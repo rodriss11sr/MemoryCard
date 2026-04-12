@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import StarRating from "./starRating";
+import { resolveAssetUrl } from "../config/api";
 
 const GameLibraryCard = ({ titulo, portada, puntuacion }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -31,7 +32,7 @@ const GameLibraryCard = ({ titulo, portada, puntuacion }) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <img src={portada} alt={titulo} style={imageStyle} />
+      <img src={resolveAssetUrl(portada) || portada} alt={titulo} style={imageStyle} />
       {puntuacion !== undefined && puntuacion !== null && (
         <div style={{ display: "flex", justifyContent: "center" }}>
           <StarRating nota={puntuacion} size="0.9rem" />
