@@ -220,8 +220,8 @@
 
                     <ImageButton
                         android:id="@+id/game_ds3"
-                        android:layout_width="111dp"
-                        android:layout_height="162dp"
+                        android:layout_width="100dp"
+                        android:layout_height="145dp"
                         android:layout_marginTop="20dp"
                         android:background="@drawable/game_miniature_shape"
                         android:clipToOutline="true"
@@ -230,9 +230,9 @@
 
                     <ImageButton
                         android:id="@+id/game_tboi"
-                        android:layout_width="111dp"
-                        android:layout_height="162dp"
-                        android:layout_marginStart="16dp"
+                        android:layout_width="100dp"
+                        android:layout_height="145dp"
+                        android:layout_marginStart="12dp"
                         android:layout_marginTop="20dp"
                         android:background="@drawable/game_miniature_shape"
                         android:clipToOutline="true"
@@ -241,9 +241,9 @@
 
                     <ImageButton
                         android:id="@+id/game_mhworld"
-                        android:layout_width="111dp"
-                        android:layout_height="162dp"
-                        android:layout_marginStart="16dp"
+                        android:layout_width="100dp"
+                        android:layout_height="145dp"
+                        android:layout_marginStart="12dp"
                         android:layout_marginTop="20dp"
                         android:background="@drawable/game_miniature_shape"
                         android:clipToOutline="true"
@@ -252,9 +252,9 @@
 
                     <ImageButton
                         android:id="@+id/game1_ror2"
-                        android:layout_width="111dp"
-                        android:layout_height="162dp"
-                        android:layout_marginStart="16dp"
+                        android:layout_width="100dp"
+                        android:layout_height="145dp"
+                        android:layout_marginStart="12dp"
                         android:layout_marginTop="20dp"
                         android:background="@drawable/game_miniature_shape"
                         android:clipToOutline="true"
@@ -305,8 +305,8 @@
 
                         <ImageButton
                             android:id="@+id/game_deadspace"
-                            android:layout_width="111dp"
-                            android:layout_height="162dp"
+                            android:layout_width="100dp"
+                            android:layout_height="145dp"
                             android:layout_marginTop="20dp"
                             android:background="@drawable/game_miniature_shape"
                             android:clipToOutline="true"
@@ -334,9 +334,9 @@
 
                         <ImageButton
                         android:id="@+id/game_dredge"
-                        android:layout_width="111dp"
-                        android:layout_height="162dp"
-                        android:layout_marginStart="16dp"
+                        android:layout_width="100dp"
+                        android:layout_height="145dp"
+                        android:layout_marginStart="12dp"
                         android:layout_marginTop="20dp"
                         android:background="@drawable/game_miniature_shape"
                         android:clipToOutline="true"
@@ -363,9 +363,9 @@
                         android:orientation="vertical">
                         <ImageButton
                             android:id="@+id/game_mhwilds"
-                            android:layout_width="111dp"
-                            android:layout_height="162dp"
-                            android:layout_marginStart="16dp"
+                            android:layout_width="100dp"
+                            android:layout_height="145dp"
+                            android:layout_marginStart="12dp"
                             android:layout_marginTop="20dp"
                             android:background="@drawable/game_miniature_shape"
                             android:clipToOutline="true"
@@ -392,9 +392,9 @@
 
                         <ImageButton
                             android:id="@+id/game1_gow"
-                            android:layout_width="111dp"
-                            android:layout_height="162dp"
-                            android:layout_marginStart="16dp"
+                            android:layout_width="100dp"
+                            android:layout_height="145dp"
+                            android:layout_marginStart="12dp"
                             android:layout_marginTop="20dp"
                             android:background="@drawable/game_miniature_shape"
                             android:clipToOutline="true"

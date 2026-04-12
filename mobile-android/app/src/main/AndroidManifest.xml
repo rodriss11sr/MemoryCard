@@ -15,7 +15,9 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".HomeActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -24,49 +26,79 @@
         <activity
             android:name=".LogInActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             />
         <activity
             android:name=".RegisterActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             />
         <activity android:name=".ForgotPasswordActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             />
         <activity android:name=".MainScreenActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             />
         <activity android:name=".ProfileActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             />
         <activity android:name=".GamesProfileActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             />
         <activity android:name=".WishlistProfileActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             />
         <activity android:name=".ReviewProfileActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             />
         <activity android:name=".ListsProfileActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             />
         <activity android:name=".InsideListGamesActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             />
         <activity android:name=".FriendsProfileActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             />
         <activity android:name=".UserProfileActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             />
         <activity android:name=".GamesListedActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             />
         <activity android:name=".GameInfoActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             />
         <activity android:name=".ReviewsListActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             />
 
 
