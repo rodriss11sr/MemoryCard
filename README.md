@@ -19,7 +19,32 @@ Estructura del repositorio
 - `web-react/`: Aplicación frontend en React (Vite).
 - `mobile-android/`: Proyecto Android (Gradle) para la app móvil.
 - `docs/`: Scripts SQL para crear/esquematizar la base de datos, migraciones y diagramas.
-- `bin/`, `postman/`, `build/`: archivos auxiliares y artefactos; la carpeta `postman/` existe por organización pero Postman no se utilizó en el desarrollo (ver nota abajo).
+- `bin/`, `build/`: archivos auxiliares y artefactos; la carpeta `postman/` existe por organización pero Postman no se utilizó en el desarrollo (ver nota abajo).
+
+Tecnologías y herramientas
+--------------------------
+
+El proyecto usa las siguientes tecnologías y programas principales:
+
+- **Backend:** Node.js y Express para la API REST, autenticación con JWT y utilidades habituales de npm.
+- **Base de datos:** MySQL (scripts SQL en `docs/`).
+- **Frontend (web):** React con Vite para la aplicación de usuario.
+- **Móvil:** Android (Gradle) para la app nativa.
+- **Contenedores / despliegue local:** Docker y docker-compose (hay archivos en `backend/`).
+- **Desarrollo:** Node/npm, Android Studio (o Gradle wrapper), y herramientas SQL para importar los scripts de `docs/`.
+
+Despliegue / Hosting
+--------------------
+
+La infraestructura de producción utilizada en este proyecto es la siguiente:
+
+- **Base de datos:** alojada en Railway (servicio de hosting para bases de datos). La cadena de conexión y credenciales se gestionan mediante variables de entorno en Railway.
+- **Backend:** desplegado en Render (servicio PaaS). El servidor backend consume las variables de entorno (por ejemplo `DATABASE_URL`, `JWT_SECRET`, `PORT`) proporcionadas por Render.
+
+Notas de despliegue:
+
+- Asegúrate de configurar correctamente las variables de entorno en Render y Railway antes de enlazar el backend con la base de datos.
+- Por seguridad, no incluyas credenciales en el repositorio; usa las opciones de secretos/variables de entorno de los servicios de hosting.
 
 Rutas principales (backend)
 ---------------------------
@@ -70,7 +95,6 @@ Ejecución local (resumen)
 
 Notas importantes
 -----------------
-- La carpeta `postman/` permanece en el repositorio por organización, pero Postman no se utilizó activamente en el desarrollo del proyecto; por tanto, no hay colecciones oficiales requeridas.
 - Revisa `backend/config/database.js` y los archivos de entorno para configurar la conexión a la base de datos antes de ejecutar el servidor.
 - Los scripts de `docs/migrations/` y `docs/*.sql` incluyen datos y migraciones útiles para replicar el entorno de pruebas.
 
@@ -85,32 +109,3 @@ Este repositorio contiene el trabajo del TFG; contacta al autor para condiciones
 Contacto
 --------
 Para dudas o comentarios, revisa el código y abre un issue en el repositorio.
-
-Docker y Google Cloud Run
--------------------------
-Para desplegar el `backend` en Google Cloud Run puedes construir una imagen y publicarla en Container Registry (o Artifact Registry) y luego desplegarla.
-
-1) Construir y subir la imagen con Cloud Build (reemplaza `PROJECT_ID`):
-
-	gcloud builds submit backend/ --tag gcr.io/PROJECT_ID/memory-card-backend
-
-2) Desplegar en Cloud Run (reemplaza `PROJECT_ID` y `REGION`):
-
-	gcloud run deploy memory-card-backend \
-	  --image gcr.io/PROJECT_ID/memory-card-backend \
-	  --platform managed \
-	  --region REGION \
-	  --allow-unauthenticated \
-	  --set-env-vars PORT=8080
-
-Alternativa (con Docker local):
-
-	cd backend
-	docker build -t gcr.io/PROJECT_ID/memory-card-backend .
-	docker push gcr.io/PROJECT_ID/memory-card-backend
-	gcloud run deploy memory-card-backend --image gcr.io/PROJECT_ID/memory-card-backend --platform managed --region REGION --allow-unauthenticated
-
-Notas:
-- Cloud Run proporciona la variable de entorno `PORT`; el servidor debe enlazar a `process.env.PORT` (si es necesario, revisar `server.js`).
-- Nunca incluyas archivos sensibles en la imagen: usa secretos/variables de entorno en Cloud Run para la configuración de base de datos, `JWT_SECRET`, etc.
-- Puedes configurar variables de entorno desde la consola de Cloud Run o con `--set-env-vars` en el comando `gcloud run deploy`.
