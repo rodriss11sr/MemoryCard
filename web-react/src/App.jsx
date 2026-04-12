@@ -3,11 +3,11 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import { useEffect } from 'react';
 import { API_BASE_URL } from './config/api';
 import AppLayout from "./components/AppLayout.jsx";
-import LogIn from "./pages/LogIn.jsx";
-import SignIn from "./pages/SignIn.jsx";
+import LogIn from "./pages/login.jsx";
+import SignIn from "./pages/signin.jsx";
 import Password from "./pages/Password.jsx";
 import ResetPassword from "./pages/ResetPassword.jsx";
-import Home from "./pages/Home.jsx";
+import Home from "./pages/home.jsx";
 import Profile from "./pages/Profile.jsx";
 import Game from "./pages/Game.jsx";
 import Games from "./pages/Games.jsx";

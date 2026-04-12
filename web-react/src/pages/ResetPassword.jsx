@@ -32,6 +32,12 @@ function ResetPassword() {
         body: JSON.stringify({ token, password }),
       });
 
+      // Comprobar que la respuesta es JSON (Evita caídas si el proxy devuelve HTML de error)
+      const contentType = response.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        throw new Error("Respuesta no válida del servidor. ¿Está el backend encendido?");
+      }
+
       const data = await response.json();
 
       if (!response.ok || !data.ok) {
@@ -42,7 +48,10 @@ function ResetPassword() {
       setSuccess("Contraseña actualizada correctamente. Redirigiendo al login...");
       setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
-      setError("No se pudo conectar con el servidor. Comprueba que esté encendido e inténtalo de nuevo.");
+      console.error("Error de conexión:", err);
+      setError(err.message === "Failed to fetch" 
+        ? "No se pudo conectar con el servidor. Comprueba que esté encendido." 
+        : err.message);
     } finally {
       setLoading(false);
     }

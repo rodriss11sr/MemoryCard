@@ -36,10 +36,8 @@ function Home() {
     const juegosNuevos = [...juegos]
         .filter((j) => j.fecha)
         .sort((a, b) => {
-            const [da, ma, aa] = a.fecha.split("/").map(Number);
-            const [db, mb, ab] = b.fecha.split("/").map(Number);
-            const dateA = new Date(aa, ma - 1, da);
-            const dateB = new Date(ab, mb - 1, db);
+            const dateA = new Date(a.fecha);
+            const dateB = new Date(b.fecha);
             return dateB - dateA;
         })
         .slice(0, 10);
