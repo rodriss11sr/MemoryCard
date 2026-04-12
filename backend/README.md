@@ -1,32 +1,35 @@
-# 🎮 GameBoxd Backend API
+# 🎮 Memory Card Backend API
 
-Backend REST API para la aplicación GameBoxd (tipo Letterboxd para videojuegos).
+Backend REST API para la aplicación Memory Card(tipo Letterboxd para videojuegos).
 
 ## 🚀 Instalación
 
-1. **Instalar dependencias:**
-```bash
-cd backend
-npm install
+Sigue estos pasos en orden para configurar tu entorno local:
+
+1. **Instalar y arrancar XAMPP**
+- Instala **XAMPP** (asegúrate de incluir MySQL).
+- Abre el Panel de Control de XAMPP como administrador e inicia los módulos **Apache** y **MySQL**.
+
+2. **Crear la base de datos**
+Abre phpMyAdmin (`http://localhost/phpmyadmin`) o tu cliente de MySQL preferido y ejecuta:
+
+```sql
+CREATE DATABASE memory_card CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
-2. **Configurar variables de entorno:**
-   - Copia `.env.example` a `.env`
-   - Ajusta los valores según tu configuración de MySQL:
-     ```
-     DB_HOST=localhost
-     DB_USER=root
-     DB_PASSWORD=tu_contraseña
-     DB_NAME=gameboxd
-     DB_PORT=3306
-     ```
+2. **Importar la estructura**
+- Selecciona la base de datos `memory_card`
+- Ve a la pestaña "SQL"
+- Copia y pega el contenido de `schema.sql`
 
-3. **Iniciar el servidor:**
-```bash
-npm start
-# o para desarrollo con auto-reload:
-npm run dev
-```
+3. **Importar los datos**
+- En el terminal ve al directorio del backend
+- Ejecuta el script con el comando `node importar_igdb.js`
+
+4. **Ejecucion del backend**
+- En el terminal ve al directorio del backend
+- Instala las dependencias con el comando `npm install`
+- Ejecuta el backend con el comando `npm run start`
 
 El servidor estará disponible en `http://localhost:3000`
 
@@ -36,73 +39,39 @@ El servidor estará disponible en `http://localhost:3000`
 - `GET /api/juegos` - Obtener todos los juegos
 - `GET /api/juegos/:id` - Obtener un juego por ID
 - `POST /api/juegos` - Crear un nuevo juego
+- `PUT /api/juegos/:id` - Actualizar información de un juego
+- `DELETE /api/juegos/:id` - Eliminar un juego
 - `GET /api/juegos/:id/reseñas` - Obtener reseñas de un juego
 
 ### Usuarios
 - `GET /api/usuarios` - Obtener todos los usuarios
 - `GET /api/usuarios/:id` - Obtener un usuario por ID
-- `POST /api/usuarios` - Crear un nuevo usuario
+- `POST /api/usuarios` - Crear un nuevo usuario (Registro)
+- `PUT /api/usuarios/:id` - Actualizar perfil de usuario
+- `DELETE /api/usuarios/:id` - Eliminar cuenta de usuario
 - `GET /api/usuarios/:id/juegos` - Obtener juegos guardados por un usuario
+
+### Autenticación
+- `POST /api/auth/login` - Iniciar sesión
+- `POST /api/auth/logout` - Cerrar sesión
 
 ### Listas
 - `GET /api/listas` - Obtener todas las listas públicas
 - `GET /api/listas/:id` - Obtener una lista por ID (con sus juegos)
 - `POST /api/listas` - Crear una nueva lista
+- `PUT /api/listas/:id` - Editar el nombre o detalles de la lista
+- `DELETE /api/listas/:id` - Eliminar una lista
 - `POST /api/listas/:id/juegos` - Agregar un juego a una lista
+- `DELETE /api/listas/:id/juegos/:juegoId` - Eliminar un juego específico de una lista
 
 ### Reseñas
 - `GET /api/reseñas` - Obtener todas las reseñas
 - `GET /api/reseñas/:id` - Obtener una reseña por ID
 - `POST /api/reseñas` - Crear una nueva reseña
+- `PUT /api/reseñas/:id` - Editar el texto/nota de una reseña
+- `DELETE /api/reseñas/:id` - Eliminar una reseña
 - `PUT /api/reseñas/:id/like` - Dar like a una reseña
 
 ### Utilidades
 - `GET /` - Información de la API
 - `GET /api/health` - Estado de la API y conexión a BD
-
-## 🧪 Probar la API
-
-Puedes probar los endpoints con:
-- **Postman**
-- **Thunder Client** (extensión de VS Code)
-- **curl** desde la terminal
-- **Tu aplicación React**
-
-### Ejemplo con curl:
-```bash
-# Obtener todos los juegos
-curl http://localhost:3000/api/juegos
-
-# Obtener un juego específico
-curl http://localhost:3000/api/juegos/1
-
-# Crear un nuevo juego
-curl -X POST http://localhost:3000/api/juegos \
-  -H "Content-Type: application/json" \
-  -d '{
-    "titulo": "The Legend of Zelda: Breath of the Wild",
-    "fecha_lanzamiento": "2017-03-03",
-    "descripcion": "Un juego de aventura épico",
-    "plataformas": ["Nintendo Switch", "Wii U"],
-    "generos": ["Aventura", "RPG"],
-    "desarrolladoras": ["Nintendo"]
-  }'
-```
-
-## 🔒 Seguridad
-
-⚠️ **IMPORTANTE**: Este es un backend básico para desarrollo. Para producción necesitas:
-- Hashear contraseñas con bcrypt
-- Implementar autenticación JWT
-- Validar y sanitizar inputs
-- Agregar rate limiting
-- Usar HTTPS
-- Validar permisos de usuario
-
-## 📝 Próximos Pasos
-
-1. ✅ Backend básico creado
-2. ⬜ Implementar autenticación JWT
-3. ⬜ Hashear contraseñas
-4. ⬜ Validación de datos
-5. ⬜ Conectar con el frontend React
