@@ -36,9 +36,8 @@ El proyecto usa las siguientes tecnologías y programas principales:
 
 - **Backend:** Node.js y Express para la API REST, autenticación con JWT y utilidades habituales de npm.
 - **Base de datos:** MySQL (scripts SQL en `docs/`).
-- **Frontend (web):** React con Vite para la aplicación de usuario.
-- **Móvil:** Android (Gradle) para la app nativa.
-- **Contenedores / despliegue local:** Docker y docker-compose (hay archivos en `backend/`).
+- **Frontend (web):** React.js con Vite para la aplicación de usuario.
+- **Móvil:** Android (Java y Gradle) para la app nativa.
 - **Desarrollo:** Node/npm, Android Studio (o Gradle wrapper), y XAMPP (Apache/MySQL) para el entorno de base de datos local.
 
 Despliegue / Hosting
@@ -49,20 +48,15 @@ La infraestructura de producción utilizada en este proyecto es la siguiente:
 - **Base de datos:** alojada en Railway (servicio de hosting para bases de datos). La cadena de conexión y credenciales se gestionan mediante variables de entorno en Railway.
 - **Backend:** desplegado en Render (servicio PaaS). El servidor backend consume las variables de entorno (por ejemplo `DATABASE_URL`, `JWT_SECRET`, `PORT`) proporcionadas por Render.
 
-Notas de despliegue:
-
-- Asegúrate de configurar correctamente las variables de entorno en Render y Railway antes de enlazar el backend con la base de datos.
-- Por seguridad, no incluyas credenciales en el repositorio; usa las opciones de secretos/variables de entorno de los servicios de hosting.
-
 Rutas principales (backend)
 ---------------------------
-El backend organiza las rutas en `backend/routes/`:
-- `auth.routes.js` — autenticación y gestión de sesiones
-- `usuarios.routes.js` — gestión de usuarios
-- `juegos.routes.js` — endpoints relacionados con juegos
-- `listas.routes.js` — creación y gestión de listas de usuario
-- `reseñas.routes.js` — crear/editar/consultar reseñas
-- `perfil.routes.js` — operaciones sobre perfil de usuario
+El backend organiza sus rutas principales bajo el prefijo `/api/` (puedes consultar la lista completa de endpoints en `backend/README.md`):
+- **Autenticación** (`/api/auth`) — inicio y cierre de sesión.
+- **Usuarios** (`/api/usuarios`) — registro, gestión de cuentas, actualización de perfil y consulta de juegos guardados.
+- **Juegos** (`/api/juegos`) — catálogo de juegos, operaciones CRUD y consulta de reseñas por juego.
+- **Listas** (`/api/listas`) — creación, edición, borrado de listas y gestión de juegos específicos en ellas.
+- **Reseñas** (`/api/reseñas`) — publicación, edición, borrado y sistema de likes en las reseñas.
+- **Utilidades** (`/api/health`) — comprobación de estado de la API y conexión a la base de datos.
 
 Base de datos
 -------------
@@ -95,16 +89,5 @@ Ejecución local (resumen)
 Notas importantes
 -----------------
 - Revisa `backend/config/database.js` y los archivos de entorno para configurar la conexión a la base de datos antes de ejecutar el servidor.
-- Los scripts de `docs/migrations/` y `docs/*.sql` incluyen datos y migraciones útiles para replicar el entorno de pruebas.
 
-Contribuir
-----------
-Si deseas colaborar, abre un issue o un PR con cambios claros: pasos para reproducir, objetivo y pruebas mínimas.
-
-Licencia
---------
-Este repositorio contiene el trabajo del TFG; contacta al autor para condiciones de uso o distribución.
-
-Contacto
---------
-Para dudas o comentarios, revisa el código y abre un issue en el repositorio.
+- Para pruebas locales, tanto de la web com ode la app Android ten siempre abierto el terminal con el backend corriendo
