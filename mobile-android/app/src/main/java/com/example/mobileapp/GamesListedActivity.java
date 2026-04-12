@@ -118,7 +118,7 @@ public class GamesListedActivity extends AppCompatActivity {
             Glide.with(this)
                     .load(imageUrl)
                     .centerCrop()
-                    .placeholder(R.drawable.ballxpit)
+                    .placeholder(R.drawable.game)
                     .into(gameImg);
 
             View.OnClickListener openDetail = v -> GameInfoActivity.open(this, game);

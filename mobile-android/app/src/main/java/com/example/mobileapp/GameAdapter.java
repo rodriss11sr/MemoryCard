@@ -48,7 +48,7 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.ViewHolder> im
         } else if (game.getImageResId() > 0) {
             holder.cover.setImageResource(game.getImageResId());
         } else {
-            holder.cover.setImageResource(R.drawable.ballxpit);
+            holder.cover.setImageResource(R.drawable.game);
         }
 
         holder.itemView.setOnClickListener(view -> {

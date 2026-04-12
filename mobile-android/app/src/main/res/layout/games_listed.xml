@@ -43,9 +43,11 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="635dp"
+        android:layout_height="0dp"
         android:layout_marginStart="1dp"
         android:layout_marginTop="10dp"
+        android:clipToPadding="false"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/accordion_games_profile">
 
@@ -53,7 +55,8 @@
             android:id="@+id/gamesListContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="100dp">
             <!-- Los juegos se añadirán aquí dinámicamente -->
         </LinearLayout>
 

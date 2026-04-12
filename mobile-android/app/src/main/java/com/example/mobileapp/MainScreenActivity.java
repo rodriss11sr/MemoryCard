@@ -94,7 +94,7 @@ public class MainScreenActivity extends AppCompatActivity {
             Glide.with(this)
                     .load(imageUrl)
                     .centerCrop()
-                    .placeholder(R.drawable.ballxpit)
+                    .placeholder(R.drawable.game)
                     .into(btn);
 
             btn.setOnClickListener(v -> {

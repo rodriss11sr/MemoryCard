@@ -18,7 +18,7 @@
         android:background="@drawable/game_miniature_shape"
         android:clipToOutline="true"
         android:scaleType="centerCrop"
-        android:src="@drawable/ballxpit" />
+        android:src="@drawable/game" />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/user_pfp_review"
@@ -27,7 +27,7 @@
         android:layout_marginHorizontal="10dp"
         android:layout_marginTop="10dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/image"
+        android:src="@drawable/pfp"
         app:shapeAppearanceOverlay="@style/ShapeAppearance.App.CircleImageView" />
 
     <LinearLayout

@@ -76,6 +76,21 @@ public class GameInfoActivity extends AppCompatActivity {
         developerTv = findViewById(R.id.gameDeveloper);
         genreTv = findViewById(R.id.gameGenre);
 
+        descriptionTv.setOnClickListener(new View.OnClickListener() {
+            private boolean isExpanded = false;
+            @Override
+            public void onClick(View v) {
+                if (isExpanded) {
+                    descriptionTv.setMaxLines(5);
+                    descriptionTv.setEllipsize(android.text.TextUtils.TruncateAt.END);
+                } else {
+                    descriptionTv.setMaxLines(Integer.MAX_VALUE);
+                    descriptionTv.setEllipsize(null);
+                }
+                isExpanded = !isExpanded;
+            }
+        });
+
         btnLibrary = findViewById(R.id.btnAddToLibrary);
         btnFavorite = findViewById(R.id.btnAddToFavorites);
         btnWishlist = findViewById(R.id.btnAddToWishlist);
@@ -164,7 +179,7 @@ public class GameInfoActivity extends AppCompatActivity {
 
         String url = game.getImagen();
         if (url != null && !url.startsWith("http")) url = getBaseUrl() + url;
-        Glide.with(this).load(url).placeholder(R.drawable.ballxpit).into(coverIv);
+        Glide.with(this).load(url).placeholder(R.drawable.game).into(coverIv);
     }
 
     private void loadRelatedGames(int id) {
@@ -196,7 +211,7 @@ public class GameInfoActivity extends AppCompatActivity {
 
             String url = game.getImagen();
             if (url != null && !url.startsWith("http")) url = getBaseUrl() + url;
-            Glide.with(this).load(url).centerCrop().placeholder(R.drawable.ballxpit).into(iv);
+            Glide.with(this).load(url).centerCrop().placeholder(R.drawable.game).into(iv);
 
             iv.setOnClickListener(v -> GameInfoActivity.open(this, game));
             relatedGamesContainer.addView(iv);

@@ -35,7 +35,7 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="10dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/image"
+                    android:src="@drawable/pfp"
                     app:shapeAppearanceOverlay="@style/ShapeAppearance.App.CircleImageView" />
 
                 <LinearLayout
@@ -47,15 +47,15 @@
 
                     <Button
                         android:id="@+id/friendsProfileBtn"
-                        android:layout_width="150dp"
-                        android:layout_height="48dp"
+                        android:layout_width="120dp"
+                        android:layout_height="40dp"
                         android:layout_gravity="end"
                         android:layout_marginVertical="15dp"
                         android:layout_marginEnd="15dp"
                         android:background="@drawable/button_shape"
                         android:fontFamily="@font/upheavtt"
                         android:text="AMIGOS"
-                        android:textSize="25sp"
+                        android:textSize="18sp"
                         app:backgroundTint="#33415C" />
 
                     <TextView
@@ -111,61 +111,64 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="horizontal"
+                    android:weightSum="2">
 
                     <Button
                         android:id="@+id/gamesProfileBtn"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:backgroundTint="#00FFFFFF"
                         android:fontFamily="@font/upheavtt"
                         android:text="JUEGOS"
                         android:textColor="#FFFFFF"
-                        android:textSize="30sp" />
-
-                    <Button
-                        android:id="@+id/wishlistProfileBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="#00FFFFFF"
-                        android:fontFamily="@font/upheavtt"
-                        android:text="wishlist"
-                        android:textColor="#FFFFFF"
-                        android:textSize="30sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:orientation="vertical">
+                        android:textSize="22sp" />
 
                     <Button
                         android:id="@+id/reviewsProfileBtn"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:backgroundTint="#00FFFFFF"
                         android:fontFamily="@font/upheavtt"
                         android:text="REVIEWS"
                         android:textColor="#FFFFFF"
-                        android:textSize="30sp" />
+                        android:textSize="22sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <Button
+                        android:id="@+id/wishlistProfileBtn"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="#00FFFFFF"
+                        android:fontFamily="@font/upheavtt"
+                        android:text="wishlist"
+                        android:textColor="#FFFFFF"
+                        android:textSize="22sp" />
 
                     <Button
                         android:id="@+id/listProfileBtn"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:backgroundTint="#00FFFFFF"
                         android:fontFamily="@font/upheavtt"
                         android:text="LISTAS"
                         android:textColor="#FFFFFF"
-                        android:textSize="30sp" />
+                        android:textSize="22sp" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -219,7 +222,7 @@
                         android:background="@drawable/game_miniature_shape"
                         android:clipToOutline="true"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/ds3" />
+                        android:src="@drawable/game" />
 
                     <ImageButton
                         android:id="@+id/game_tboi"
@@ -230,7 +233,7 @@
                         android:background="@drawable/game_miniature_shape"
                         android:clipToOutline="true"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/tboi" />
+                        android:src="@drawable/game" />
 
                     <ImageButton
                         android:id="@+id/game_mhworld"
@@ -241,7 +244,7 @@
                         android:background="@drawable/game_miniature_shape"
                         android:clipToOutline="true"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/mhworld" />
+                        android:src="@drawable/game" />
 
                     <ImageButton
                         android:id="@+id/game1_ror2"
@@ -252,7 +255,7 @@
                         android:background="@drawable/game_miniature_shape"
                         android:clipToOutline="true"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/ror2" />
+                        android:src="@drawable/game" />
                 </LinearLayout>
             </HorizontalScrollView>
 
@@ -302,7 +305,7 @@
                             android:background="@drawable/game_miniature_shape"
                             android:clipToOutline="true"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/deadspace" />
+                            android:src="@drawable/game" />
                         <RatingBar
                             android:id="@+id/ratingBarReview"
                             style="?android:attr/ratingBarStyleSmall"
@@ -332,7 +335,7 @@
                         android:background="@drawable/game_miniature_shape"
                         android:clipToOutline="true"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/dredge" />
+                        android:src="@drawable/game" />
 
                         <RatingBar
                             android:id="@+id/ratingBarReview2"
@@ -361,7 +364,7 @@
                             android:background="@drawable/game_miniature_shape"
                             android:clipToOutline="true"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/mhwilds" />
+                            android:src="@drawable/game" />
                         <RatingBar
                             android:id="@+id/ratingBarReview3"
                             style="?android:attr/ratingBarStyleSmall"
@@ -390,7 +393,7 @@
                             android:background="@drawable/game_miniature_shape"
                             android:clipToOutline="true"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/gow" />
+                            android:src="@drawable/game" />
                         <RatingBar
                             android:id="@+id/ratingBarReview4"
                             style="?android:attr/ratingBarStyleSmall"

@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -64,6 +65,30 @@ public class AddGameFinalActivity extends DialogFragment {
         }
 
         RatingBar ratingBar = v.findViewById(R.id.reviewRatingBar);
+        ratingBar.setOnTouchListener((v1, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                float width = ratingBar.getWidth();
+                int numStars = ratingBar.getNumStars();
+                float starWidth = width / numStars;
+                float x = event.getX();
+                int tappedStar = (int) (x / starWidth) + 1;
+
+                float currentRating = ratingBar.getRating();
+
+                if (tappedStar == (int) Math.ceil(currentRating) && currentRating > (tappedStar - 1)) {
+                    if (currentRating == (float) tappedStar) {
+                        ratingBar.setRating(tappedStar - 0.5f);
+                    } else {
+                        ratingBar.setRating(tappedStar - 1.0f);
+                    }
+                } else {
+                    ratingBar.setRating((float) tappedStar);
+                }
+                v1.performClick();
+                return true;
+            }
+            return true;
+        });
         EditText etReview = v.findViewById(R.id.etReviewText);
         Button btnAdd = v.findViewById(R.id.btnAddFinal);
 

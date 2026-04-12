@@ -42,7 +42,7 @@ public class ImageUtils {
         Glide.with(context)
                 .load(glideUrl)
                 .error(diceBearFallback)
-                .placeholder(R.drawable.ballxpit)
+                .placeholder(R.drawable.pfp)
                 .into(target);
     }
 
@@ -62,11 +62,11 @@ public class ImageUtils {
                     .build());
             Glide.with(context)
                     .load(glideUrl)
-                    .placeholder(R.drawable.ballxpit)
-                    .error(R.drawable.ballxpit)
+                    .placeholder(R.drawable.game)
+                    .error(R.drawable.game)
                     .into(target);
         } else {
-            target.setImageResource(R.drawable.ballxpit);
+            target.setImageResource(R.drawable.game);
         }
     }
 }
