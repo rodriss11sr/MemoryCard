@@ -203,72 +203,24 @@ router.get('/:id/relacionados', async (req, res) => {
     const nombresPlataformas = plataformas.map(p => p.nombre_plataforma);
     const tituloActual = juegoActual[0]?.titulo || '';
 
-    // Construir la query de forma más robusta
-    let query = `
-      SELECT j.id_juego, j.titulo, j.portada, 
-             GROUP_CONCAT(DISTINCT p.nombre SEPARATOR ', ') AS plataformas,
-             COUNT(*) AS coincidencias,
-             CASE 1=1`;
-
+    // Construir query que calcule una puntuación de relevancia por pesos
+    // Usamos subconsultas EXISTS/COUNT para evitar que una condición más genérica
+    // anule una más específica (evita el problema del CASE con primer match).
     let params = [];
-    let relevanciaCase = '';
+    const generoPlaceholders = nombresGeneros.map(() => '?').join(',') || "''";
+    const devPlaceholders = nombresDesarrolladoras.map(() => '?').join(',') || "''";
+    const platPlaceholders = nombresPlataformas.map(() => '?').join(',') || "''";
 
-    // Tier 1: mismo género
-    relevanciaCase += `
-      WHEN EXISTS (
-        SELECT 1 FROM pertenece pe
-        WHERE pe.id_juego = j.id_juego
-          AND pe.nombre_genero IN (${nombresGeneros.map(() => '?').join(',')})
-      ) THEN 1`;
-    params.push(...nombresGeneros);
-
-    // Tier 2: mismo género + misma desarrolladora
-    if (nombresDesarrolladoras.length > 0) {
-      relevanciaCase += `
-      WHEN EXISTS (
-        SELECT 1 FROM desarrolla d
-        WHERE d.id_juego = j.id_juego
-          AND d.nombre_desarrolladora IN (${nombresDesarrolladoras.map(() => '?').join(',')})
-      )
-      AND EXISTS (
-        SELECT 1 FROM pertenece pe
-        WHERE pe.id_juego = j.id_juego
-          AND pe.nombre_genero IN (${nombresGeneros.map(() => '?').join(',')})
-      ) THEN 2`;
-      params.push(...nombresDesarrolladoras);
-      params.push(...nombresGeneros);
-    }
-
-    // Tier 3: nombre similar
-    relevanciaCase += ` WHEN j.titulo LIKE ? THEN 3`;
-    params.push(`%${tituloActual}%`);
-
-    // Tier 4: mismo género + misma desarrolladora + misma plataforma
-    if (nombresDesarrolladoras.length > 0 && nombresPlataformas.length > 0) {
-      relevanciaCase += `
-      WHEN EXISTS (
-        SELECT 1 FROM desarrolla d
-        WHERE d.id_juego = j.id_juego
-          AND d.nombre_desarrolladora IN (${nombresDesarrolladoras.map(() => '?').join(',')})
-      )
-      AND EXISTS (
-        SELECT 1 FROM pertenece pe
-        WHERE pe.id_juego = j.id_juego
-          AND pe.nombre_genero IN (${nombresGeneros.map(() => '?').join(',')})
-      )
-      AND EXISTS (
-        SELECT 1 FROM lanza l2
-        WHERE l2.id_juego = j.id_juego
-          AND l2.nombre_plataforma IN (${nombresPlataformas.map(() => '?').join(',')})
-      ) THEN 4`;
-      params.push(...nombresDesarrolladoras);
-      params.push(...nombresGeneros);
-      params.push(...nombresPlataformas);
-    }
-
-    relevanciaCase += ` ELSE 0 END AS relevancia`;
-
-    query += relevanciaCase + `
+    let query = `
+      SELECT j.id_juego, j.titulo, j.portada,
+             GROUP_CONCAT(DISTINCT p.nombre SEPARATOR ', ') AS plataformas,
+             (
+               (CASE WHEN EXISTS (SELECT 1 FROM pertenece pe WHERE pe.id_juego = j.id_juego AND pe.nombre_genero IN (${generoPlaceholders})) THEN 1 ELSE 0 END) * 100
+               + (CASE WHEN EXISTS (SELECT 1 FROM desarrolla d WHERE d.id_juego = j.id_juego AND d.nombre_desarrolladora IN (${devPlaceholders})) THEN 1 ELSE 0 END) * 50
+               + (CASE WHEN EXISTS (SELECT 1 FROM lanza l2 WHERE l2.id_juego = j.id_juego AND l2.nombre_plataforma IN (${platPlaceholders})) THEN 1 ELSE 0 END) * 30
+               + (CASE WHEN j.titulo LIKE ? THEN 1 ELSE 0 END) * 10
+             ) AS relevancia,
+             (SELECT COUNT(*) FROM pertenece pe2 WHERE pe2.id_juego = j.id_juego AND pe2.nombre_genero IN (${generoPlaceholders})) AS coincidencias
       FROM juego j
       LEFT JOIN lanza l ON j.id_juego = l.id_juego
       LEFT JOIN plataforma p ON l.nombre_plataforma = p.nombre
@@ -276,17 +228,22 @@ router.get('/:id/relacionados', async (req, res) => {
         AND EXISTS (
           SELECT 1 FROM pertenece pe
           WHERE pe.id_juego = j.id_juego
-            AND pe.nombre_genero IN (${nombresGeneros.map(() => '?').join(',')})
+            AND pe.nombre_genero IN (${generoPlaceholders})
         )
       GROUP BY j.id_juego
       ORDER BY relevancia DESC, coincidencias DESC, j.titulo ASC
       LIMIT 12
     `;
 
-
-    params.push(id);
+    // Rellenar params: para cada placeholder group, añadimos los arrays correspondientes
+    // El orden debe coincidir con el uso en la query
     params.push(...nombresGeneros);
-
+    params.push(...nombresDesarrolladoras);
+    params.push(...nombresPlataformas);
+    params.push(`%${tituloActual}%`);
+    params.push(id);
+    // coincidencias subquery placeholders
+    params.push(...nombresGeneros);
 
     let [relacionados] = await pool.query(query, params);
 

@@ -29,7 +29,7 @@ function App() {
     const url = `${API_BASE_URL}/health`;
     const ping = () => fetch(url, { method: 'GET', cache: 'no-cache' }).catch(() => {});
     ping();
-    const id = setInterval(ping, 15000);
+    const id = setInterval(ping, 300000); // 5 minutos
     return () => clearInterval(id);
   }, []);
   return (
