@@ -11,6 +11,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -204,15 +206,17 @@
 
             <HorizontalScrollView
                 android:id="@+id/horizontalScrollView"
-                android:layout_width="411dp"
-                android:layout_height="200dp">
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:clipToPadding="false">
 
                 <LinearLayout
                     android:id="@+id/linearLayout2"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
-                    android:paddingHorizontal="16dp">
+                    android:paddingStart="16dp"
+                    android:paddingEnd="40dp">
 
                     <ImageButton
                         android:id="@+id/game_ds3"
@@ -282,14 +286,16 @@
             <HorizontalScrollView
                 android:id="@+id/latestactivity"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:clipToPadding="false">
 
                 <LinearLayout
                     android:id="@+id/linearLayoutLatestActivity"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
-                    android:paddingHorizontal="16dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="40dp"
                     android:layout_marginBottom="30dp">
 
                     <LinearLayout
