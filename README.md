@@ -15,11 +15,19 @@ Proveer una plataforma donde usuarios pueden registrar cuentas, crear listas de 
 
 Estructura del repositorio
 --------------------------
-- `backend/`: Código del servidor API (rutas, controladores, configuración de base de datos). Contiene `server.js`, `routes/` y `config/database.js`.
-- `web-react/`: Aplicación frontend en React (Vite).
-- `mobile-android/`: Proyecto Android (Gradle) para la app móvil.
-- `docs/`: Scripts SQL para crear/esquematizar la base de datos, migraciones y diagramas.
-- `bin/`, `build/`: archivos auxiliares y artefactos; la carpeta `postman/` existe por organización pero Postman no se utilizó en el desarrollo (ver nota abajo).
+
+```
+MemoryCard/
+├── backend/              # API REST (Node.js + Express)
+│   ├── config/          # Configuración de BD
+│   ├── routes/          # Rutas de la API
+│   └── server.js        # Servidor principal
+├── web-react/           # Frontend (React + Vite)
+│   └── src/
+│       ├── components/  # Componentes reutilizables
+│       └── pages/       # Páginas de la aplicación
+└── mobile-android/      # App Android
+```
 
 Tecnologías y herramientas
 --------------------------
@@ -31,7 +39,7 @@ El proyecto usa las siguientes tecnologías y programas principales:
 - **Frontend (web):** React con Vite para la aplicación de usuario.
 - **Móvil:** Android (Gradle) para la app nativa.
 - **Contenedores / despliegue local:** Docker y docker-compose (hay archivos en `backend/`).
-- **Desarrollo:** Node/npm, Android Studio (o Gradle wrapper), y herramientas SQL para importar los scripts de `docs/`.
+- **Desarrollo:** Node/npm, Android Studio (o Gradle wrapper), y XAMPP (Apache/MySQL) para el entorno de base de datos local.
 
 Despliegue / Hosting
 --------------------
@@ -58,23 +66,14 @@ El backend organiza las rutas en `backend/routes/`:
 
 Base de datos
 -------------
-En `docs/` hay scripts SQL para crear tablas y datos de ejemplo (por ejemplo `01_schema.sql`, `02_datos_ejemplo.sql`, etc.).
-Usa tu gestor SQL preferido para ejecutar esos scripts (Postgres, MySQL o SQLite según tu configuración local).
+En `docs/` hay scripts SQL para crear tablas y datos de ejemplo (`01_schema.sql`, `02_datos_ejemplo.sql`, etc.).
+Para el entorno local se requiere el uso de XAMPP (MySQL). Para ver los pasos detallados de cómo montar la base de datos, consulta `docs/README.md`.
 
 Ejecución local (resumen)
 ------------------------
 1. Backend
 
-	 - Abrir terminal en la carpeta `backend/`.
-	 - Instalar dependencias:
-
-		 npm install
-
-	 - Ejecutar:
-
-		 npm start
-
-	 (Si no existe el script `start`, se puede lanzar con `node server.js`.)
+	 - Para configurar y ejecutar el servidor, por favor consulta la guía detallada en `backend/README.md`.
 
 2. Frontend (web)
 
