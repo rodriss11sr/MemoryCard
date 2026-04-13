@@ -1,61 +1,152 @@
-import { useState } from 'react'
-import './App.css'
 
-function App() {
-  const [likes, setLikes] = useState(0)
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { useEffect } from 'react';
+import { API_BASE_URL } from './config/api';
+import AppLayout from "./components/AppLayout.jsx";
+import LogIn from "./pages/login.jsx";
+import SignIn from "./pages/signin.jsx";
+import Password from "./pages/Password.jsx";
+import ResetPassword from "./pages/ResetPassword.jsx";
+import Home from "./pages/home.jsx";
+import Profile from "./pages/Profile.jsx";
+import Game from "./pages/Game.jsx";
+import Games from "./pages/Games.jsx";
+import Reviews from "./pages/Reviews.jsx";
+import Friends from "./pages/Friends.jsx";
+import Whishlist from "./pages/Whishlist.jsx";
+import ListDetail from "./pages/ListDetail.jsx";
 
-  // Ejemplo de lo que sería vuestra base de datos (Database)
-  const juegosEjemplo = [
-    { id: 1, titulo: "Elden Ring", nota: "9.5", img: "⚔️" },
-    { id: 2, titulo: "Zelda: TotK", nota: "10", img: "🛡️" },
-    { id: 3, titulo: "Hollow Knight", nota: "9.0", img: "🪲" }
-  ]
-
-  return (
-    <>
-      <header style={{ borderBottom: '1px solid #555', marginBottom: '20px' }}>
-        <h1>GameBoxd 🎮</h1>
-        <p>Tu diario de videojuegos personal</p>
-      </header>
-
-      <div className="card">
-        <input 
-          type="text" 
-          placeholder="Busca un juego para loguear..." 
-          style={{ padding: '10px', borderRadius: '20px', border: 'none', width: '80%' }}
-        />
-      </div>
-
-      <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', marginTop: '30px' }}>
-        {juegosEjemplo.map(juego => (
-          <div key={juego.id} style={{ 
-            backgroundColor: '#1a1a1a', 
-            padding: '15px', 
-            borderRadius: '10px',
-            border: '1px solid #444',
-            width: '120px'
-          }}>
-            <div style={{ fontSize: '30px' }}>{juego.img}</div>
-            <h4>{juego.titulo}</h4>
-            <p style={{ color: '#00e676' }}>★ {juego.nota}</p>
-          </div>
-        ))}
-      </div>
-
-      <div className="card" style={{ marginTop: '40px' }}>
-        <button onClick={() => setLikes((likes) => likes + 1)}>
-          ❤️ Dar amor al proyecto: {likes}
-        </button>
-        <p style={{ fontSize: '0.8rem', color: '#888', marginTop: '15px' }}>
-          Conectado a: <code>localhost:phpMyAdmin</code> (Próximamente)
-        </p>
-      </div>
-
-      <footer style={{ marginTop: '50px', opacity: 0.6 }}>
-        <small>TFG - Equipo GameBoxd - 2025</small>
-      </footer>
-    </>
-  )
+function RequireAuth({ children }) {
+  const isAuthenticated = !!localStorage.getItem("user");
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+  return children;
 }
 
-export default App
+function App() {
+  useEffect(() => {
+    const url = `${API_BASE_URL}/health`;
+    const ping = () => fetch(url, { method: 'GET', cache: 'no-cache' }).catch(() => {});
+    ping();
+    const id = setInterval(ping, 300000); // 5 minutos
+    return () => clearInterval(id);
+  }, []);
+  return (
+    <Router>
+      <Routes>
+        {/*Login (Sin header ni sidebar)*/}
+        <Route path="/login" element={<LogIn />} />
+        {/*Signin (Sin header ni sidebar)*/}
+        <Route path="/signin" element={<SignIn />} />
+        {/*Recuperar contraseña (Sin header ni sidebar)*/}
+        <Route path="/password" element={<Password />} />
+        {/*Cambiar contraseña con token (Sin header ni sidebar)*/}
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
+        {/*Inicio (con header y sidebar)*/}
+        <Route
+          path="/"
+          element={
+            <RequireAuth>
+              <AppLayout>
+                <Home />
+              </AppLayout>
+            </RequireAuth>
+          }
+        />
+        {/*Perfil del usuario (con header y sidebar)*/}
+        <Route
+          path="/profile"
+          element={
+            <RequireAuth>
+              <AppLayout>
+                <Profile />
+              </AppLayout>
+            </RequireAuth>
+          }
+        />
+        {/*Perfil de otro usuario (con header y sidebar)*/}
+        <Route
+          path="/user/:id"
+          element={
+            <RequireAuth>
+              <AppLayout>
+                <Profile />
+              </AppLayout>
+            </RequireAuth>
+          }
+        />
+        {/*Listado de juegos (con header y sidebar)*/}
+        <Route
+          path="/games"
+          element={
+            <RequireAuth>
+              <AppLayout>
+                <Games />
+              </AppLayout>
+            </RequireAuth>
+          }
+        />
+        {/*Detalle de juego (con header y sidebar)*/}
+        <Route
+          path="/game/:id"
+          element={
+            <RequireAuth>
+              <AppLayout>
+                <Game />
+              </AppLayout>
+            </RequireAuth>
+          }
+        />
+        {/*Reviews (con header y sidebar)*/}
+        <Route
+          path="/reviews"
+          element={
+            <RequireAuth>
+              <AppLayout>
+                <Reviews />
+              </AppLayout>
+            </RequireAuth>
+          }
+        />
+        {/*Amigos (con header y sidebar)*/}
+        <Route
+          path="/friends"
+          element={
+            <RequireAuth>
+              <AppLayout>
+                <Friends />
+              </AppLayout>
+            </RequireAuth>
+          }
+        />
+        {/*Whishlist (con header y sidebar)*/}
+        <Route
+          path="/whishlist"
+          element={
+            <RequireAuth>
+              <AppLayout>
+                <Whishlist />
+              </AppLayout>
+            </RequireAuth>
+          }
+        />
+        {/*Detalle de lista (con header y sidebar)*/}
+        <Route
+          path="/list/:id"
+          element={
+            <RequireAuth>
+              <AppLayout>
+                <ListDetail />
+              </AppLayout>
+            </RequireAuth>
+          }
+        />
+        {/*Cualquier otra ruta redirige al login*/}
+        <Route path="*" element={<Navigate to="/login" replace />} />
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;

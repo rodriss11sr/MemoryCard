@@ -2,46 +2,204 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/homeScreen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#1B1F27"
-    tools:context=".MainActivity">
+    tools:context=".HomeActivity">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/upheavtt"
-        android:text="@string/archive"
-        android:textColor="#FFFFFF"
-        android:textSize="48sp"
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="top|center"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.13" />
+        app:layout_constraintVertical_bias="0.0">
 
-    <androidx.constraintlayout.widget.Barrier
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="top"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="73dp"
+            android:background="#2D333E" />
 
-    <Button
-        android:id="@+id/iniciarSesion"
-        style="@style/Widget.Material3.Button"
-        android:layout_width="365dp"
-        android:layout_height="75dp"
-        android:backgroundTint="#0466C8"
-        android:fontFamily="@font/upheavtt"
-        android:text="@string/iniciar_sesi_n"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:layout_constraintVertical_bias="0.082" />
+        <TextView
+            android:id="@+id/archiveText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/upheavtt"
+            android:paddingTop="10dp"
+            android:paddingBottom="20dp"
+            android:text="@string/memoryCard"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="48sp" />
+
+
+        <Button
+            android:id="@+id/logInButton"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="345dp"
+            android:layout_height="54dp"
+            android:background="@drawable/button_shape"
+            android:fontFamily="@font/upheavtt"
+            android:text="INICIAR SESIÓN"
+            android:textSize="27dp"
+            app:backgroundTint="@null" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingStart="50dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
+
+
+            <TextView
+                android:id="@+id/woutAccount"
+                android:layout_width="wrap_content"
+                android:layout_height="56dp"
+                android:paddingTop="12dp"
+                android:fontFamily="@font/m6x11plus"
+                android:letterSpacing="0.03"
+                android:text="¿No tienes cuenta?"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/registerBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_weight="1"
+                android:background="#00FFFFFF"
+                android:fontFamily="@font/m6x11plus"
+                android:text="Registrate!"
+                android:textAlignment="viewStart"
+                android:textColor="#29CDF2"
+                android:textSize="24dp"
+                app:iconTint="#00000000"
+                app:rippleColor="#00FFFFFF" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/divider3"
+            android:layout_width="392dp"
+            android:layout_height="1dp"
+            android:background="#E6E6E6" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="20dp"
+                android:paddingTop="20dp"
+                android:paddingEnd="0dp">
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/upheavtt"
+                    android:letterSpacing="0.1"
+                    android:text="¿Qué es Memory Card?"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="286dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/m6x11plus"
+                    android:letterSpacing="0.05"
+                    android:text="Aqui puedes llevar un registro de tus juegos y compartirlo con otros usuarios."
+                    android:textAlignment="viewStart"
+                    android:textAllCaps="false"
+                    android:textColor="#9C9C9C"
+                    android:textSize="16sp"
+                    android:typeface="normal" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:orientation="vertical"
+                android:paddingTop="35dp"
+                android:paddingEnd="20dp">
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="249dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/upheavtt"
+                    android:letterSpacing="0.1"
+                    android:text="Guarda tus juegos favoritos"
+                    android:textAlignment="viewEnd"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="302dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/m6x11plus"
+                    android:letterSpacing="0.05"
+                    android:text="Puedes guardar juegos en tu biblioteca, indicar cuales han sido tus favoritos e incluso crear listas personalizadas."
+                    android:textAlignment="viewEnd"
+                    android:textAllCaps="false"
+                    android:textColor="#9C9C9C"
+                    android:textSize="16sp"
+
+                    android:typeface="normal" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="20dp"
+                android:paddingTop="35dp"
+                android:paddingEnd="0dp">
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="227dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/upheavtt"
+                    android:letterSpacing="0.1"
+                    android:text="Comparte tus experiencias"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="263dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/m6x11plus"
+                    android:letterSpacing="0.05"
+                    android:text="Escribe y lee reseñas de los juegos que te interesan y sigue a otros usuarios."
+                    android:textAlignment="viewStart"
+                    android:textAllCaps="false"
+                    android:textColor="#9C9C9C"
+                    android:textSize="16sp"
+                    android:typeface="normal" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

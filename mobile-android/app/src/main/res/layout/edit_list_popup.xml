@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="350dp"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="#2D333E"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="10dp"
+    android:layout_marginTop="100dp"
+    android:layout_gravity="center|top">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="EDITAR LISTA"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:fontFamily="@font/upheavtt"
+            android:layout_marginBottom="20dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="NOMBRE"
+            android:textColor="@color/white"
+            android:fontFamily="@font/upheavtt"
+            android:textSize="20sp"
+            android:layout_marginBottom="8dp" />
+
+        <EditText
+            android:id="@+id/etEditNombre"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/button_shape"
+            android:backgroundTint="@color/white"
+            android:fontFamily="@font/upheavtt"
+            android:paddingStart="15dp"
+            android:maxLength="20"
+            android:textColor="@color/black"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="DESCRIPCIÓN"
+            android:textColor="@color/white"
+            android:fontFamily="@font/upheavtt"
+            android:textSize="20sp"
+            android:layout_marginBottom="8dp" />
+
+        <EditText
+            android:id="@+id/etEditDescripcion"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="@drawable/button_shape"
+            android:backgroundTint="@color/white"
+            android:fontFamily="@font/upheavtt"
+            android:paddingStart="15dp"
+            android:paddingTop="10dp"
+            android:gravity="top|start"
+            android:textColor="@color/black"
+            android:hint="Opcional..."
+            android:layout_marginBottom="20dp" />
+
+        <Button
+            android:id="@+id/btnSaveEdit"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="GUARDAR"
+            android:textSize="24dp"
+            android:backgroundTint="#0066CC"
+            android:fontFamily="@font/upheavtt"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

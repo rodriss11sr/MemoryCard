@@ -1,42 +1,292 @@
-#root {
-  max-width: 1280px;
+:root {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  /* --- PALETA EXTRAÍDA DE LA IMAGEN --- */
+  
+  /* El fondo general (el color más oscuro detrás de todo) */
+  --bg-color: #15171e; 
+  
+  /* El color de las tarjetas (ese azul grisáceo de los reviews) */
+  --card-bg: #2b303b; 
+  
+  /* Textos */
+  --text-primary: #ffffff;   /* Blanco puro para títulos */
+  --text-secondary: #9ca3af; /* Gris azulado para textos secundarios */
+  
+  /* Acentos */
+  --accent: #ef4444;         /* Rojo (para errores o likes) */
+  --border-color: #3e4451;   /* Líneas divisorias sutiles */
+
+  color-scheme: dark;
+  color: var(--text-primary);
+  background-color: var(--bg-color);
+  
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: var(--bg-color);
+}
+
+/* Scrollbar personalizada para que pegue con el tema */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-color); 
+}
+::-webkit-scrollbar-thumb {
+  background: #3e4451; 
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #5c6370; 
+}
+
+/* ===== PÁGINA DE JUEGO ===== */
+.game-page {
+  width: 100%;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 2rem;
-  text-align: center;
+  color: var(--text-primary);
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.game-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 2rem 0;
+  line-height: 1.2;
+  font-family: 'Upheaval', system-ui;
+  color: var(--text-primary);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+/* Sección principal del juego */
+.game-header {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 3rem;
+  margin-bottom: 4rem;
+  align-items: start;
+}
+
+.game-cover {
+  position: sticky;
+  top: 2rem;
+  width: 320px;
+}
+
+.game-cover img {
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  display: block;
+}
+
+.game-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.game-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  border: none;
+  padding: 0;
+  border-radius: 0;
+  background-color: transparent;
+}
+
+.detail-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.detail-row .label {
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.detail-row .value {
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.game-description {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin: 0;
+  text-align: justify;
+}
+
+/* Sección juegos relacionados */
+.related-games-section {
+  margin-bottom: 4rem;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 1.5rem 0;
+  font-family: 'Upheaval', system-ui;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-primary);
+}
+
+.games-grid {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.game-card-small {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  flex-shrink: 0;
+  min-width: 160px;
+}
+
+.game-card-small:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.game-card-small img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+}
+
+.game-card-small p {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 1rem;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* Sección reseñas */
+.reviews-section {
+  margin-bottom: 2rem;
+}
+
+.reviews-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.review-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.review-card:hover {
+  background-color: rgba(43, 48, 59, 0.8);
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.reviewer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.reviewer-name {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-family: 'Upheaval', system-ui;
+}
+
+.review-date {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.review-text {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .game-page {
+    padding: 1rem;
   }
-  to {
-    transform: rotate(360deg);
+
+  .game-header {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .game-cover {
+    position: static;
+    width: 100%;
+  }
+
+  .game-title {
+    font-size: 1.8rem;
+  }
+
+  .games-grid {
+    gap: 1rem;
+  }
+
+  .detail-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+@media (max-width: 480px) {
+  .game-title {
+    font-size: 1.5rem;
   }
-}
 
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+  .reviews-section {
+    margin-top: 2rem;
+  }
 }
