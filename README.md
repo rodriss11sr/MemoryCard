@@ -53,7 +53,7 @@ Demo y Descarga
 
 Puedes probar el proyecto y descargar la aplicación desde los siguientes enlaces:
 
-- **Aplicación Web:** Introduce aquí la URL pública de la web
+- **Aplicación Web:** [memorycard.io](https://rodriss11sr.github.io/MemoryCard/#/)
 - **App Android (APK):** [Haz click aquí para descargar](https://drive.google.com/file/d/1MtDNArFywdCxHiJQfo3m3otmra5iT0ny/view?usp=sharing) *(Nota: Puede no ser compatible en algunos dispositivos)*
 
 Rutas principales (backend)
