@@ -48,6 +48,14 @@ La infraestructura de producción utilizada en este proyecto es la siguiente:
 - **Base de datos:** alojada en Railway (servicio de hosting para bases de datos). La cadena de conexión y credenciales se gestionan mediante variables de entorno en Railway.
 - **Backend:** desplegado en Render (servicio PaaS). El servidor backend consume las variables de entorno (por ejemplo `DATABASE_URL`, `JWT_SECRET`, `PORT`) proporcionadas por Render.
 
+Demo y Descarga
+---------------
+
+Puedes probar el proyecto y descargar la aplicación desde los siguientes enlaces:
+
+- **Aplicación Web:** [memorycard.io](https://rodriss11sr.github.io/MemoryCard/#/)
+- **App Android (APK):** [Haz click aquí para descargar](https://drive.google.com/file/d/1MtDNArFywdCxHiJQfo3m3otmra5iT0ny/view?usp=sharing) *(Nota: Puede no ser compatible en algunos dispositivos)*
+
 Rutas principales (backend)
 ---------------------------
 El backend organiza sus rutas principales bajo el prefijo `/api/` (puedes consultar la lista completa de endpoints en `backend/README.md`):
